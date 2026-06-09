@@ -92,6 +92,8 @@ Rankings (UTD, TAMUGA, QS, US News) and placement data are sourced from external
 
 **Faculty profile:** Photo, school, title, PhD institution, research topics, theories, methodology, links to school profile / personal website / Google Scholar.
 
+**School profile page — research portfolio chart:** A donut chart showing the proportion of that school's faculty by research topic (e.g., a slice for Innovation, M&A, Org Theory), with a legend and counts on hover. Computed client-side from the same `faculty_topics` data used for filtering. Since a faculty member can have multiple topics, the chart counts topic mentions rather than strictly partitioning faculty 1:1 — slices represent relative emphasis, not a disjoint headcount.
+
 ## Admin Interface
 
 - `/admin` area in the Next.js app, authenticated via Supabase Auth (single admin account initially)
