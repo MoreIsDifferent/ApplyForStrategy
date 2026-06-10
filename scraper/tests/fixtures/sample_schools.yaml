@@ -1,0 +1,4 @@
+- slug: test-school
+  name: "Test School"
+  directory_url: "https://example.edu/faculty"
+  fetch_mode: static
