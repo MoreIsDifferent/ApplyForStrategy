@@ -4,21 +4,22 @@ import { FacetBar } from './FacetBar';
 import { EMPTY_FILTERS } from '@/lib/filtering';
 
 describe('FacetBar', () => {
-  it('renders one column per facet definition', () => {
-    render(
+  it('renders one column per facet definition inside a card', () => {
+    const { container } = render(
       <FacetBar
         facetDefinitions={[
-          { field: 'topics', title: 'Topic', options: ['Innovation'] },
-          { field: 'theories', title: 'Theory', options: ['RBV'] },
+          { field: 'theories', title: 'Theory', options: ['RBV'], colorScheme: 'theory' },
+          { field: 'methodology', title: 'Methodology', options: ['Quantitative'], colorScheme: 'method' },
         ]}
         filters={EMPTY_FILTERS}
-        counts={{ topics: { Innovation: 1 }, theories: { RBV: 1 }, methodology: {}, geography: {} }}
+        counts={{ topics: {}, theories: { RBV: 1 }, methodology: { Quantitative: 1 }, geography: {} }}
         onToggle={() => {}}
       />
     );
-    expect(screen.getByText('Topic')).toBeInTheDocument();
     expect(screen.getByText('Theory')).toBeInTheDocument();
-    expect(screen.getByRole('checkbox', { name: /Innovation/ })).toBeInTheDocument();
-    expect(screen.getByRole('checkbox', { name: /RBV/ })).toBeInTheDocument();
+    expect(screen.getByText('Methodology')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'RBV (1)' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Quantitative (1)' })).toBeInTheDocument();
+    expect(container.querySelector('.bg-white')).toBeInTheDocument();
   });
 });
