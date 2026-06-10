@@ -11,7 +11,7 @@ export function getTopicDistribution(faculty: Faculty[]): TopicDistributionEntry
   let total = 0;
   for (const f of faculty) {
     for (const topic of f.topics) {
-      counts[topic] = (counts[topic] ?? 0) + 1;
+      counts[topic.category] = (counts[topic.category] ?? 0) + 1;
       total += 1;
     }
   }

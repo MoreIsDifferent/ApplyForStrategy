@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { getTopicDistribution } from './portfolio';
-import type { Faculty } from './types';
+import type { Faculty, Topic } from './types';
 
-function makeFaculty(topics: string[]): Faculty {
+function makeFaculty(topics: Topic[]): Faculty {
   return {
     id: Math.random().toString(),
     name: 'Test',
@@ -28,16 +28,21 @@ describe('getTopicDistribution', () => {
     expect(getTopicDistribution([])).toEqual([]);
   });
 
-  it('counts topic mentions across faculty and sorts by count descending', () => {
+  it('counts topic mentions by category and sorts by count descending', () => {
     const faculty = [
-      makeFaculty(['Innovation', 'Corporate Strategy']),
-      makeFaculty(['M&A', 'Corporate Strategy']),
-      makeFaculty(['Innovation']),
+      makeFaculty([
+        { name: 'Innovation', category: 'Innovation & Technology' },
+        { name: 'Corporate Strategy', category: 'Corporate Strategy & Governance' },
+      ]),
+      makeFaculty([
+        { name: 'M&A', category: 'Corporate Strategy & Governance' },
+        { name: 'Corporate Strategy', category: 'Corporate Strategy & Governance' },
+      ]),
+      makeFaculty([{ name: 'Innovation', category: 'Innovation & Technology' }]),
     ];
     expect(getTopicDistribution(faculty)).toEqual([
-      { topic: 'Innovation', count: 2, percentage: 40 },
-      { topic: 'Corporate Strategy', count: 2, percentage: 40 },
-      { topic: 'M&A', count: 1, percentage: 20 },
+      { topic: 'Corporate Strategy & Governance', count: 3, percentage: 60 },
+      { topic: 'Innovation & Technology', count: 2, percentage: 40 },
     ]);
   });
 });
