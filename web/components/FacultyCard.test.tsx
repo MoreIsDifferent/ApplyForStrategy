@@ -11,7 +11,7 @@ describe('FacultyCard', () => {
     expect(screen.getByText(faculty.school.name)).toBeInTheDocument();
     expect(screen.getByText(faculty.title)).toBeInTheDocument();
     for (const topic of faculty.topics) {
-      expect(screen.getByText(topic)).toBeInTheDocument();
+      expect(screen.getByText(topic.name)).toBeInTheDocument();
     }
   });
 });

@@ -15,7 +15,7 @@ export function FacultyCard({ faculty }: { faculty: Faculty }) {
         <span className="text-gray-500 text-sm">{faculty.title}</span>
       </div>
       <div className="flex flex-wrap gap-1">
-        {[...faculty.topics, ...faculty.theories].map((tag) => (
+        {[...faculty.topics.map((t) => t.name), ...faculty.theories].map((tag) => (
           <span key={tag} className="text-xs bg-gray-100 rounded px-2 py-0.5">
             {tag}
           </span>
