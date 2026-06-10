@@ -1,0 +1,12 @@
+- slug: wharton
+  name: "Wharton (UPenn)"
+  directory_url: "https://www.wharton.upenn.edu/faculty-research/faculty-directory/?department=mgmt"
+  fetch_mode: static
+- slug: chicago-booth
+  name: "Chicago Booth"
+  directory_url: "https://www.chicagobooth.edu/faculty/directory?area=Strategy and Leadership"
+  fetch_mode: rendered
+- slug: ucla-anderson
+  name: "UCLA Anderson"
+  directory_url: "https://www.anderson.ucla.edu/faculty-and-research/management-and-organizations/faculty"
+  fetch_mode: rendered
