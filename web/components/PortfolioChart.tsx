@@ -17,7 +17,10 @@ export function PortfolioChart({ data }: { data: TopicDistributionEntry[] }) {
         nameKey="topic"
         innerRadius={60}
         outerRadius={100}
-        label={(entry) => `${entry.topic} (${entry.percentage}%)`}
+        label={(entry) => {
+          const item = entry as unknown as TopicDistributionEntry;
+          return `${item.topic} (${item.percentage}%)`;
+        }}
       >
         {data.map((entry, index) => (
           <Cell key={entry.topic} fill={COLORS[index % COLORS.length]} />
