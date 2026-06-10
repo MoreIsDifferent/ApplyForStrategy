@@ -5,10 +5,10 @@ export function ResultsList({ faculty }: { faculty: Faculty[] }) {
   const sorted = [...faculty].sort((a, b) => a.name.localeCompare(b.name));
   return (
     <div>
-      <p className="text-sm text-gray-500 mb-2">
+      <p className="text-sm text-gray-secondary mb-2">
         {sorted.length} result{sorted.length === 1 ? '' : 's'}
       </p>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         {sorted.map((f) => (
           <FacultyCard key={f.id} faculty={f} />
         ))}
