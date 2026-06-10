@@ -39,7 +39,7 @@ export default async function FacultyPage({
         </div>
         <div>
           <dt className="font-semibold">Research Topics</dt>
-          <dd>{faculty.topics.length > 0 ? faculty.topics.join(', ') : 'Unknown'}</dd>
+          <dd>{faculty.topics.length > 0 ? faculty.topics.map((t) => t.name).join(', ') : 'Unknown'}</dd>
         </div>
         <div>
           <dt className="font-semibold">Theories</dt>
