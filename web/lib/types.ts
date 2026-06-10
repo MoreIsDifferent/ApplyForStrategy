@@ -14,6 +14,11 @@ export interface School {
 
 export type Methodology = 'Quantitative' | 'Qualitative' | 'Mixed' | 'Experimental' | 'Computational';
 
+export interface Topic {
+  name: string;
+  category: string;
+}
+
 export interface Faculty {
   id: string;
   name: string;
@@ -25,6 +30,6 @@ export interface Faculty {
   personal_website_url: string | null;
   google_scholar_url: string | null;
   methodology: Methodology | null;
-  topics: string[];
+  topics: Topic[];
   theories: string[];
 }
