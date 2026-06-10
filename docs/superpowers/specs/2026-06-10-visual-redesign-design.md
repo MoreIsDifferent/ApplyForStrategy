@@ -20,6 +20,22 @@ Replace the current minimal Tailwind v4 theme in `web/app/globals.css` with toke
   --color-accent-soft: #E8F2FB;
   --color-accent-soft-text: #2b6f9e;
   --color-muted: #9AA5B1;
+
+  /* Facet color families: selected = medium tone (filled pill),
+     soft = light tint (unselected pill / tag), with matching text color */
+  --color-theory: #95C0A3;
+  --color-theory-soft: #E3F0E6;
+  --color-theory-soft-text: #3F7A52;
+
+  --color-method: #E3BACF;
+  --color-method-text: #7A4259;
+  --color-method-soft: #F8EDF2;
+  --color-method-soft-text: #9C6F87;
+
+  --color-geo: #B99B99;
+  --color-geo-soft: #F2E6E5;
+  --color-geo-soft-text: #8C6E6E;
+
   --font-sans: var(--font-inter), sans-serif;
 }
 body {
@@ -30,7 +46,7 @@ body {
 
 `web/app/layout.tsx`: replace the `Geist`/`Geist_Mono` font imports with `Inter` from `next/font/google`, applied as the body font. Metadata title remains "Strategy PhD Faculty Finder".
 
-These tokens become available as Tailwind utilities: `bg-warm-white`, `text-charcoal`, `text-gray-secondary`, `border-divider`, `bg-accent`, `text-accent`, `bg-accent-soft`, `text-accent-soft-text`, `text-muted`.
+These tokens become available as Tailwind utilities: `bg-warm-white`, `text-charcoal`, `text-gray-secondary`, `border-divider`, `bg-accent`, `text-accent`, `bg-accent-soft`, `text-accent-soft-text`, `text-muted`, `bg-theory`, `bg-theory-soft`, `text-theory-soft-text`, `bg-method`, `text-method-text`, `bg-method-soft`, `text-method-soft-text`, `bg-geo`, `bg-geo-soft`, `text-geo-soft-text`.
 
 ## Homepage: header & filter bar
 
@@ -54,18 +70,21 @@ These tokens become available as Tailwind utilities: `bg-warm-white`, `text-char
 </div>
 ```
 
-`web/components/FacetColumn.tsx` (single-level facets — Methodology, Geography, etc.):
+`web/components/FacetColumn.tsx` (single-level facets — Theory, Methodology, Geography):
 - Small uppercase label: `text-[11px] font-bold tracking-wide text-gray-secondary`
-- Each facet value rendered as a pill button. Unselected: `bg-white border border-divider text-charcoal`. Selected: `bg-accent text-white`.
-- Count shown inline in the pill label, e.g. `Quantitative (40)`.
+- Each facet value rendered as a pill button with a count, e.g. `Quantitative (40)`.
+- Each facet category has its own color family — selected = filled with the family's medium tone, unselected = the family's light "soft" tint, both with matching text color:
+  - **Theory**: selected `bg-theory text-white`, unselected `bg-theory-soft text-theory-soft-text`
+  - **Methodology**: selected `bg-method text-method-text`, unselected `bg-method-soft text-method-soft-text`
+  - **Geography**: selected `bg-geo text-white`, unselected `bg-geo-soft text-geo-soft-text`
 
-`web/components/TopicFacet.tsx` (two-level — categories with sub-topics):
-- Top-level categories rendered as larger pills with a `▾`/`▸` expand indicator, same selected/unselected coloring as `FacetColumn` pills.
+`web/components/TopicFacet.tsx` (two-level — categories with sub-topics, blue/accent family):
+- Top-level categories rendered as larger pills with a `▾`/`▸` expand indicator. Selected = `bg-accent text-white`, unselected = `bg-accent-soft text-accent-soft-text`.
 - Clicking the expand indicator (not the pill body) toggles whether sub-topics are shown — it does not change the filter selection.
-- When expanded, sub-topic pills render in a row below, indented, using the smaller "tag" style: unselected = `bg-accent-soft text-accent-soft-text`, selected = `bg-accent text-white`.
+- When expanded, sub-topic pills render in a row below, indented, using the same accent family at a smaller size: unselected = `bg-accent-soft text-accent-soft-text`, selected = `bg-accent text-white`.
 - Clicking a sub-topic pill toggles that topic's filter selection directly.
 
-This establishes a single pill-based interaction model across all facets, with the two-level Topic facet getting expand/collapse for its sub-topics.
+This establishes a single pill-based interaction model across all facets, with each facet category color-coded via its own hue family (Topic = blue, Theory = green, Methodology = mauve, Geography = rose-brown), and the two-level Topic facet getting expand/collapse for its sub-topics.
 
 ## FacultyCard & ResultsList
 
