@@ -1,5 +1,5 @@
 import { getSupabaseClient } from './supabase';
-import type { Faculty, Methodology, School } from './types';
+import type { Faculty, Methodology, School, Topic } from './types';
 
 interface SchoolRow {
   id: string;
@@ -26,7 +26,7 @@ interface FacultyRow {
   google_scholar_url: string | null;
   methodology: string | null;
   schools: SchoolRow;
-  faculty_topics: { topics: { name: string } | null }[];
+  faculty_topics: { topics: { name: string; canonical_name: string | null; category: string | null } | null }[];
   faculty_theories: { theories: { name: string } | null }[];
 }
 
@@ -46,6 +46,21 @@ function toSchool(row: SchoolRow): School {
   };
 }
 
+function dedupeTopics(
+  facultyTopics: { topics: { name: string; canonical_name: string | null; category: string | null } | null }[]
+): Topic[] {
+  const map = new Map<string, Topic>();
+  for (const ft of facultyTopics) {
+    if (!ft.topics) continue;
+    const name = ft.topics.canonical_name ?? ft.topics.name;
+    const category = ft.topics.category ?? 'Other';
+    if (!map.has(name)) {
+      map.set(name, { name, category });
+    }
+  }
+  return Array.from(map.values());
+}
+
 function toFaculty(row: FacultyRow): Faculty {
   return {
     id: row.id,
@@ -58,7 +73,7 @@ function toFaculty(row: FacultyRow): Faculty {
     personal_website_url: row.personal_website_url,
     google_scholar_url: row.google_scholar_url,
     methodology: (row.methodology as Methodology | null) ?? null,
-    topics: row.faculty_topics.map((ft) => ft.topics?.name).filter((name): name is string => !!name),
+    topics: dedupeTopics(row.faculty_topics),
     theories: row.faculty_theories.map((ft) => ft.theories?.name).filter((name): name is string => !!name),
   };
 }
@@ -75,7 +90,7 @@ export async function getAllFaculty(): Promise<Faculty[]> {
   const { data, error } = await supabase
     .from('faculty')
     .select(
-      '*, schools(*), faculty_topics(topics(name)), faculty_theories(theories(name))'
+      '*, schools(*), faculty_topics(topics(name, canonical_name, category)), faculty_theories(theories(name))'
     )
     .order('name');
   if (error) throw error;
