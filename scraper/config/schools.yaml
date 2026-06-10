@@ -9,4 +9,4 @@
 - slug: ucla-anderson
   name: "UCLA Anderson"
   directory_url: "https://www.anderson.ucla.edu/faculty-and-research/management-and-organizations/faculty"
-  fetch_mode: rendered
+  fetch_mode: static
