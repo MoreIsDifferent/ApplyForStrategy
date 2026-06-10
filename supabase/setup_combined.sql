@@ -1,5 +1,5 @@
 -- Combined setup script: run once in the Supabase SQL Editor for a fresh project.
--- Includes schema.sql + migrations/0001_add_bio_hash.sql + school records (no placeholder faculty).
+-- Includes schema.sql + migrations/0001_add_bio_hash.sql + migrations/0002_add_topic_taxonomy.sql + school records (no placeholder faculty).
 
 create extension if not exists "uuid-ossp";
 
@@ -19,7 +19,10 @@ create table schools (
 
 create table topics (
   id uuid primary key default uuid_generate_v4(),
-  name text not null unique
+  name text not null unique,
+  canonical_name text,
+  category text,
+  needs_categorization boolean not null default true
 );
 
 create table theories (
