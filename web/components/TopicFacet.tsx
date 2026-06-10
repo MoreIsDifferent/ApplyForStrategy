@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { TopicCategoryGroup } from '@/lib/filtering';
+import { pillClasses } from '@/lib/facetColors';
 
 interface TopicFacetProps {
   groups: TopicCategoryGroup[];
@@ -37,49 +38,46 @@ export function TopicFacet({ groups, counts, selected, onToggle }: TopicFacetPro
 
   return (
     <div className="flex-1 min-w-[200px]">
-      <h3 className="font-semibold text-sm uppercase tracking-wide text-gray-500 mb-2">Topic</h3>
-      <ul className="space-y-1 max-h-80 overflow-y-auto pr-2">
+      <h3 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase mb-2">Topic</h3>
+      <div className="flex flex-col gap-1.5 max-h-80 overflow-y-auto pr-2">
         {visibleGroups.map((group) => (
-          <li key={group.category}>
-            <div className="flex items-center gap-2 text-sm">
+          <div key={group.category}>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                aria-pressed={selected.includes(group.category)}
+                onClick={() => onToggle(group.category)}
+                className={pillClasses('topic', selected.includes(group.category))}
+              >
+                {group.category} ({group.count})
+              </button>
               <button
                 type="button"
                 aria-label={`Toggle ${group.category}`}
                 onClick={() => toggleExpanded(group.category)}
-                className="text-gray-400 w-4 text-left"
+                className="text-gray-secondary text-xs px-1"
               >
-                {expanded.has(group.category) ? '−' : '+'}
+                {expanded.has(group.category) ? '▾' : '▸'}
               </button>
-              <label className="flex items-center gap-2 cursor-pointer flex-1">
-                <input
-                  type="checkbox"
-                  checked={selected.includes(group.category)}
-                  onChange={() => onToggle(group.category)}
-                />
-                <span>{group.category}</span>
-                <span className="text-gray-400">({group.count})</span>
-              </label>
             </div>
             {expanded.has(group.category) && (
-              <ul className="ml-6 space-y-1 mt-1">
+              <div className="flex flex-wrap gap-1 ml-4 mt-1.5">
                 {group.topics.map((topic) => (
-                  <li key={topic}>
-                    <label className="flex items-center gap-2 text-sm cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={selected.includes(topic)}
-                        onChange={() => onToggle(topic)}
-                      />
-                      <span>{topic}</span>
-                      <span className="text-gray-400">({counts[topic] ?? 0})</span>
-                    </label>
-                  </li>
+                  <button
+                    key={topic}
+                    type="button"
+                    aria-pressed={selected.includes(topic)}
+                    onClick={() => onToggle(topic)}
+                    className={pillClasses('topic', selected.includes(topic)) + ' text-[11px] px-2 py-0.5'}
+                  >
+                    {topic} ({counts[topic] ?? 0})
+                  </button>
                 ))}
-              </ul>
+              </div>
             )}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
