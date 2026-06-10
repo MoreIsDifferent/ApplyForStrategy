@@ -14,11 +14,12 @@ import {
 import { FacetBar } from './FacetBar';
 import { TopicFacet } from './TopicFacet';
 import { ResultsList } from './ResultsList';
+import type { FacetColorScheme } from '@/lib/facetColors';
 
-const FACET_DEFS: { field: FacetField; title: string }[] = [
-  { field: 'theories', title: 'Theory' },
-  { field: 'methodology', title: 'Methodology' },
-  { field: 'geography', title: 'Geography' },
+const FACET_DEFS: { field: FacetField; title: string; colorScheme: FacetColorScheme }[] = [
+  { field: 'theories', title: 'Theory', colorScheme: 'theory' },
+  { field: 'methodology', title: 'Methodology', colorScheme: 'method' },
+  { field: 'geography', title: 'Geography', colorScheme: 'geo' },
 ];
 
 const ALL_FIELDS: FacetField[] = ['topics', 'theories', 'methodology', 'geography'];
@@ -67,13 +68,15 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-6 border-b pb-4 mb-4">
-        <TopicFacet
-          groups={topicGroups}
-          counts={counts.topics}
-          selected={filters.topics}
-          onToggle={(value) => handleToggle('topics', value)}
-        />
+      <div className="flex flex-col gap-3 mb-6">
+        <div className="bg-white border border-divider rounded-lg p-3">
+          <TopicFacet
+            groups={topicGroups}
+            counts={counts.topics}
+            selected={filters.topics}
+            onToggle={(value) => handleToggle('topics', value)}
+          />
+        </div>
         <FacetBar
           facetDefinitions={facetDefinitions}
           filters={filters}
