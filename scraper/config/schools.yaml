@@ -4,7 +4,7 @@
   fetch_mode: static
 - slug: chicago-booth
   name: "Chicago Booth"
-  directory_url: "https://www.chicagobooth.edu/faculty/directory?area=Strategy and Leadership"
+  directory_url: "https://www.chicagobooth.edu/faculty/academic-areas/strategy-and-leadership"
   fetch_mode: rendered
 - slug: ucla-anderson
   name: "UCLA Anderson"
