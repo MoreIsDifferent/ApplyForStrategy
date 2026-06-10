@@ -17,4 +17,12 @@ describe('getInitials', () => {
   it('uppercases lowercase names', () => {
     expect(getInitials('jane doe')).toBe('JD');
   });
+
+  it('returns empty string for empty input', () => {
+    expect(getInitials('')).toBe('');
+  });
+
+  it('returns empty string for whitespace-only input', () => {
+    expect(getInitials('   ')).toBe('');
+  });
 });
