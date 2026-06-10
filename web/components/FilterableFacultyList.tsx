@@ -5,20 +5,23 @@ import type { Faculty } from '@/lib/types';
 import {
   applyFilters,
   getFacetCounts,
+  getTopicTaxonomy,
   valuesForField,
   EMPTY_FILTERS,
   type FacetField,
   type FacetFilters,
 } from '@/lib/filtering';
 import { FacetBar } from './FacetBar';
+import { TopicFacet } from './TopicFacet';
 import { ResultsList } from './ResultsList';
 
 const FACET_DEFS: { field: FacetField; title: string }[] = [
-  { field: 'topics', title: 'Topic' },
   { field: 'theories', title: 'Theory' },
   { field: 'methodology', title: 'Methodology' },
   { field: 'geography', title: 'Geography' },
 ];
+
+const ALL_FIELDS: FacetField[] = ['topics', 'theories', 'methodology', 'geography'];
 
 function uniqueValues(faculty: Faculty[], field: FacetField): string[] {
   const set = new Set<string>();
@@ -40,10 +43,12 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
     [faculty]
   );
 
+  const topicGroups = useMemo(() => getTopicTaxonomy(faculty), [faculty]);
+
   const counts = useMemo(() => {
     const result = {} as Record<FacetField, Record<string, number>>;
-    for (const def of FACET_DEFS) {
-      result[def.field] = getFacetCounts(faculty, filters, def.field);
+    for (const field of ALL_FIELDS) {
+      result[field] = getFacetCounts(faculty, filters, field);
     }
     return result;
   }, [faculty, filters]);
@@ -62,12 +67,20 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
 
   return (
     <div>
-      <FacetBar
-        facetDefinitions={facetDefinitions}
-        filters={filters}
-        counts={counts}
-        onToggle={handleToggle}
-      />
+      <div className="flex flex-wrap gap-6 border-b pb-4 mb-4">
+        <TopicFacet
+          groups={topicGroups}
+          counts={counts.topics}
+          selected={filters.topics}
+          onToggle={(value) => handleToggle('topics', value)}
+        />
+        <FacetBar
+          facetDefinitions={facetDefinitions}
+          filters={filters}
+          counts={counts}
+          onToggle={handleToggle}
+        />
+      </div>
       <ResultsList faculty={filtered} />
     </div>
   );
