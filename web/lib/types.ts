@@ -12,19 +12,19 @@ export interface School {
   logo_url: string | null;
 }
 
-export type Methodology = 'Quantitative' | 'Qualitative' | 'Mixed';
+export type Methodology = 'Quantitative' | 'Qualitative' | 'Mixed' | 'Experimental' | 'Computational';
 
 export interface Faculty {
   id: string;
   name: string;
   school: School;
-  title: string;
-  phd_institution: string;
+  title: string | null;
+  phd_institution: string | null;
   photo_url: string | null;
   school_profile_url: string | null;
   personal_website_url: string | null;
   google_scholar_url: string | null;
-  methodology: Methodology;
+  methodology: Methodology | null;
   topics: string[];
   theories: string[];
 }

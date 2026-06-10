@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { allFaculty } from '@/lib/sampleData';
+import { getAllFaculty } from '@/lib/data';
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const allFaculty = await getAllFaculty();
   return allFaculty.map((f) => ({ id: f.id }));
 }
 
@@ -12,6 +13,7 @@ export default async function FacultyPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const allFaculty = await getAllFaculty();
   const faculty = allFaculty.find((f) => f.id === id);
   if (!faculty) {
     notFound();
@@ -29,19 +31,19 @@ export default async function FacultyPage({
       <dl className="space-y-2 text-sm">
         <div>
           <dt className="font-semibold">PhD Institution</dt>
-          <dd>{faculty.phd_institution}</dd>
+          <dd>{faculty.phd_institution ?? 'Unknown'}</dd>
         </div>
         <div>
           <dt className="font-semibold">Methodology</dt>
-          <dd>{faculty.methodology}</dd>
+          <dd>{faculty.methodology ?? 'Unknown'}</dd>
         </div>
         <div>
           <dt className="font-semibold">Research Topics</dt>
-          <dd>{faculty.topics.join(', ')}</dd>
+          <dd>{faculty.topics.length > 0 ? faculty.topics.join(', ') : 'Unknown'}</dd>
         </div>
         <div>
           <dt className="font-semibold">Theories</dt>
-          <dd>{faculty.theories.join(', ')}</dd>
+          <dd>{faculty.theories.length > 0 ? faculty.theories.join(', ') : 'Unknown'}</dd>
         </div>
       </dl>
       <div className="flex gap-4 mt-4 text-sm">

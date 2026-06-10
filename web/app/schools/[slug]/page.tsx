@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { allFaculty, schools } from '@/lib/sampleData';
+import { getAllFaculty, getSchools } from '@/lib/data';
 import { getTopicDistribution } from '@/lib/portfolio';
 import { PortfolioChart } from '@/components/PortfolioChart';
 import { ResultsList } from '@/components/ResultsList';
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const schools = await getSchools();
   return schools.map((school) => ({ slug: school.slug }));
 }
 
@@ -15,11 +16,13 @@ export default async function SchoolPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const schools = await getSchools();
   const school = schools.find((s) => s.slug === slug);
   if (!school) {
     notFound();
   }
 
+  const allFaculty = await getAllFaculty();
   const facultyAtSchool = allFaculty.filter((f) => f.school.slug === school.slug);
   const distribution = getTopicDistribution(facultyAtSchool);
 

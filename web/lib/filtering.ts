@@ -25,7 +25,7 @@ export function valuesForField(faculty: Faculty, field: FacetField): string[] {
     case 'theories':
       return faculty.theories;
     case 'methodology':
-      return [faculty.methodology];
+      return faculty.methodology ? [faculty.methodology] : [];
     case 'geography':
       return [faculty.school.geography];
   }
