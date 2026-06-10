@@ -34,6 +34,21 @@ export default async function SchoolPage({
       <h1 className="text-2xl font-bold mb-2">{school.name}</h1>
       <p className="text-gray-500 mb-6">{school.geography}</p>
 
+      <h2 className="text-lg font-semibold mb-2">Rankings</h2>
+      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {[
+          { label: 'UTD Top 100', value: school.ranking_utd },
+          { label: 'TAMU', value: school.ranking_tamuga },
+          { label: 'US News', value: school.ranking_usnews },
+          { label: 'QS', value: school.ranking_qs },
+        ].map(({ label, value }) => (
+          <div key={label} className="border rounded p-3 text-center">
+            <dt className="text-xs uppercase tracking-wide text-gray-500">{label}</dt>
+            <dd className="text-xl font-semibold">{value ?? '—'}</dd>
+          </div>
+        ))}
+      </dl>
+
       <h2 className="text-lg font-semibold mb-2">Research Portfolio</h2>
       <PortfolioChart data={distribution} />
 
