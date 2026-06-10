@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllFaculty } from '@/lib/data';
+import { getInitials } from '@/lib/initials';
 
 export async function generateStaticParams() {
   const allFaculty = await getAllFaculty();
@@ -20,47 +21,70 @@ export default async function FacultyPage({
   }
 
   return (
-    <main className="max-w-2xl mx-auto p-6">
-      <Link href="/" className="text-sm text-blue-600 underline mb-4 inline-block">
+    <main className="max-w-2xl mx-auto px-6 py-8">
+      <Link href="/" className="text-sm text-accent hover:underline mb-4 inline-block">
         ← Back to all faculty
       </Link>
-      <h1 className="text-2xl font-bold mb-1">{faculty.name}</h1>
-      <p className="text-gray-500 mb-4">
-        {faculty.title} — {faculty.school.name}
-      </p>
-      <dl className="space-y-2 text-sm">
+
+      <div className="flex items-center gap-4 mb-1">
+        {faculty.photo_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={faculty.photo_url}
+            alt={faculty.name}
+            className="w-16 h-16 rounded-full object-cover border border-divider"
+          />
+        ) : (
+          <div className="w-16 h-16 rounded-full bg-accent text-white flex items-center justify-center text-xl font-bold flex-shrink-0">
+            {getInitials(faculty.name)}
+          </div>
+        )}
         <div>
-          <dt className="font-semibold">PhD Institution</dt>
-          <dd>{faculty.phd_institution ?? 'Unknown'}</dd>
+          <h1 className="text-2xl font-bold text-charcoal">{faculty.name}</h1>
+          <p className="text-sm text-gray-secondary">
+            {faculty.title ? `${faculty.title} — ` : ''}{faculty.school.name}
+          </p>
         </div>
-        <div>
-          <dt className="font-semibold">Methodology</dt>
-          <dd>{faculty.methodology ?? 'Unknown'}</dd>
-        </div>
-        <div>
-          <dt className="font-semibold">Research Topics</dt>
-          <dd>{faculty.topics.length > 0 ? faculty.topics.map((t) => t.name).join(', ') : 'Unknown'}</dd>
-        </div>
-        <div>
-          <dt className="font-semibold">Theories</dt>
-          <dd>{faculty.theories.length > 0 ? faculty.theories.join(', ') : 'Unknown'}</dd>
-        </div>
-      </dl>
+      </div>
+
+      <div className="bg-white border border-divider rounded-lg p-4 mt-4">
+        <dl className="space-y-3 text-sm">
+          <div>
+            <dt className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase mb-1">PhD Institution</dt>
+            <dd className="text-charcoal">{faculty.phd_institution ?? 'Unknown'}</dd>
+          </div>
+          <div>
+            <dt className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase mb-1">Methodology</dt>
+            <dd className="text-charcoal">{faculty.methodology ?? 'Unknown'}</dd>
+          </div>
+          <div>
+            <dt className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase mb-1">Research Topics</dt>
+            <dd className="flex flex-wrap gap-1.5">
+              {faculty.topics.length > 0 ? (
+                faculty.topics.map((t) => (
+                  <span key={t.name} className="bg-accent-soft text-accent-soft-text rounded-full px-2.5 py-0.5 text-[11px]">{t.name}</span>
+                ))
+              ) : (
+                <span className="text-charcoal">Unknown</span>
+              )}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase mb-1">Theories</dt>
+            <dd className="text-charcoal">{faculty.theories.length > 0 ? faculty.theories.join(', ') : 'Unknown'}</dd>
+          </div>
+        </dl>
+      </div>
+
       <div className="flex gap-4 mt-4 text-sm">
         {faculty.school_profile_url && (
-          <a className="text-blue-600 underline" href={faculty.school_profile_url}>
-            School Profile
-          </a>
+          <a className="text-accent hover:underline" href={faculty.school_profile_url}>School Profile</a>
         )}
         {faculty.personal_website_url && (
-          <a className="text-blue-600 underline" href={faculty.personal_website_url}>
-            Personal Website
-          </a>
+          <a className="text-accent hover:underline" href={faculty.personal_website_url}>Personal Website</a>
         )}
         {faculty.google_scholar_url && (
-          <a className="text-blue-600 underline" href={faculty.google_scholar_url}>
-            Google Scholar
-          </a>
+          <a className="text-accent hover:underline" href={faculty.google_scholar_url}>Google Scholar</a>
         )}
       </div>
     </main>
