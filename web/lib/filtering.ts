@@ -16,12 +16,23 @@ export const EMPTY_FILTERS: FacetFilters = {
   geography: [],
 };
 
+export interface TopicCategoryGroup {
+  category: string;
+  topics: string[];
+}
+
 const ALL_FIELDS: FacetField[] = ['topics', 'theories', 'methodology', 'geography'];
 
 export function valuesForField(faculty: Faculty, field: FacetField): string[] {
   switch (field) {
-    case 'topics':
-      return faculty.topics;
+    case 'topics': {
+      const values = new Set<string>();
+      for (const t of faculty.topics) {
+        values.add(t.name);
+        values.add(t.category);
+      }
+      return Array.from(values);
+    }
     case 'theories':
       return faculty.theories;
     case 'methodology':
@@ -34,7 +45,7 @@ export function valuesForField(faculty: Faculty, field: FacetField): string[] {
 function matchesField(faculty: Faculty, field: FacetField, selected: string[]): boolean {
   if (selected.length === 0) return true;
   const values = valuesForField(faculty, field);
-  return selected.some((v) => values.includes(v));
+  return selected.every((v) => values.includes(v));
 }
 
 export function applyFilters(faculty: Faculty[], filters: FacetFilters): Faculty[] {
@@ -55,4 +66,21 @@ export function getFacetCounts(
     }
   }
   return counts;
+}
+
+export function getTopicTaxonomy(faculty: Faculty[]): TopicCategoryGroup[] {
+  const map = new Map<string, Set<string>>();
+  for (const f of faculty) {
+    for (const t of f.topics) {
+      if (!map.has(t.category)) map.set(t.category, new Set());
+      map.get(t.category)!.add(t.name);
+    }
+  }
+  return Array.from(map.entries())
+    .map(([category, topics]) => ({ category, topics: Array.from(topics).sort() }))
+    .sort((a, b) => {
+      if (a.category === 'Other') return 1;
+      if (b.category === 'Other') return -1;
+      return a.category.localeCompare(b.category);
+    });
 }

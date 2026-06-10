@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { applyFilters, getFacetCounts, EMPTY_FILTERS } from './filtering';
+import { applyFilters, getFacetCounts, getTopicTaxonomy, EMPTY_FILTERS } from './filtering';
 import type { Faculty, School } from './types';
 
 const schoolA: School = {
@@ -30,10 +30,13 @@ function makeFaculty(overrides: Partial<Faculty> & { id: string; name: string })
   };
 }
 
+const INNOVATION = { name: 'Innovation', category: 'Innovation & Technology' };
+const MA = { name: 'M&A', category: 'Corporate Strategy & Governance' };
+
 const faculty: Faculty[] = [
-  makeFaculty({ id: 'f1', name: 'Alice', school: schoolA, topics: ['Innovation'], theories: ['RBV'], methodology: 'Quantitative' }),
-  makeFaculty({ id: 'f2', name: 'Bob', school: schoolA, topics: ['M&A'], theories: ['Agency Theory'], methodology: 'Qualitative' }),
-  makeFaculty({ id: 'f3', name: 'Carol', school: schoolB, topics: ['Innovation', 'M&A'], theories: ['RBV'], methodology: 'Mixed' }),
+  makeFaculty({ id: 'f1', name: 'Alice', school: schoolA, topics: [INNOVATION], theories: ['RBV'], methodology: 'Quantitative' }),
+  makeFaculty({ id: 'f2', name: 'Bob', school: schoolA, topics: [MA], theories: ['Agency Theory'], methodology: 'Qualitative' }),
+  makeFaculty({ id: 'f3', name: 'Carol', school: schoolB, topics: [INNOVATION, MA], theories: ['RBV'], methodology: 'Mixed' }),
 ];
 
 describe('applyFilters', () => {
@@ -51,9 +54,19 @@ describe('applyFilters', () => {
     expect(result.map((f) => f.id)).toEqual(['f3']);
   });
 
-  it('treats multiple values within the same facet as OR logic', () => {
+  it('treats multiple values within the same facet as AND/intersection logic', () => {
     const result = applyFilters(faculty, { ...EMPTY_FILTERS, topics: ['Innovation', 'M&A'] });
-    expect(result.map((f) => f.id)).toEqual(['f1', 'f2', 'f3']);
+    expect(result.map((f) => f.id)).toEqual(['f3']);
+  });
+
+  it('matches faculty via category-level topic selection', () => {
+    const result = applyFilters(faculty, { ...EMPTY_FILTERS, topics: ['Innovation & Technology'] });
+    expect(result.map((f) => f.id)).toEqual(['f1', 'f3']);
+  });
+
+  it('combines a category-level selection with a specific-topic selection using AND', () => {
+    const result = applyFilters(faculty, { ...EMPTY_FILTERS, topics: ['Innovation & Technology', 'M&A'] });
+    expect(result.map((f) => f.id)).toEqual(['f3']);
   });
 
   it('filters by geography derived from the faculty school', () => {
@@ -63,13 +76,37 @@ describe('applyFilters', () => {
 });
 
 describe('getFacetCounts', () => {
-  it("counts values for a facet ignoring that facet's own active filters", () => {
+  it("counts topic names and categories for a facet ignoring that facet's own active filters", () => {
     const counts = getFacetCounts(faculty, { ...EMPTY_FILTERS, topics: ['Innovation'] }, 'topics');
-    expect(counts).toEqual({ Innovation: 2, 'M&A': 2 });
+    expect(counts).toEqual({
+      Innovation: 2,
+      'Innovation & Technology': 2,
+      'M&A': 2,
+      'Corporate Strategy & Governance': 2,
+    });
   });
 
   it('respects filters from other facets when counting', () => {
     const counts = getFacetCounts(faculty, { ...EMPTY_FILTERS, methodology: ['Mixed'] }, 'topics');
-    expect(counts).toEqual({ Innovation: 1, 'M&A': 1 });
+    expect(counts).toEqual({
+      Innovation: 1,
+      'Innovation & Technology': 1,
+      'M&A': 1,
+      'Corporate Strategy & Governance': 1,
+    });
+  });
+});
+
+describe('getTopicTaxonomy', () => {
+  it('groups unique topic names by category, sorted alphabetically with Other last', () => {
+    const taxonomy = getTopicTaxonomy([
+      ...faculty,
+      makeFaculty({ id: 'f4', name: 'Dave', topics: [{ name: 'Misc', category: 'Other' }] }),
+    ]);
+    expect(taxonomy).toEqual([
+      { category: 'Corporate Strategy & Governance', topics: ['M&A'] },
+      { category: 'Innovation & Technology', topics: ['Innovation'] },
+      { category: 'Other', topics: ['Misc'] },
+    ]);
   });
 });
