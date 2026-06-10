@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { allFaculty } from '@/lib/sampleData';
 
@@ -18,6 +19,9 @@ export default async function FacultyPage({
 
   return (
     <main className="max-w-2xl mx-auto p-6">
+      <Link href="/" className="text-sm text-blue-600 underline mb-4 inline-block">
+        ← Back to all faculty
+      </Link>
       <h1 className="text-2xl font-bold mb-1">{faculty.name}</h1>
       <p className="text-gray-500 mb-4">
         {faculty.title} — {faculty.school.name}

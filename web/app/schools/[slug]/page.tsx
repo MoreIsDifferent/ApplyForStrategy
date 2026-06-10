@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { allFaculty, schools } from '@/lib/sampleData';
 import { getTopicDistribution } from '@/lib/portfolio';
@@ -24,6 +25,9 @@ export default async function SchoolPage({
 
   return (
     <main className="max-w-5xl mx-auto p-6">
+      <Link href="/" className="text-sm text-blue-600 underline mb-4 inline-block">
+        ← Back to all faculty
+      </Link>
       <h1 className="text-2xl font-bold mb-2">{school.name}</h1>
       <p className="text-gray-500 mb-6">{school.geography}</p>
 
