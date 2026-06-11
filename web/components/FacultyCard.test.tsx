@@ -4,10 +4,9 @@ import { FacultyCard } from './FacultyCard';
 import { allFaculty } from '@/lib/sampleData';
 
 describe('FacultyCard', () => {
-  it('renders school name above faculty name and title, color-coded pills, and links to the faculty page', () => {
+  it('renders faculty name/title/pills linking to the faculty page and a school icon+name linking to the school page', () => {
     const faculty = allFaculty[0];
     render(<FacultyCard faculty={faculty} />);
-    expect(screen.getByText(faculty.school.name)).toBeInTheDocument();
     expect(screen.getByText(faculty.name)).toBeInTheDocument();
     if (faculty.title) {
       expect(screen.getByText(faculty.title)).toBeInTheDocument();
@@ -22,8 +21,10 @@ describe('FacultyCard', () => {
       expect(screen.getByText(faculty.methodology)).toBeInTheDocument();
     }
     expect(screen.getByText(faculty.school.geography)).toBeInTheDocument();
+    expect(screen.getByText(faculty.school.name)).toBeInTheDocument();
 
-    const link = screen.getByRole('link');
-    expect(link).toHaveAttribute('href', `/faculty/${faculty.id}`);
+    const links = screen.getAllByRole('link');
+    expect(links.find((l) => l.getAttribute('href') === `/faculty/${faculty.id}`)).toBeTruthy();
+    expect(links.find((l) => l.getAttribute('href') === `/schools/${faculty.school.slug}`)).toBeTruthy();
   });
 });
