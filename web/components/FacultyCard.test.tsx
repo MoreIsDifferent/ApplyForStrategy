@@ -4,22 +4,26 @@ import { FacultyCard } from './FacultyCard';
 import { allFaculty } from '@/lib/sampleData';
 
 describe('FacultyCard', () => {
-  it('renders faculty name, title/school line, topic pills, methodology, and links to the faculty page', () => {
+  it('renders school name above faculty name and title, color-coded pills, and links to the faculty page', () => {
     const faculty = allFaculty[0];
     render(<FacultyCard faculty={faculty} />);
+    expect(screen.getByText(faculty.school.name)).toBeInTheDocument();
     expect(screen.getByText(faculty.name)).toBeInTheDocument();
-    const link = screen.getByRole('link');
     if (faculty.title) {
-      expect(link).toHaveTextContent(`${faculty.title} — ${faculty.school.name}`);
-    } else {
-      expect(screen.getByText(faculty.school.name)).toBeInTheDocument();
+      expect(screen.getByText(faculty.title)).toBeInTheDocument();
     }
     for (const topic of faculty.topics) {
       expect(screen.getByText(topic.name)).toBeInTheDocument();
     }
-    if (faculty.methodology) {
-      expect(screen.getByText(`Methodology: ${faculty.methodology}`)).toBeInTheDocument();
+    for (const theory of faculty.theories) {
+      expect(screen.getByText(theory)).toBeInTheDocument();
     }
+    if (faculty.methodology) {
+      expect(screen.getByText(faculty.methodology)).toBeInTheDocument();
+    }
+    expect(screen.getByText(faculty.school.geography)).toBeInTheDocument();
+
+    const link = screen.getByRole('link');
     expect(link).toHaveAttribute('href', `/faculty/${faculty.id}`);
   });
 });
