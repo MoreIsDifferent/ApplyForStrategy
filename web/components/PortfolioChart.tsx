@@ -5,17 +5,17 @@ import type { TopicDistributionEntry } from '@/lib/portfolio';
 
 // 11 shades of blue (one per topic category), varied in hue and lightness for more contrast.
 const COLORS = [
-  'hsla(210, 70%, 50%, 0.9)',
-  'hsla(195, 75%, 78%, 0.9)',
-  'hsla(228, 65%, 38%, 0.9)',
-  'hsla(200, 85%, 88%, 0.9)',
-  'hsla(242, 55%, 62%, 0.9)',
-  'hsla(185, 65%, 50%, 0.9)',
-  'hsla(215, 75%, 72%, 0.9)',
-  'hsla(252, 50%, 78%, 0.9)',
-  'hsla(192, 85%, 32%, 0.9)',
-  'hsla(232, 70%, 88%, 0.9)',
-  'hsla(205, 45%, 45%, 0.9)',
+  'hsla(210, 70%, 56%, 0.9)',
+  'hsla(195, 75%, 84%, 0.9)',
+  'hsla(228, 65%, 44%, 0.9)',
+  'hsla(200, 85%, 94%, 0.9)',
+  'hsla(242, 55%, 68%, 0.9)',
+  'hsla(185, 65%, 56%, 0.9)',
+  'hsla(215, 75%, 78%, 0.9)',
+  'hsla(252, 50%, 84%, 0.9)',
+  'hsla(192, 85%, 38%, 0.9)',
+  'hsla(232, 70%, 94%, 0.9)',
+  'hsla(205, 45%, 51%, 0.9)',
 ];
 
 export function PortfolioChart({ data }: { data: TopicDistributionEntry[] }) {

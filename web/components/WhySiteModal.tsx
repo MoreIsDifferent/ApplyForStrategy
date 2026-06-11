@@ -1,9 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+const SEEN_KEY = 'why-this-site-seen';
 
 export function WhySiteModal() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!sessionStorage.getItem(SEEN_KEY)) {
+      setOpen(true);
+    }
+  }, []);
+
+  function handleClose() {
+    sessionStorage.setItem(SEEN_KEY, 'true');
+    setOpen(false);
+  }
 
   if (!open) return null;
 
@@ -45,10 +58,10 @@ export function WhySiteModal() {
         </div>
         <button
           type="button"
-          onClick={() => setOpen(false)}
+          onClick={handleClose}
           className="mt-6 px-6 py-2 rounded-lg bg-accent text-white text-sm font-bold hover:bg-accent-soft-text transition-colors"
         >
-          Start finding
+          Get Started
         </button>
       </div>
     </div>
