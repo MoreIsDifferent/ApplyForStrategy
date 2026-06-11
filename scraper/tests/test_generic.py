@@ -27,6 +27,18 @@ def test_clean_html_to_text_drops_nav_and_footer():
     assert "Privacy Policy" not in text
 
 
+def test_clean_html_to_text_falls_back_to_raw_extraction_when_trafilatura_is_sparse(monkeypatch):
+    html = (FIXTURES_DIR / "directory_grid.html").read_text()
+    monkeypatch.setattr("scraper.generic.trafilatura.extract", MagicMock(return_value="short"))
+
+    text = clean_html_to_text(html)
+
+    assert "[Jane Doe](/faculty/jane-doe)" in text
+    assert "[John Smith](/faculty/john-smith)" in text
+    assert "[Alex Lee](/faculty/alex-lee)" in text
+    assert "Copyright" not in text
+
+
 def _config(fetch_mode="static"):
     return SchoolConfig(
         slug="example",

@@ -22,14 +22,23 @@ def fetch_static(url: str, delay: float = 1.0) -> BeautifulSoup:
     return BeautifulSoup(response.text, "html.parser")
 
 
-def _click_load_more(page) -> bool:
-    """Click any visible 'Load More'-style buttons/links. Returns True if anything was clicked."""
+def _click_load_more(page, click_timeout: float = 5000) -> bool:
+    """Click any visible 'Load More'-style buttons/links. Returns True if anything was clicked.
+
+    Click failures (e.g. element obscured by an overlay) are swallowed - a
+    "Load More" button that can't be clicked shouldn't crash the whole fetch.
+    """
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+
     clicked = False
     for role in ("button", "link"):
         for element in page.get_by_role(role, name=LOAD_MORE_PATTERN).all():
             if element.is_visible():
-                element.click()
-                clicked = True
+                try:
+                    element.click(timeout=click_timeout)
+                    clicked = True
+                except PlaywrightTimeoutError:
+                    continue
     return clicked
 
 

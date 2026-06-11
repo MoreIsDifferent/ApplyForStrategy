@@ -102,6 +102,30 @@ def test_fetch_rendered_clicks_load_more_buttons(mock_sleep):
 
 
 @patch("scraper.fetch.time.sleep")
+def test_fetch_rendered_ignores_load_more_buttons_that_fail_to_click(mock_sleep):
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+
+    mock_page = MagicMock()
+    mock_page.content.return_value = "<html><body><h1>Rendered</h1></body></html>"
+
+    mock_button = MagicMock()
+    mock_button.is_visible.return_value = True
+    mock_button.click.side_effect = PlaywrightTimeoutError("Timeout 5000ms exceeded")
+    locator_with_button = MagicMock()
+    locator_with_button.all.return_value = [mock_button]
+
+    mock_page.get_by_role.return_value = locator_with_button
+    mock_page.evaluate.return_value = 1000
+
+    mock_playwright_cm = _mock_playwright_page(mock_page)
+
+    with patch("playwright.sync_api.sync_playwright", return_value=mock_playwright_cm):
+        soup = fetch_rendered("https://example.edu/faculty", delay=0)
+
+    assert soup.find("h1").text == "Rendered"
+
+
+@patch("scraper.fetch.time.sleep")
 def test_fetch_rendered_stops_after_max_iterations(mock_sleep):
     mock_page = MagicMock()
     mock_page.content.return_value = "<html><body><h1>Rendered</h1></body></html>"
