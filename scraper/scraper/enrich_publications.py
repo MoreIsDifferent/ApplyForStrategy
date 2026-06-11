@@ -30,6 +30,11 @@ def upsert_publication(supabase, faculty_id: str, work: dict) -> None:
 
 
 def enrich_faculty(supabase, faculty_row: dict, institution_cache: dict[str, str | None]) -> None:
+    if faculty_row.get("openalex_author_id"):
+        for work in openalex.fetch_works(faculty_row["openalex_author_id"]):
+            upsert_publication(supabase, faculty_row["id"], work)
+        return
+
     school_id = faculty_row["school_id"]
 
     if school_id not in institution_cache:
@@ -72,7 +77,7 @@ def run(supabase, school_slug: str | None = None, limit: int | None = None) -> N
         school = supabase.table("schools").select("id").eq("slug", school_slug).execute().data[0]
         query = query.eq("school_id", school["id"])
 
-    rows = [row for row in query.execute().data if not row.get("openalex_author_id")]
+    rows = query.execute().data
     if limit is not None:
         rows = rows[:limit]
 

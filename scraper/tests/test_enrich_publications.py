@@ -4,7 +4,7 @@ from scraper import enrich_publications, openalex
 from tests.fake_supabase import FakeSupabaseClient
 
 
-def test_skips_faculty_already_matched(monkeypatch):
+def test_already_matched_faculty_refreshes_publications_without_rematching(monkeypatch):
     client = FakeSupabaseClient()
     client.seed(
         "schools",
@@ -17,10 +17,30 @@ def test_skips_faculty_already_matched(monkeypatch):
 
     find_author = MagicMock()
     monkeypatch.setattr(openalex, "find_author", find_author)
+    monkeypatch.setattr(
+        openalex,
+        "fetch_works",
+        MagicMock(
+            return_value=[
+                {
+                    "openalex_id": "W1",
+                    "title": "New Paper",
+                    "year": 2025,
+                    "journal": "AMJ",
+                    "citation_count": 1,
+                    "coauthors": ["Jane Doe"],
+                    "abstract": "def",
+                },
+            ]
+        ),
+    )
 
     enrich_publications.run(client)
 
     find_author.assert_not_called()
+    pub_rows = client.tables["publications"].rows
+    assert len(pub_rows) == 1
+    assert pub_rows[0]["title"] == "New Paper"
 
 
 def test_ambiguous_match_sets_needs_review(monkeypatch):
