@@ -7,9 +7,11 @@ export default async function HomePage() {
   return (
     <main className="max-w-7xl mx-auto px-6 py-8">
       <WhySiteModal />
-      <div className="text-[15px] font-medium text-navy leading-relaxed mb-6 mt-6">
-        <p>This platform aims to foster better matches between prospective students and doctoral programs.</p>
-        <p>
+      <div className="mb-6 mt-6">
+        <p className="font-display text-2xl sm:text-3xl text-navy leading-snug">
+          Foster better matches between prospective students and doctoral programs.
+        </p>
+        <p className="text-[13px] text-gray-secondary mt-2">
           If you have suggestions or data corrections, please contact Yi Hao{' '}
           <a
             href="mailto:Yi_Hao@kenan-flagler.unc.edu"

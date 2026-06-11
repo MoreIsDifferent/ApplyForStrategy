@@ -9,7 +9,7 @@ export function WhySiteModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-charcoal/40 px-4 py-8">
-      <div className="bg-accent-soft/60 border border-accent-soft rounded-2xl shadow-xl max-w-2xl w-full p-6 max-h-full overflow-y-auto">
+      <div className="bg-accent-soft/95 border border-accent-soft rounded-2xl shadow-xl max-w-2xl w-full p-6 max-h-full overflow-y-auto">
         <h2 className="text-xl font-extrabold tracking-tight text-navy mb-3">Why this site?</h2>
         <div className="flex flex-col gap-4 text-[15px] font-medium text-charcoal leading-relaxed">
           <p>

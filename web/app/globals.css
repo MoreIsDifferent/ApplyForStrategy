@@ -33,6 +33,7 @@
   --color-ranking-soft-text: #9C7A2E;
 
   --font-sans: var(--font-inter), sans-serif;
+  --font-display: var(--font-display), serif;
 }
 
 body {
