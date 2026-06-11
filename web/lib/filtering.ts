@@ -86,6 +86,33 @@ export function getFacetCounts(
   return counts;
 }
 
+// Fields whose facet counts represent the number of distinct programs (schools)
+// matching, rather than the number of faculty.
+export const PROGRAM_FIELDS: FacetField[] = ['geography', 'ranking'];
+
+export function getProgramFacetCounts(
+  faculty: Faculty[],
+  filters: FacetFilters,
+  field: 'geography' | 'ranking'
+): Record<string, number> {
+  const otherFilters: FacetFilters = { ...filters, [field]: [] };
+  const filtered = applyFilters(faculty, otherFilters);
+
+  const schools = new Map<string, Faculty['school']>();
+  for (const f of filtered) {
+    schools.set(f.school.id, f.school);
+  }
+
+  const counts: Record<string, number> = {};
+  for (const school of schools.values()) {
+    const values = field === 'geography' ? [school.geography] : getRankingValues(school);
+    for (const value of values) {
+      counts[value] = (counts[value] ?? 0) + 1;
+    }
+  }
+  return counts;
+}
+
 export function getTopicTaxonomy(faculty: Faculty[]): TopicCategoryGroup[] {
   const map = new Map<string, Set<string>>();
   for (const f of faculty) {

@@ -5,9 +5,11 @@ import type { Faculty } from '@/lib/types';
 import {
   applyFilters,
   getFacetCounts,
+  getProgramFacetCounts,
   getTopicTaxonomy,
   valuesForField,
   EMPTY_FILTERS,
+  PROGRAM_FIELDS,
   type FacetField,
   type FacetFilters,
 } from '@/lib/filtering';
@@ -53,7 +55,9 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
   const counts = useMemo(() => {
     const result = {} as Record<FacetField, Record<string, number>>;
     for (const field of ALL_FIELDS) {
-      result[field] = getFacetCounts(faculty, filters, field);
+      result[field] = PROGRAM_FIELDS.includes(field)
+        ? getProgramFacetCounts(faculty, filters, field as 'geography' | 'ranking')
+        : getFacetCounts(faculty, filters, field);
     }
     return result;
   }, [faculty, filters]);
