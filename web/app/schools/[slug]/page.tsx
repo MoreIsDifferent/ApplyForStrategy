@@ -27,32 +27,34 @@ export default async function SchoolPage({
   const distribution = getTopicDistribution(facultyAtSchool);
 
   return (
-    <main className="max-w-5xl mx-auto p-6">
-      <Link href="/" className="text-sm text-blue-600 underline mb-4 inline-block">
+    <main className="max-w-5xl mx-auto px-6 py-8">
+      <Link href="/" className="text-sm text-accent hover:underline mb-4 inline-block">
         ← Back to all faculty
       </Link>
-      <h1 className="text-2xl font-bold mb-2">{school.name}</h1>
-      <p className="text-gray-500 mb-6">{school.geography}</p>
+      <h1 className="text-2xl font-bold text-charcoal mb-1">{school.name}</h1>
+      <p className="text-sm text-gray-secondary mb-6">{school.geography}</p>
 
-      <h2 className="text-lg font-semibold mb-2">Rankings</h2>
-      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+      <h2 className="text-lg font-semibold text-charcoal mb-2">Rankings</h2>
+      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {[
           { label: 'UTD Top 100', value: school.ranking_utd },
           { label: 'TAMU', value: school.ranking_tamuga },
           { label: 'US News', value: school.ranking_usnews },
           { label: 'QS', value: school.ranking_qs },
         ].map(({ label, value }) => (
-          <div key={label} className="border rounded p-3 text-center">
-            <dt className="text-xs uppercase tracking-wide text-gray-500">{label}</dt>
-            <dd className="text-xl font-semibold">{value ?? '—'}</dd>
+          <div key={label} className="bg-white border border-divider rounded-lg p-3 text-center">
+            <dt className="text-[11px] uppercase tracking-wide text-gray-secondary">{label}</dt>
+            <dd className="text-xl font-semibold text-charcoal">{value ?? '—'}</dd>
           </div>
         ))}
       </dl>
 
-      <h2 className="text-lg font-semibold mb-2">Research Portfolio</h2>
-      <PortfolioChart data={distribution} />
+      <h2 className="text-lg font-semibold text-charcoal mb-2">Research Portfolio</h2>
+      <div className="bg-white border border-divider rounded-lg p-4 mb-8">
+        <PortfolioChart data={distribution} />
+      </div>
 
-      <h2 className="text-lg font-semibold mt-6 mb-2">Faculty</h2>
+      <h2 className="text-lg font-semibold text-charcoal mb-2">Faculty</h2>
       <ResultsList faculty={facultyAtSchool} />
     </main>
   );
