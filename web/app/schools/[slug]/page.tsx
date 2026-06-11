@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { getAllFaculty, getSchools } from '@/lib/data';
 import { getTopicDistribution } from '@/lib/portfolio';
 import { getSchoolState } from '@/lib/schoolState';
+import { getSchoolIconUrl } from '@/lib/schoolIcons';
+import { getInitials } from '@/lib/initials';
 import { PortfolioChart } from '@/components/PortfolioChart';
 import { ResultsList } from '@/components/ResultsList';
 import { USStateMap } from '@/components/USStateMap';
@@ -28,6 +30,7 @@ export default async function SchoolPage({
   const facultyAtSchool = allFaculty.filter((f) => f.school.slug === school.slug);
   const distribution = getTopicDistribution(facultyAtSchool);
   const state = getSchoolState(school.slug);
+  const iconUrl = getSchoolIconUrl(school.slug) ?? school.logo_url;
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-8">
@@ -35,7 +38,21 @@ export default async function SchoolPage({
         ← Back to all faculty
       </Link>
       <div className="flex items-start justify-between gap-4 mb-6">
-        <h1 className="text-2xl font-bold text-charcoal">{school.name}</h1>
+        <div className="flex items-center gap-3">
+          {iconUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={iconUrl}
+              alt=""
+              className="w-12 h-12 rounded-md object-contain bg-white border border-divider p-1 flex-shrink-0"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-md bg-accent-soft text-accent-soft-text flex items-center justify-center text-sm font-bold flex-shrink-0">
+              {getInitials(school.name)}
+            </div>
+          )}
+          <h1 className="text-2xl font-bold text-charcoal">{school.name}</h1>
+        </div>
         {state && (
           <div className="w-32 flex-shrink-0">
             <USStateMap highlightState={state} />
