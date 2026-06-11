@@ -40,3 +40,9 @@ body {
   background: var(--color-warm-white);
   color: var(--color-charcoal);
 }
+
+.recharts-pie-sector:focus,
+.recharts-sector:focus,
+.recharts-surface:focus {
+  outline: none;
+}

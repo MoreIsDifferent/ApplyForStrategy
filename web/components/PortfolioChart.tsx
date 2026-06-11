@@ -3,19 +3,19 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { TopicDistributionEntry } from '@/lib/portfolio';
 
-// 11 shades of blue (one per topic category), so no two slices repeat.
+// 11 shades of blue (one per topic category), varied in hue and lightness for more contrast.
 const COLORS = [
-  'hsla(205, 75%, 88%, 0.9)',
-  'hsla(205, 70%, 78%, 0.9)',
-  'hsla(205, 65%, 68%, 0.9)',
-  'hsla(205, 60%, 58%, 0.9)',
-  'hsla(205, 55%, 48%, 0.9)',
-  'hsla(195, 65%, 75%, 0.9)',
-  'hsla(195, 60%, 60%, 0.9)',
-  'hsla(220, 65%, 80%, 0.9)',
-  'hsla(220, 55%, 65%, 0.9)',
-  'hsla(230, 50%, 70%, 0.9)',
-  'hsla(190, 50%, 85%, 0.9)',
+  'hsla(210, 70%, 50%, 0.9)',
+  'hsla(195, 75%, 78%, 0.9)',
+  'hsla(228, 65%, 38%, 0.9)',
+  'hsla(200, 85%, 88%, 0.9)',
+  'hsla(242, 55%, 62%, 0.9)',
+  'hsla(185, 65%, 50%, 0.9)',
+  'hsla(215, 75%, 72%, 0.9)',
+  'hsla(252, 50%, 78%, 0.9)',
+  'hsla(192, 85%, 32%, 0.9)',
+  'hsla(232, 70%, 88%, 0.9)',
+  'hsla(205, 45%, 45%, 0.9)',
 ];
 
 export function PortfolioChart({ data }: { data: TopicDistributionEntry[] }) {
@@ -54,7 +54,7 @@ export function PortfolioChart({ data }: { data: TopicDistributionEntry[] }) {
                 {payload.map((entry) => (
                   <li key={entry.value} className="flex items-center gap-2 text-xs font-medium text-navy">
                     <span
-                      className="inline-block w-3 h-3 rounded-sm flex-shrink-0"
+                      className="inline-block w-4 h-4 rounded-sm flex-shrink-0"
                       style={{ backgroundColor: entry.color }}
                     />
                     <span>
