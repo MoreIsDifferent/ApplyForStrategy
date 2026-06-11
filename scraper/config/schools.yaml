@@ -18,7 +18,7 @@
 - slug: harvard-hbs
   name: "Harvard Business School"
   directory_url: "https://www.hbs.edu/faculty/units/strategy/Pages/faculty.aspx"
-  fetch_mode: static
+  fetch_mode: rendered
   area_hint: "Strategy unit faculty"
 - slug: columbia-cbs
   name: "Columbia Business School"
