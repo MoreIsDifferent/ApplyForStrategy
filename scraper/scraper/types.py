@@ -7,6 +7,7 @@ class SchoolConfig:
     name: str
     directory_url: str
     fetch_mode: str
+    area_hint: str | None = None
 
 
 @dataclass
