@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllFaculty } from '@/lib/data';
 import { getInitials } from '@/lib/initials';
+import { getSampleCoauthors } from '@/lib/coauthors';
+import { CoauthorGraph } from '@/components/CoauthorGraph';
 
 export async function generateStaticParams() {
   const allFaculty = await getAllFaculty();
@@ -19,6 +21,8 @@ export default async function FacultyPage({
   if (!faculty) {
     notFound();
   }
+
+  const coauthors = getSampleCoauthors(faculty, allFaculty);
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-8">
@@ -87,6 +91,15 @@ export default async function FacultyPage({
           <a className="text-accent hover:underline" href={faculty.google_scholar_url}>Google Scholar</a>
         )}
       </div>
+
+      {coauthors.length > 0 && (
+        <div className="bg-white border border-divider rounded-lg p-4 mt-4">
+          <h2 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase mb-3">
+            Frequent Collaborators
+          </h2>
+          <CoauthorGraph faculty={faculty} coauthors={coauthors} />
+        </div>
+      )}
     </main>
   );
 }

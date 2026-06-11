@@ -1,6 +1,6 @@
 'use client';
 
-import { RANKING_TYPES, RANKING_BUCKETS, rankingOptionValue } from '@/lib/ranking';
+import { RANKING_TYPES, rankingOptionValue } from '@/lib/ranking';
 
 interface RankingFacetProps {
   counts: Record<string, number>;
@@ -19,7 +19,7 @@ export function RankingFacet({ counts, selected, onChange }: RankingFacetProps) 
     <div className="flex-1 min-w-[140px]">
       <h3 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase mb-2">Ranking</h3>
       <div className="flex flex-wrap gap-3">
-        {RANKING_TYPES.map(({ label }) => {
+        {RANKING_TYPES.map(({ label, buckets }) => {
           const value = selectedBucketFor(label);
           return (
             <label key={label} className="flex flex-col gap-1">
@@ -34,7 +34,7 @@ export function RankingFacet({ counts, selected, onChange }: RankingFacetProps) 
                 }`}
               >
                 <option value="">Any</option>
-                {RANKING_BUCKETS.map((bucket) => (
+                {buckets.map((bucket) => (
                   <option key={bucket} value={bucket}>
                     {bucket} ({counts[rankingOptionValue(label, bucket)] ?? 0})
                   </option>

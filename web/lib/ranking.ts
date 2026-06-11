@@ -1,19 +1,20 @@
 import type { School } from './types';
 
+export const RANKING_BUCKETS = ['1-20', '20-50', '50-100', '100-200', '200+'] as const;
+export type RankingBucket = (typeof RANKING_BUCKETS)[number];
+
 export interface RankingTypeDef {
   field: keyof Pick<School, 'ranking_utd' | 'ranking_tamuga' | 'ranking_qs' | 'ranking_usnews'>;
   label: string;
+  buckets: readonly RankingBucket[];
 }
 
 export const RANKING_TYPES: RankingTypeDef[] = [
-  { field: 'ranking_utd', label: 'UTD Top 100' },
-  { field: 'ranking_tamuga', label: 'TAMU' },
-  { field: 'ranking_usnews', label: 'US News' },
-  { field: 'ranking_qs', label: 'QS' },
+  { field: 'ranking_utd', label: 'UTD Top 100', buckets: ['1-20', '20-50', '50-100'] },
+  { field: 'ranking_tamuga', label: 'TAMU', buckets: RANKING_BUCKETS },
+  { field: 'ranking_usnews', label: 'US News', buckets: RANKING_BUCKETS },
+  { field: 'ranking_qs', label: 'QS', buckets: RANKING_BUCKETS },
 ];
-
-export const RANKING_BUCKETS = ['1-20', '20-50', '50-100', '100-200', '200+'] as const;
-export type RankingBucket = (typeof RANKING_BUCKETS)[number];
 
 export function getRankingBucket(rank: number | null): RankingBucket | null {
   if (rank == null) return null;

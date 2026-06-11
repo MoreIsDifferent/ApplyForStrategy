@@ -2,8 +2,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllFaculty, getSchools } from '@/lib/data';
 import { getTopicDistribution } from '@/lib/portfolio';
+import { getSchoolState } from '@/lib/schoolState';
 import { PortfolioChart } from '@/components/PortfolioChart';
 import { ResultsList } from '@/components/ResultsList';
+import { USStateMap } from '@/components/USStateMap';
 
 export async function generateStaticParams() {
   const schools = await getSchools();
@@ -25,14 +27,21 @@ export default async function SchoolPage({
   const allFaculty = await getAllFaculty();
   const facultyAtSchool = allFaculty.filter((f) => f.school.slug === school.slug);
   const distribution = getTopicDistribution(facultyAtSchool);
+  const state = getSchoolState(school.slug);
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-8">
       <Link href="/" className="text-sm text-accent hover:underline mb-4 inline-block">
         ← Back to all faculty
       </Link>
-      <h1 className="text-2xl font-bold text-charcoal mb-1">{school.name}</h1>
-      <p className="text-sm text-gray-secondary mb-6">{school.geography}</p>
+      <div className="flex items-start justify-between gap-4 mb-6">
+        <h1 className="text-2xl font-bold text-charcoal">{school.name}</h1>
+        {state && (
+          <div className="w-32 flex-shrink-0">
+            <USStateMap highlightState={state} />
+          </div>
+        )}
+      </div>
 
       <h2 className="text-lg font-semibold text-charcoal mb-2">Rankings</h2>
       <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">

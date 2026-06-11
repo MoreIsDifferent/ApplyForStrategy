@@ -28,6 +28,9 @@ const FACULTY_FACET_DEFS: { field: FacetField; title: string; colorScheme: Facet
 
 const ALL_FIELDS: FacetField[] = ['topics', 'theories', 'methodology', 'geography', 'title', 'ranking'];
 
+const FACULTY_FIELDS: FacetField[] = ['topics', 'theories', 'methodology', 'title'];
+const PROGRAM_FILTER_FIELDS: FacetField[] = ['geography', 'ranking'];
+
 function uniqueValues(faculty: Faculty[], field: FacetField): string[] {
   const set = new Set<string>();
   for (const f of faculty) {
@@ -74,6 +77,16 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
     });
   }
 
+  function clearFields(fields: FacetField[]) {
+    setFilters((prev) => {
+      const next = { ...prev };
+      for (const field of fields) {
+        next[field] = [];
+      }
+      return next;
+    });
+  }
+
   function handleRankingChange(label: string, bucket: string | null) {
     setFilters((prev) => {
       const prefix = `${label}:`;
@@ -85,9 +98,18 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
 
   return (
     <div>
-      <h2 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase border-b border-divider pb-2 mb-3">
-        Filter by Faculty
-      </h2>
+      <div className="flex items-center justify-between border-b border-divider pb-2 mb-3">
+        <h2 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase">
+          Filter by Faculty
+        </h2>
+        <button
+          type="button"
+          onClick={() => clearFields(FACULTY_FIELDS)}
+          className="text-[11px] text-accent hover:underline"
+        >
+          Clear filters
+        </button>
+      </div>
       <div className="bg-white border border-divider rounded-lg p-3 flex flex-wrap gap-4 mb-6">
         <TopicFacet
           groups={topicGroups}
@@ -103,9 +125,18 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
         />
       </div>
 
-      <h2 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase border-b border-divider pb-2 mb-3">
-        Filter by Program
-      </h2>
+      <div className="flex items-center justify-between border-b border-divider pb-2 mb-3">
+        <h2 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase">
+          Filter by Program
+        </h2>
+        <button
+          type="button"
+          onClick={() => clearFields(PROGRAM_FILTER_FIELDS)}
+          className="text-[11px] text-accent hover:underline"
+        >
+          Clear filters
+        </button>
+      </div>
       <div className="bg-white border border-divider rounded-lg p-3 flex flex-wrap gap-4 mb-6">
         <FacetColumn
           title="Geography"
