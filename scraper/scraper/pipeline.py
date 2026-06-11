@@ -1,8 +1,10 @@
+import argparse
 import hashlib
 import json
 import os
 from pathlib import Path
 
+from scraper import generic
 from scraper.config import load_school_configs
 from scraper.extract import build_client, extract_faculty_fields, get_model
 from scraper.schools import chicago_booth, ucla_anderson, wharton
@@ -20,14 +22,20 @@ def _bio_hash(bio_text: str) -> str:
 
 
 def scrape_school(config: SchoolConfig, client, model: str, limit: int | None = None) -> list[dict]:
-    module = SCRAPER_MODULES[config.slug]
-    stubs = module.scrape_faculty_list(config)
+    if config.slug in SCRAPER_MODULES:
+        module = SCRAPER_MODULES[config.slug]
+        stubs = module.scrape_faculty_list(config)
+        bio_fn = module.scrape_bio
+    else:
+        stubs = generic.scrape_faculty_list(config, client, model)
+        bio_fn = generic.scrape_bio
+
     if limit is not None:
         stubs = stubs[:limit]
 
     records = []
     for stub in stubs:
-        bio_text = module.scrape_bio(config, stub)
+        bio_text = bio_fn(config, stub)
         extracted = extract_faculty_fields(stub.name, stub.title, bio_text, client, model)
         records.append(
             {
@@ -46,8 +54,13 @@ def scrape_school(config: SchoolConfig, client, model: str, limit: int | None = 
     return records
 
 
-def run_pipeline(config_path: Path, output_dir: Path, limit: int | None = None) -> None:
+def run_pipeline(
+    config_path: Path, output_dir: Path, school_slug: str | None = None, limit: int | None = None
+) -> None:
     configs = load_school_configs(config_path)
+    if school_slug:
+        configs = [c for c in configs if c.slug == school_slug]
+
     client = build_client()
     model = get_model()
 
@@ -59,10 +72,16 @@ def run_pipeline(config_path: Path, output_dir: Path, limit: int | None = None) 
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Scrape faculty bios for configured schools")
+    parser.add_argument("--school", help="Only scrape this school slug")
+    parser.add_argument("--limit", type=int, help="Only process this many faculty per school")
+    args = parser.parse_args()
+
     repo_root = Path(__file__).resolve().parent.parent
     limit_env = os.environ.get("SCRAPE_LIMIT")
     run_pipeline(
         config_path=repo_root / "config" / "schools.yaml",
         output_dir=repo_root / "output",
-        limit=int(limit_env) if limit_env else None,
+        school_slug=args.school,
+        limit=args.limit if args.limit is not None else (int(limit_env) if limit_env else None),
     )
