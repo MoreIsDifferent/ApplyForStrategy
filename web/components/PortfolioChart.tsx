@@ -3,7 +3,7 @@
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import type { TopicDistributionEntry } from '@/lib/portfolio';
 
-const COLORS = ['#2563eb', '#16a34a', '#d97706', '#dc2626', '#7c3aed', '#0891b2', '#db2777'];
+const COLORS = ['#4B9CD3', '#7CB9E8', '#2b6f9e', '#9AA5B1', '#A8D5BA', '#E8B86D', '#D88C8C'];
 
 export function PortfolioChart({ data }: { data: TopicDistributionEntry[] }) {
   if (data.length === 0) {
