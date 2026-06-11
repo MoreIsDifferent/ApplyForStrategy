@@ -3,7 +3,20 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { TopicDistributionEntry } from '@/lib/portfolio';
 
-const COLORS = ['#4B9CD3', '#7CB9E8', '#2b6f9e', '#9AA5B1', '#A8D5BA', '#E8B86D', '#D88C8C'];
+// 11 distinct hues (one per topic category), light and semi-transparent so no two slices repeat.
+const COLORS = [
+  'hsla(0, 65%, 75%, 0.6)',
+  'hsla(33, 65%, 75%, 0.6)',
+  'hsla(65, 65%, 75%, 0.6)',
+  'hsla(98, 65%, 75%, 0.6)',
+  'hsla(131, 65%, 75%, 0.6)',
+  'hsla(164, 65%, 75%, 0.6)',
+  'hsla(196, 65%, 75%, 0.6)',
+  'hsla(229, 65%, 75%, 0.6)',
+  'hsla(262, 65%, 75%, 0.6)',
+  'hsla(295, 65%, 75%, 0.6)',
+  'hsla(327, 65%, 75%, 0.6)',
+];
 
 export function PortfolioChart({ data }: { data: TopicDistributionEntry[] }) {
   if (data.length === 0) {

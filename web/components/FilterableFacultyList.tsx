@@ -99,7 +99,7 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
   return (
     <div>
       <div className="flex items-center justify-between border-b border-divider pb-2 mb-1">
-        <h2 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase">
+        <h2 className="text-[11px] font-bold tracking-wide text-navy uppercase">
           Filter by Faculty
         </h2>
         <button
@@ -129,7 +129,7 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
       </div>
 
       <div className="flex items-center justify-between border-b border-divider pb-2 mb-3">
-        <h2 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase">
+        <h2 className="text-[11px] font-bold tracking-wide text-navy uppercase">
           Filter by Program
         </h2>
         <button
