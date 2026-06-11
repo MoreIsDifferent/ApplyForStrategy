@@ -13,9 +13,9 @@ interface FacetColumnProps {
 
 export function FacetColumn({ title, colorScheme, options, counts, selected, onToggle }: FacetColumnProps) {
   return (
-    <div className="flex-1 min-w-[160px]">
+    <div className="flex-1 min-w-[140px]">
       <h3 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase mb-2">{title}</h3>
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-1.5 max-h-80 overflow-y-auto pr-1">
         {options.map((option) => (
           <button
             key={option}

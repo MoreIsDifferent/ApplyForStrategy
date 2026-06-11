@@ -37,7 +37,7 @@ export function TopicFacet({ groups, counts, selected, onToggle }: TopicFacetPro
     .filter((group) => group.count > 0);
 
   return (
-    <div className="flex-1 min-w-[200px]">
+    <div className="flex-1 min-w-[140px]">
       <h3 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase mb-2">Topic</h3>
       <div className="flex flex-col gap-1.5 max-h-80 overflow-y-auto pr-2">
         {visibleGroups.map((group) => (

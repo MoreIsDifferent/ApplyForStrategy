@@ -4,8 +4,8 @@ import { FacetBar } from './FacetBar';
 import { EMPTY_FILTERS } from '@/lib/filtering';
 
 describe('FacetBar', () => {
-  it('renders one column per facet definition inside a card', () => {
-    const { container } = render(
+  it('renders one column per facet definition', () => {
+    render(
       <FacetBar
         facetDefinitions={[
           { field: 'theories', title: 'Theory', options: ['RBV'], colorScheme: 'theory' },
@@ -20,6 +20,5 @@ describe('FacetBar', () => {
     expect(screen.getByText('Methodology')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'RBV (1)' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Quantitative (1)' })).toBeInTheDocument();
-    expect(container.querySelector('.bg-white')).toBeInTheDocument();
   });
 });

@@ -68,15 +68,13 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
 
   return (
     <div>
-      <div className="flex flex-col gap-3 mb-6">
-        <div className="bg-white border border-divider rounded-lg p-3">
-          <TopicFacet
-            groups={topicGroups}
-            counts={counts.topics}
-            selected={filters.topics}
-            onToggle={(value) => handleToggle('topics', value)}
-          />
-        </div>
+      <div className="bg-white border border-divider rounded-lg p-3 flex flex-wrap gap-4 mb-6">
+        <TopicFacet
+          groups={topicGroups}
+          counts={counts.topics}
+          selected={filters.topics}
+          onToggle={(value) => handleToggle('topics', value)}
+        />
         <FacetBar
           facetDefinitions={facetDefinitions}
           filters={filters}

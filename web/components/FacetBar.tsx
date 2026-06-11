@@ -18,7 +18,7 @@ interface FacetBarProps {
 
 export function FacetBar({ facetDefinitions, filters, counts, onToggle }: FacetBarProps) {
   return (
-    <div className="bg-white border border-divider rounded-lg p-3 flex flex-wrap gap-4">
+    <>
       {facetDefinitions.map((def) => (
         <FacetColumn
           key={def.field}
@@ -30,6 +30,6 @@ export function FacetBar({ facetDefinitions, filters, counts, onToggle }: FacetB
           onToggle={(value) => onToggle(def.field, value)}
         />
       ))}
-    </div>
+    </>
   );
 }
