@@ -48,3 +48,65 @@ def find_author(name: str, institution_id: str | None) -> tuple[str | None, str]
     if len(results) != 1:
         return None, "ambiguous"
     return _short_id(results[0]["id"]), "name_institution"
+
+
+def fetch_works(author_id: str, today: date | None = None) -> list[dict]:
+    today = today or date.today()
+    author = _get(f"/authors/{author_id}", {})
+    works_count = author.get("works_count", 0)
+
+    cutoff = date(today.year - RECENT_YEARS, today.month, today.day).isoformat()
+    recent_count_data = _get(
+        "/works",
+        {
+            "filter": f"authorships.author.id:{author_id},from_publication_date:{cutoff}",
+            "per_page": 1,
+        },
+    )
+    recent_count = recent_count_data.get("meta", {}).get("count", 0)
+
+    limit = (
+        EXPANDED_LIMIT
+        if works_count > WORKS_COUNT_THRESHOLD or recent_count >= RECENT_WORKS_THRESHOLD
+        else DEFAULT_LIMIT
+    )
+
+    recent = _get(
+        "/works",
+        {"filter": f"authorships.author.id:{author_id}", "sort": "publication_date:desc", "per_page": limit},
+    )
+    cited = _get(
+        "/works",
+        {"filter": f"authorships.author.id:{author_id}", "sort": "cited_by_count:desc", "per_page": limit},
+    )
+
+    deduped: dict[str, dict] = {}
+    for work in recent.get("results", []) + cited.get("results", []):
+        parsed = _parse_work(work)
+        deduped.setdefault(parsed["openalex_id"], parsed)
+    return list(deduped.values())
+
+
+def _parse_work(work: dict) -> dict:
+    primary_location = work.get("primary_location") or {}
+    source = primary_location.get("source") or {}
+    return {
+        "openalex_id": _short_id(work["id"]),
+        "title": work.get("display_name"),
+        "year": work.get("publication_year"),
+        "journal": source.get("display_name"),
+        "citation_count": work.get("cited_by_count"),
+        "coauthors": [authorship["author"]["display_name"] for authorship in work.get("authorships", [])],
+        "abstract": _reconstruct_abstract(work.get("abstract_inverted_index")),
+    }
+
+
+def _reconstruct_abstract(inverted_index: dict | None) -> str | None:
+    if not inverted_index:
+        return None
+    positions: list[tuple[int, str]] = []
+    for word, indexes in inverted_index.items():
+        for index in indexes:
+            positions.append((index, word))
+    positions.sort()
+    return " ".join(word for _, word in positions)
