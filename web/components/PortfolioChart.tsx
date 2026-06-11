@@ -7,7 +7,7 @@ const COLORS = ['#4B9CD3', '#7CB9E8', '#2b6f9e', '#9AA5B1', '#A8D5BA', '#E8B86D'
 
 export function PortfolioChart({ data }: { data: TopicDistributionEntry[] }) {
   if (data.length === 0) {
-    return <p className="text-sm text-gray-500">No topic data available.</p>;
+    return <p className="text-sm text-gray-secondary">No topic data available.</p>;
   }
   return (
     <PieChart width={400} height={300}>
