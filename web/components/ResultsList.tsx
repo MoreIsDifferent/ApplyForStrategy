@@ -7,20 +7,33 @@ import { FacultyCard } from './FacultyCard';
 const PAGE_SIZE = 20;
 
 export function ResultsList({ faculty }: { faculty: Faculty[] }) {
-  const sorted = [...faculty].sort((a, b) => a.name.localeCompare(b.name));
+  const [search, setSearch] = useState('');
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  const sorted = [...faculty]
+    .filter((f) => f.name.toLowerCase().includes(search.trim().toLowerCase()))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [faculty]);
+  }, [faculty, search]);
 
   const visible = sorted.slice(0, visibleCount);
 
   return (
     <div>
-      <p className="text-sm text-gray-secondary mb-2">
-        {sorted.length} result{sorted.length === 1 ? '' : 's'}
-      </p>
+      <div className="flex items-center justify-between gap-3 mb-2">
+        <p className="text-sm text-gray-secondary">
+          {sorted.length} result{sorted.length === 1 ? '' : 's'}
+        </p>
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search faculty by name"
+          className="w-48 sm:w-64 rounded-full border border-divider px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
+        />
+      </div>
       <div className="flex flex-col gap-3">
         {visible.map((f) => (
           <FacultyCard key={f.id} faculty={f} />
