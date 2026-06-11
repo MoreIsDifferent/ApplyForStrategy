@@ -7,7 +7,7 @@ export default async function HomePage() {
   return (
     <main className="max-w-7xl mx-auto px-6 py-8">
       <WhySiteModal />
-      <div className="mb-6 mt-6">
+      <div className="mb-10 mt-6">
         <p className="font-display text-2xl sm:text-3xl text-navy leading-snug">
           Foster better matches between prospective students and doctoral programs.
         </p>

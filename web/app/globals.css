@@ -42,6 +42,7 @@ body {
 }
 
 .recharts-pie-sector:focus,
+.recharts-pie-sector *:focus,
 .recharts-sector:focus,
 .recharts-surface:focus {
   outline: none;
