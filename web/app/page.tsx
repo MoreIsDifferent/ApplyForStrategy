@@ -7,18 +7,23 @@ export default async function HomePage() {
     <main className="max-w-7xl mx-auto px-6 py-8">
       <section className="bg-accent-soft/60 border border-accent-soft rounded-2xl p-6 mb-6 mt-6">
         <h2 className="text-xl font-extrabold tracking-tight text-navy mb-3">Why this site?</h2>
-        <div className="flex flex-col gap-4 text-[15px] text-charcoal leading-relaxed">
+        <div className="flex flex-col gap-4 text-[15px] font-medium text-charcoal leading-relaxed">
           <p>
-            In our experience, fit with a program is one of the most important factors in a successful Strategy PhD
-            application — and finding fit starts with finding faculty whose research genuinely interests you. This
-            site is meant to help with that step: by surfacing more information about faculty research, we hope to
-            help applicants and programs find better matches. Better matches mean applicants are more likely to find
-            programs that are right for them and less likely to lose out due to poor fit, while programs are more
-            likely to see applicants who are a strong match for their faculty.
+            In our experience, academic fit is one of the most critical factors in a successful Strategy PhD
+            application—and finding that fit begins with identifying faculty whose research genuinely aligns with
+            your interests. This platform is designed to streamline that pivotal step. By surfacing structured,
+            granular insights into faculty research, we hope to help applicants more effectively collect information
+            and to foster better matches between prospective students and doctoral programs. We believe that better
+            matches empower applicants to discover the right choices for their academic journey, while ensuring
+            programs attract candidates who are a strong fit.
           </p>
           <p className="text-navy">
-            This site was built by Yi Hao &amp; Isin Guler. Yi Hao is a PhD student in Strategy and Entrepreneurship at
-            UNC Kenan-Flagler, and Isin is a Professor of Strategy at UNC Kenan-Flagler. If you have suggestions,
+            This site was built as a collaborative effort by Yi Hao and Isin Guler from the UNC Kenan-Flagler Business
+            School. Yi Hao is a PhD student in Strategy and Entrepreneurship, and Isin Guler is a Professor of
+            Strategy.
+          </p>
+          <p className="text-navy">
+            We welcome your feedback to help improve this resource. If you have suggestions or data corrections,
             please contact Yi Hao{' '}
             <a
               href="mailto:Yi_Hao@kenan-flagler.unc.edu"
