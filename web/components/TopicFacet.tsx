@@ -55,7 +55,7 @@ export function TopicFacet({ groups, counts, selected, onToggle }: TopicFacetPro
                 type="button"
                 aria-label={`Toggle ${group.category}`}
                 onClick={() => toggleExpanded(group.category)}
-                className="text-gray-secondary text-xs px-1"
+                className="text-gray-secondary text-base px-2 py-1 -m-1 hover:text-charcoal"
               >
                 {expanded.has(group.category) ? '▾' : '▸'}
               </button>
