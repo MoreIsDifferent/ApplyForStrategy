@@ -20,13 +20,15 @@ def test_fetch_static_returns_soup(mock_sleep, mock_get):
     )
 
 
-@patch("scraper.fetch.time.sleep")
-def test_fetch_rendered_returns_soup(mock_sleep):
-    mock_page = MagicMock()
-    mock_page.content.return_value = "<html><body><h1>Rendered</h1></body></html>"
+def _empty_locator():
+    locator = MagicMock()
+    locator.all.return_value = []
+    return locator
 
+
+def _mock_playwright_page(page):
     mock_browser = MagicMock()
-    mock_browser.new_page.return_value = mock_page
+    mock_browser.new_page.return_value = page
 
     mock_chromium = MagicMock()
     mock_chromium.launch.return_value = mock_browser
@@ -37,9 +39,80 @@ def test_fetch_rendered_returns_soup(mock_sleep):
     mock_playwright_cm = MagicMock()
     mock_playwright_cm.__enter__.return_value = mock_playwright_instance
     mock_playwright_cm.__exit__.return_value = None
+    return mock_playwright_cm
+
+
+@patch("scraper.fetch.time.sleep")
+def test_fetch_rendered_returns_soup(mock_sleep):
+    mock_page = MagicMock()
+    mock_page.content.return_value = "<html><body><h1>Rendered</h1></body></html>"
+    mock_page.get_by_role.return_value = _empty_locator()
+    mock_page.evaluate.return_value = 1000
+
+    mock_playwright_cm = _mock_playwright_page(mock_page)
 
     with patch("playwright.sync_api.sync_playwright", return_value=mock_playwright_cm):
         soup = fetch_rendered("https://example.edu/faculty", delay=0)
 
     assert soup.find("h1").text == "Rendered"
     mock_page.goto.assert_called_once_with("https://example.edu/faculty", timeout=60000)
+
+
+@patch("scraper.fetch.time.sleep")
+def test_fetch_rendered_scrolls_until_height_stabilizes(mock_sleep):
+    mock_page = MagicMock()
+    mock_page.content.return_value = "<html><body><h1>Rendered</h1></body></html>"
+    mock_page.get_by_role.return_value = _empty_locator()
+    # scrollTo calls return None, scrollHeight checks grow then stabilize
+    mock_page.evaluate.side_effect = [None, 1000, None, 2000, None, 2000]
+
+    mock_playwright_cm = _mock_playwright_page(mock_page)
+
+    with patch("playwright.sync_api.sync_playwright", return_value=mock_playwright_cm):
+        fetch_rendered("https://example.edu/faculty", delay=0)
+
+    # initial load + 3 scroll iterations before height stabilizes
+    assert mock_page.wait_for_load_state.call_count == 4
+
+
+@patch("scraper.fetch.time.sleep")
+def test_fetch_rendered_clicks_load_more_buttons(mock_sleep):
+    mock_page = MagicMock()
+    mock_page.content.return_value = "<html><body><h1>Rendered</h1></body></html>"
+
+    mock_button = MagicMock()
+    mock_button.is_visible.return_value = True
+    locator_with_button = MagicMock()
+    locator_with_button.all.return_value = [mock_button]
+
+    mock_page.get_by_role.side_effect = [
+        locator_with_button,  # iteration 1: button role has a "Load More" button
+        _empty_locator(),  # iteration 1: link role
+        _empty_locator(),  # iteration 2: button role
+        _empty_locator(),  # iteration 2: link role
+    ]
+    mock_page.evaluate.side_effect = [None, 1000, None, 1000]
+
+    mock_playwright_cm = _mock_playwright_page(mock_page)
+
+    with patch("playwright.sync_api.sync_playwright", return_value=mock_playwright_cm):
+        fetch_rendered("https://example.edu/faculty", delay=0)
+
+    mock_button.click.assert_called_once()
+
+
+@patch("scraper.fetch.time.sleep")
+def test_fetch_rendered_stops_after_max_iterations(mock_sleep):
+    mock_page = MagicMock()
+    mock_page.content.return_value = "<html><body><h1>Rendered</h1></body></html>"
+    mock_page.get_by_role.return_value = _empty_locator()
+    # height keeps growing forever - loop must still terminate
+    mock_page.evaluate.side_effect = lambda script: len(mock_page.evaluate.mock_calls) * 1000
+
+    mock_playwright_cm = _mock_playwright_page(mock_page)
+
+    with patch("playwright.sync_api.sync_playwright", return_value=mock_playwright_cm):
+        fetch_rendered("https://example.edu/faculty", delay=0)
+
+    # initial load + MAX_SCROLL_ITERATIONS loop iterations
+    assert mock_page.wait_for_load_state.call_count == 11
