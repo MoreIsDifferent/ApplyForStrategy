@@ -70,6 +70,15 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
     });
   }
 
+  function handleRankingChange(label: string, bucket: string | null) {
+    setFilters((prev) => {
+      const prefix = `${label}:`;
+      const withoutLabel = prev.ranking.filter((v) => !v.startsWith(prefix));
+      const next = bucket ? [...withoutLabel, `${label}:${bucket}`] : withoutLabel;
+      return { ...prev, ranking: next };
+    });
+  }
+
   return (
     <div>
       <h2 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase border-b border-divider pb-2 mb-3">
@@ -105,7 +114,7 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
         <RankingFacet
           counts={counts.ranking}
           selected={filters.ranking}
-          onToggle={(value) => handleToggle('ranking', value)}
+          onChange={handleRankingChange}
         />
       </div>
 
