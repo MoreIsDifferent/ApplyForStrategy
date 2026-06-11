@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllFaculty, getSchools } from '@/lib/data';
 import { getTopicDistribution } from '@/lib/portfolio';
@@ -8,6 +7,7 @@ import { getInitials } from '@/lib/initials';
 import { PortfolioChart } from '@/components/PortfolioChart';
 import { ResultsList } from '@/components/ResultsList';
 import { USStateMap } from '@/components/USStateMap';
+import { BackButton } from '@/components/BackButton';
 
 export async function generateStaticParams() {
   const schools = await getSchools();
@@ -34,9 +34,7 @@ export default async function SchoolPage({
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-8">
-      <Link href="/" className="text-sm text-accent hover:underline mb-4 inline-block">
-        ← Back to all faculty
-      </Link>
+      <BackButton />
       <div className="flex items-start justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
           {iconUrl ? (

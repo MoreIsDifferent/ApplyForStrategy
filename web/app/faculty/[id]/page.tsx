@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAllFaculty } from '@/lib/data';
 import { getInitials } from '@/lib/initials';
 import { getSampleCoauthors } from '@/lib/coauthors';
 import { CoauthorGraph } from '@/components/CoauthorGraph';
+import { BackButton } from '@/components/BackButton';
 
 export async function generateStaticParams() {
   const allFaculty = await getAllFaculty();
@@ -26,9 +26,7 @@ export default async function FacultyPage({
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-8">
-      <Link href="/" className="text-sm text-accent hover:underline mb-4 inline-block">
-        ← Back to all faculty
-      </Link>
+      <BackButton />
 
       <div className="flex items-center gap-4 mb-1">
         {faculty.photo_url ? (

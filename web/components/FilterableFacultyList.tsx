@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import type { Faculty } from '@/lib/types';
 import {
   applyFilters,
@@ -39,8 +40,39 @@ function uniqueValues(faculty: Faculty[], field: FacetField): string[] {
   return Array.from(set).sort();
 }
 
+function filtersFromSearchParams(params: URLSearchParams): FacetFilters {
+  const result: FacetFilters = { ...EMPTY_FILTERS };
+  for (const field of ALL_FIELDS) {
+    const values = params.getAll(field);
+    if (values.length > 0) {
+      result[field] = values;
+    }
+  }
+  return result;
+}
+
+function searchParamsFromFilters(filters: FacetFilters): string {
+  const params = new URLSearchParams();
+  for (const field of ALL_FIELDS) {
+    for (const value of filters[field]) {
+      params.append(field, value);
+    }
+  }
+  return params.toString();
+}
+
 export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
-  const [filters, setFilters] = useState<FacetFilters>(EMPTY_FILTERS);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const [filters, setFilters] = useState<FacetFilters>(() => filtersFromSearchParams(searchParams));
+
+  useEffect(() => {
+    const query = searchParamsFromFilters(filters);
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
 
   const facultyFacetDefinitions = useMemo(
     () =>

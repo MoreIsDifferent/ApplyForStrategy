@@ -14,7 +14,7 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Strategy PhD Faculty Finder",
+  title: "Match For Strategy",
   description: "Search and filter Strategy PhD faculty across top US programs by research topic, theory, methodology, and more.",
 };
 
