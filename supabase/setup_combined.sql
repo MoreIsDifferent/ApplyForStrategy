@@ -1,5 +1,5 @@
 -- Combined setup script: run once in the Supabase SQL Editor for a fresh project.
--- Includes schema.sql + migrations/0001_add_bio_hash.sql + migrations/0002_add_topic_taxonomy.sql + school records (no placeholder faculty).
+-- Includes schema.sql + migrations/0001_add_bio_hash.sql + migrations/0002_add_topic_taxonomy.sql + migrations/0003_publication_enrichment.sql + school records (no placeholder faculty).
 
 create extension if not exists "uuid-ossp";
 
@@ -14,7 +14,8 @@ create table schools (
   ranking_usnews integer,
   placement_summary text,
   website_url text,
-  logo_url text
+  logo_url text,
+  openalex_institution_id text
 );
 
 create table topics (
@@ -42,7 +43,9 @@ create table faculty (
   google_scholar_url text,
   methodology text,
   needs_review boolean not null default false,
-  bio_hash text
+  bio_hash text,
+  openalex_author_id text,
+  openalex_match_confidence text check (openalex_match_confidence in ('name_institution', 'ambiguous'))
 );
 
 create table faculty_topics (
@@ -64,7 +67,10 @@ create table publications (
   year integer,
   journal text,
   citation_count integer,
-  coauthors text[]
+  coauthors text[],
+  abstract text,
+  openalex_id text,
+  unique (faculty_id, openalex_id)
 );
 
 insert into schools (name, slug, geography, ranking_utd, ranking_tamuga, ranking_qs, ranking_usnews, placement_summary, website_url) values
