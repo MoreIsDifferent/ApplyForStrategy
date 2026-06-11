@@ -40,6 +40,43 @@ review. Topics/theories are free-form — new tags proposed by the LLM are added
 the `topics`/`theories` lookup tables and should be reviewed/merged via the admin
 interface.
 
+## Enriching publications from OpenAlex
+
+Requires `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. Optionally set
+`OPENALEX_EMAIL` to your email address to use OpenAlex's "polite pool" for
+higher rate limits (defaults to a placeholder address otherwise).
+
+```bash
+source .env && python -m scraper.enrich_publications
+```
+
+For each faculty member without a cached `openalex_author_id`, this:
+
+1. Resolves the faculty member's school to an OpenAlex institution ID (cached
+   on `schools.openalex_institution_id` after the first lookup)
+2. Searches OpenAlex for an author matching the faculty member's name at that
+   institution. If exactly one match is found, caches
+   `faculty.openalex_author_id` and `openalex_match_confidence =
+   'name_institution'`. If zero or multiple candidates match, sets
+   `openalex_match_confidence = 'ambiguous'` and `needs_review = true` and
+   skips publication fetching for that person.
+3. For matched faculty, fetches their most recent and most-cited works (10
+   each, expanded to 20 if `works_count > 30` or they have 3+ works in the
+   last 3 years), deduplicates by `openalex_id`, and upserts into
+   `publications`.
+
+Use `--school <slug>` to limit to one school, and `--limit N` to cap the
+number of faculty processed (useful for testing).
+
+### Manually resolving ambiguous matches
+
+Faculty flagged `needs_review = true` with `openalex_match_confidence =
+'ambiguous'` can be resolved manually via the Supabase dashboard Table Editor:
+look up the correct author at openalex.org (cross-referencing
+`google_scholar_url` if present), and set `faculty.openalex_author_id`
+directly. Re-running `enrich_publications` will then skip re-matching (since
+`openalex_author_id` is set) and fetch publications for that person.
+
 ## Testing
 
 ```bash
