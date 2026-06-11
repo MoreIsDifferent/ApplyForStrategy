@@ -10,3 +10,48 @@
   name: "UCLA Anderson"
   directory_url: "https://www.anderson.ucla.edu/faculty-and-research/management-and-organizations/faculty"
   fetch_mode: static
+- slug: mit-sloan
+  name: "MIT Sloan"
+  directory_url: "https://mitsloan.mit.edu/faculty/academic-groups/ties/faculty-centers-initiatives"
+  fetch_mode: static
+  area_hint: "Technological Innovation, Entrepreneurship, and Strategic Management (TIES) faculty group"
+- slug: harvard-hbs
+  name: "Harvard Business School"
+  directory_url: "https://www.hbs.edu/faculty/units/strategy/Pages/faculty.aspx"
+  fetch_mode: static
+  area_hint: "Strategy unit faculty"
+- slug: columbia-cbs
+  name: "Columbia Business School"
+  directory_url: "https://business.columbia.edu/faculty/areas-of-expertise/strategy"
+  fetch_mode: rendered
+  area_hint: "Strategy area of expertise faculty"
+- slug: nyu-stern
+  name: "NYU Stern"
+  directory_url: "https://www.stern.nyu.edu/experience-stern/about/departments-centers-initiatives/academic-departments/management-and-organizations/our-people/faculty/tenured-tenure-track"
+  fetch_mode: static
+  area_hint: "Management and Organizations Department, Tenured & Tenure-Track faculty (includes the Strategy sub-specialization)"
+- slug: northwestern-kellogg
+  name: "Northwestern Kellogg"
+  directory_url: "https://www.kellogg.northwestern.edu/academics-research/faculty-directory/?department=Strategy"
+  fetch_mode: rendered
+  area_hint: "Strategy Department faculty"
+- slug: berkeley-haas
+  name: "UC Berkeley Haas"
+  directory_url: "https://haas.berkeley.edu/mors/faculty/"
+  fetch_mode: static
+  area_hint: "Management of Organizations (MORS) Group ladder faculty (covers strategy and organizational behavior)"
+- slug: michigan-ross
+  name: "Michigan Ross"
+  directory_url: "https://michiganross.umich.edu/faculty-research/areas-of-study/strategy"
+  fetch_mode: rendered
+  area_hint: "Strategy area faculty"
+- slug: duke-fuqua
+  name: "Duke Fuqua"
+  directory_url: "https://areas.fuqua.duke.edu/strategy/"
+  fetch_mode: rendered
+  area_hint: "Strategy academic area faculty"
+- slug: unc-kenan-flagler
+  name: "UNC Kenan-Flagler"
+  directory_url: "https://www.kenan-flagler.unc.edu/faculty/?area=strategy-and-entrepreneurship"
+  fetch_mode: rendered
+  area_hint: "Faculty whose title includes 'Strategy and Entrepreneurship' (e.g., Professor of Strategy and Entrepreneurship, Assistant Professor of Strategy and Entrepreneurship)"
