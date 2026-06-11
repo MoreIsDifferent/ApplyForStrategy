@@ -98,7 +98,7 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between border-b border-divider pb-2 mb-3">
+      <div className="flex items-center justify-between border-b border-divider pb-2 mb-1">
         <h2 className="text-[11px] font-bold tracking-wide text-gray-secondary uppercase">
           Filter by Faculty
         </h2>
@@ -110,6 +110,9 @@ export function FilterableFacultyList({ faculty }: { faculty: Faculty[] }) {
           Clear filters
         </button>
       </div>
+      <p className="text-[11px] text-gray-secondary mb-3">
+        Based on each faculty member&apos;s most cited and most recent research.
+      </p>
       <div className="bg-white border border-divider rounded-lg p-3 flex flex-wrap gap-4 mb-6">
         <TopicFacet
           groups={topicGroups}
