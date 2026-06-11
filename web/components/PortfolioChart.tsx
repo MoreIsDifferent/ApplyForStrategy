@@ -3,19 +3,19 @@
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import type { TopicDistributionEntry } from '@/lib/portfolio';
 
-// 11 distinct hues (one per topic category), light and semi-transparent so no two slices repeat.
+// 11 shades of blue (one per topic category), so no two slices repeat.
 const COLORS = [
-  'hsla(0, 65%, 75%, 0.6)',
-  'hsla(33, 65%, 75%, 0.6)',
-  'hsla(65, 65%, 75%, 0.6)',
-  'hsla(98, 65%, 75%, 0.6)',
-  'hsla(131, 65%, 75%, 0.6)',
-  'hsla(164, 65%, 75%, 0.6)',
-  'hsla(196, 65%, 75%, 0.6)',
-  'hsla(229, 65%, 75%, 0.6)',
-  'hsla(262, 65%, 75%, 0.6)',
-  'hsla(295, 65%, 75%, 0.6)',
-  'hsla(327, 65%, 75%, 0.6)',
+  'hsla(205, 75%, 88%, 0.9)',
+  'hsla(205, 70%, 78%, 0.9)',
+  'hsla(205, 65%, 68%, 0.9)',
+  'hsla(205, 60%, 58%, 0.9)',
+  'hsla(205, 55%, 48%, 0.9)',
+  'hsla(195, 65%, 75%, 0.9)',
+  'hsla(195, 60%, 60%, 0.9)',
+  'hsla(220, 65%, 80%, 0.9)',
+  'hsla(220, 55%, 65%, 0.9)',
+  'hsla(230, 50%, 70%, 0.9)',
+  'hsla(190, 50%, 85%, 0.9)',
 ];
 
 export function PortfolioChart({ data }: { data: TopicDistributionEntry[] }) {
@@ -44,9 +44,26 @@ export function PortfolioChart({ data }: { data: TopicDistributionEntry[] }) {
           layout="vertical"
           align="right"
           verticalAlign="middle"
-          formatter={(value, entry) => {
-            const payload = (entry as unknown as { payload: TopicDistributionEntry }).payload;
-            return `${value} (${payload.percentage}%)`;
+          content={(props) => {
+            const payload = (props as unknown as {
+              payload?: { value: string; color: string; payload: TopicDistributionEntry }[];
+            }).payload;
+            if (!payload) return null;
+            return (
+              <ul className="flex flex-col gap-1.5">
+                {payload.map((entry) => (
+                  <li key={entry.value} className="flex items-center gap-2 text-xs font-medium text-navy">
+                    <span
+                      className="inline-block w-3 h-3 rounded-sm flex-shrink-0"
+                      style={{ backgroundColor: entry.color }}
+                    />
+                    <span>
+                      {entry.value} ({entry.payload.percentage}%)
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            );
           }}
         />
       </PieChart>
