@@ -17,7 +17,9 @@ export default async function HomePage() {
             likely to see applicants who are a strong match for their faculty.
           </p>
           <p className="text-navy">
-            This site was built by Yi Hao{' '}
+            This site was built by Yi Hao &amp; Isin Guler. Yi Hao is a PhD student in Strategy and Entrepreneurship at
+            UNC Kenan-Flagler, and Isin is a Professor of Strategy at UNC Kenan-Flagler. If you have suggestions,
+            please contact Yi Hao{' '}
             <a
               href="mailto:Yi_Hao@kenan-flagler.unc.edu"
               aria-label="Email Yi Hao"
@@ -28,9 +30,8 @@ export default async function HomePage() {
                 <rect x="2" y="4" width="20" height="16" rx="2" />
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
               </svg>
-            </a>{' '}
-            &amp; Isin Guler. Yi Hao is a PhD student in Strategy and Entrepreneurship at UNC Kenan-Flagler, and Isin
-            is a Professor of Strategy at UNC Kenan-Flagler. If you have suggestions, please contact Yi Hao.
+            </a>
+            .
           </p>
         </div>
       </section>
