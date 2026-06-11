@@ -1,12 +1,16 @@
 import type { Faculty } from './types';
+import { getTitleCategory } from './title';
+import { getRankingValues } from './ranking';
 
-export type FacetField = 'topics' | 'theories' | 'methodology' | 'geography';
+export type FacetField = 'topics' | 'theories' | 'methodology' | 'geography' | 'title' | 'ranking';
 
 export interface FacetFilters {
   topics: string[];
   theories: string[];
   methodology: string[];
   geography: string[];
+  title: string[];
+  ranking: string[];
 }
 
 export const EMPTY_FILTERS: FacetFilters = {
@@ -14,6 +18,8 @@ export const EMPTY_FILTERS: FacetFilters = {
   theories: [],
   methodology: [],
   geography: [],
+  title: [],
+  ranking: [],
 };
 
 export interface TopicCategoryGroup {
@@ -21,7 +27,11 @@ export interface TopicCategoryGroup {
   topics: string[];
 }
 
-const ALL_FIELDS: FacetField[] = ['topics', 'theories', 'methodology', 'geography'];
+const ALL_FIELDS: FacetField[] = ['topics', 'theories', 'methodology', 'geography', 'title', 'ranking'];
+
+// Fields where multiple selected values must ALL match (AND/intersection).
+// 'ranking' uses OR/union: matching any selected ranking bucket is enough.
+const UNION_FIELDS: FacetField[] = ['ranking'];
 
 export function valuesForField(faculty: Faculty, field: FacetField): string[] {
   switch (field) {
@@ -39,13 +49,21 @@ export function valuesForField(faculty: Faculty, field: FacetField): string[] {
       return faculty.methodology ? [faculty.methodology] : [];
     case 'geography':
       return [faculty.school.geography];
+    case 'title': {
+      const category = getTitleCategory(faculty.title);
+      return category ? [category] : [];
+    }
+    case 'ranking':
+      return getRankingValues(faculty.school);
   }
 }
 
 function matchesField(faculty: Faculty, field: FacetField, selected: string[]): boolean {
   if (selected.length === 0) return true;
   const values = valuesForField(faculty, field);
-  return selected.every((v) => values.includes(v));
+  return UNION_FIELDS.includes(field)
+    ? selected.some((v) => values.includes(v))
+    : selected.every((v) => values.includes(v));
 }
 
 export function applyFilters(faculty: Faculty[], filters: FacetFilters): Faculty[] {

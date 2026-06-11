@@ -23,6 +23,14 @@
   --color-geo-soft: #F2E6E5;
   --color-geo-soft-text: #8C6E6E;
 
+  --color-title: #D9B45C;
+  --color-title-soft: #FBF3DF;
+  --color-title-soft-text: #9C7A2E;
+
+  --color-ranking: #B9A8DD;
+  --color-ranking-soft: #F1ECFA;
+  --color-ranking-soft-text: #6F5694;
+
   --font-sans: var(--font-inter), sans-serif;
 }
 

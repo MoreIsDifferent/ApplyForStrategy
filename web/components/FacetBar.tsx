@@ -12,7 +12,7 @@ interface FacetDefinition {
 interface FacetBarProps {
   facetDefinitions: FacetDefinition[];
   filters: FacetFilters;
-  counts: Record<FacetField, Record<string, number>>;
+  counts: Partial<Record<FacetField, Record<string, number>>>;
   onToggle: (field: FacetField, value: string) => void;
 }
 
@@ -25,7 +25,7 @@ export function FacetBar({ facetDefinitions, filters, counts, onToggle }: FacetB
           title={def.title}
           colorScheme={def.colorScheme}
           options={def.options}
-          counts={counts[def.field]}
+          counts={counts[def.field] ?? {}}
           selected={filters[def.field]}
           onToggle={(value) => onToggle(def.field, value)}
         />

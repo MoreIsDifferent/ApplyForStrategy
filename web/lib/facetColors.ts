@@ -1,4 +1,4 @@
-export type FacetColorScheme = 'topic' | 'theory' | 'method' | 'geo';
+export type FacetColorScheme = 'topic' | 'theory' | 'method' | 'geo' | 'title' | 'ranking';
 
 export function pillClasses(scheme: FacetColorScheme, selected: boolean): string {
   const baseClasses = 'rounded-full px-3 py-1 text-xs transition-colors';
@@ -19,6 +19,14 @@ export function pillClasses(scheme: FacetColorScheme, selected: boolean): string
     geo: {
       selected: 'bg-geo text-white',
       unselected: 'bg-geo-soft text-geo-soft-text',
+    },
+    title: {
+      selected: 'bg-title text-white',
+      unselected: 'bg-title-soft text-title-soft-text',
+    },
+    ranking: {
+      selected: 'bg-ranking text-white',
+      unselected: 'bg-ranking-soft text-ranking-soft-text',
     },
   };
 

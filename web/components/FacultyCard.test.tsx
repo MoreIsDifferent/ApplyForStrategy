@@ -20,7 +20,6 @@ describe('FacultyCard', () => {
     if (faculty.methodology) {
       expect(screen.getByText(faculty.methodology)).toBeInTheDocument();
     }
-    expect(screen.getByText(faculty.school.geography)).toBeInTheDocument();
     expect(screen.getByText(faculty.school.name)).toBeInTheDocument();
 
     const links = screen.getAllByRole('link');

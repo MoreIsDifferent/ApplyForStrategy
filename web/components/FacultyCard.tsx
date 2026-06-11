@@ -28,7 +28,6 @@ export function FacultyCard({ faculty }: { faculty: Faculty }) {
           {faculty.methodology && (
             <span className={pillClasses('method', false)}>{faculty.methodology}</span>
           )}
-          <span className={pillClasses('geo', false)}>{faculty.school.geography}</span>
         </div>
       </Link>
       <Link

@@ -14,6 +14,12 @@ const schoolB: School = {
   placement_summary: null, website_url: null, logo_url: null,
 };
 
+const schoolC: School = {
+  id: 's3', name: 'School C', slug: 'school-c', geography: 'West Coast',
+  ranking_utd: 150, ranking_tamuga: null, ranking_qs: null, ranking_usnews: null,
+  placement_summary: null, website_url: null, logo_url: null,
+};
+
 function makeFaculty(overrides: Partial<Faculty> & { id: string; name: string }): Faculty {
   return {
     school: schoolA,
@@ -72,6 +78,30 @@ describe('applyFilters', () => {
   it('filters by geography derived from the faculty school', () => {
     const result = applyFilters(faculty, { ...EMPTY_FILTERS, geography: ['Midwest'] });
     expect(result.map((f) => f.id)).toEqual(['f3']);
+  });
+
+  it('filters by title category derived from the faculty title', () => {
+    const titledFaculty: Faculty[] = [
+      makeFaculty({ id: 't1', name: 'Pat', title: 'Assistant Professor of Strategy' }),
+      makeFaculty({ id: 't2', name: 'Sam', title: 'Clinical Professor of Management' }),
+    ];
+    const result = applyFilters(titledFaculty, { ...EMPTY_FILTERS, title: ['Assistant Professor'] });
+    expect(result.map((f) => f.id)).toEqual(['t1']);
+  });
+
+  it('filters by ranking bucket using union/OR logic across selections', () => {
+    const rankedFaculty: Faculty[] = [
+      makeFaculty({ id: 'r1', name: 'Pat', school: schoolA }), // UTD/TAMU/QS/US News all rank 1 -> 1-20
+      makeFaculty({ id: 'r2', name: 'Sam', school: schoolC }), // UTD rank 150 -> 100-200
+    ];
+    const result = applyFilters(rankedFaculty, {
+      ...EMPTY_FILTERS,
+      ranking: ['UTD Top 100:1-20', 'UTD Top 100:100-200'],
+    });
+    expect(result.map((f) => f.id).sort()).toEqual(['r1', 'r2']);
+
+    const narrowed = applyFilters(rankedFaculty, { ...EMPTY_FILTERS, ranking: ['UTD Top 100:100-200'] });
+    expect(narrowed.map((f) => f.id)).toEqual(['r2']);
   });
 });
 
