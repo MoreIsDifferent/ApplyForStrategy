@@ -5,9 +5,9 @@ export default async function HomePage() {
   const allFaculty = await getAllFaculty();
   return (
     <main className="max-w-7xl mx-auto px-6 py-8">
-      <section className="bg-white border border-divider rounded-lg p-6 mb-6 mt-6">
+      <section className="bg-accent-soft/60 border border-accent-soft rounded-2xl p-6 mb-6 mt-6">
         <h2 className="text-xl font-extrabold tracking-tight text-navy mb-3">Why this site?</h2>
-        <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4 text-[15px] text-charcoal leading-relaxed">
+        <div className="flex flex-col gap-4 text-[15px] text-charcoal leading-relaxed">
           <p>
             In our experience, fit with a program is one of the most important factors in a successful Strategy PhD
             application — and finding fit starts with finding faculty whose research genuinely interests you. This
