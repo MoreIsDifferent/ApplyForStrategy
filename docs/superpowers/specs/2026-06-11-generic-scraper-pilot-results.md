@@ -142,3 +142,43 @@ user request, bringing the pilot to 9 schools.
   3. For bot-protected pages (Columbia, possibly Michigan Ross), considering
      alternative fetch strategies (different user agent, longer waits) — and accepting
      that some schools may need a small custom parser even in the "generic" era.
+
+## Follow-up: fetch_rendered + clean_html_to_text fixes (2026-06-11)
+
+Addressed recommendation #1 above (and unblocked Columbia's bot-protection issue as a
+side effect). Three changes to `scraper/scraper/fetch.py` and
+`scraper/scraper/generic.py`:
+
+1. **`fetch_rendered` now scrolls to the bottom and clicks "Load More"/"Show
+   More"/"More Faculty"/"More Results"-style buttons in a loop until the page height
+   stabilizes** (capped at 10 iterations). Click failures (e.g. an element obscured by
+   an overlay) are swallowed rather than crashing the fetch.
+2. **`fetch_rendered` dismisses "Accept All"-style cookie consent banners** before the
+   scroll/click loop, since they can sit on top of and block "Load More" buttons
+   (this was blocking Kellogg's "More Faculty" button).
+3. **`clean_html_to_text` now falls back to a simple boilerplate-stripped raw-text
+   extraction** when trafilatura's main-content heuristic keeps less than half as much
+   text as the raw extraction — trafilatura was treating large faculty directory grids
+   as navigation/listing boilerplate and discarding nearly all of them.
+
+Additionally, `michigan-ross`'s `directory_url` was changed from the "Strategy" area
+landing page (which only embeds one faculty profile directly) to the filtered faculty
+directory page (`/faculty-research/directory?status=All&department=35`), which lists
+the full department roster.
+
+**Re-tested directory roster extraction for all schools that previously failed or were
+incomplete** (smoke test only — directory list extraction, not full bio scraping):
+
+| School | Before | After |
+|---|---|---|
+| Columbia CBS (`columbia-cbs`) | 0 (empty/bot-blocked) | 12 |
+| Northwestern Kellogg (`northwestern-kellogg`) | 0 (landing page) | 44 |
+| Michigan Ross (`michigan-ross`) | 1 (area chair only) | 25 |
+| Duke Fuqua (`duke-fuqua`) | 3 (lazy-loaded, partial) | 13 |
+| UNC Kenan-Flagler (`unc-kenan-flagler`) | 1 (first page only) | 24 |
+
+All 9 pilot schools now extract a full or near-full Strategy faculty roster from the
+directory page. Remaining open issue from the original pilot: **HBS's rendered profile
+pages still return empty bio content** (`phd_institution`/`topics`/`methodology` null)
+— this is unrelated to directory extraction and still needs investigation before HBS
+can be run in full.
