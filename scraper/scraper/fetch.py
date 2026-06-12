@@ -9,7 +9,12 @@ USER_AGENT = (
     "(+https://github.com/MoreIsDifferent/ApplyForStrategy; research project)"
 )
 
-LOAD_MORE_PATTERN = re.compile(r"load more|show more|view more|see more", re.IGNORECASE)
+LOAD_MORE_PATTERN = re.compile(
+    r"^(load|show|view|see)\s+more\b|^more\s+(faculty|results|profiles|people|staff|articles|posts)\b",
+    re.IGNORECASE,
+)
+
+COOKIE_CONSENT_PATTERN = re.compile(r"^(accept|allow)\s+all\b|^accept\b", re.IGNORECASE)
 
 MAX_SCROLL_ITERATIONS = 10
 
@@ -20,6 +25,23 @@ def fetch_static(url: str, delay: float = 1.0) -> BeautifulSoup:
     response = requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=30)
     response.raise_for_status()
     return BeautifulSoup(response.text, "html.parser")
+
+
+def _dismiss_cookie_banner(page, click_timeout: float = 5000) -> None:
+    """Click an "Accept All"-style cookie consent button, if present.
+
+    Cookie banners can sit on top of "Load More" buttons and block clicks.
+    Failures are swallowed - if there's no banner (or it can't be dismissed),
+    fetching proceeds as normal.
+    """
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+
+    for element in page.get_by_role("button", name=COOKIE_CONSENT_PATTERN).all():
+        if element.is_visible():
+            try:
+                element.click(timeout=click_timeout)
+            except PlaywrightTimeoutError:
+                continue
 
 
 def _click_load_more(page, click_timeout: float = 5000) -> bool:
@@ -57,6 +79,7 @@ def fetch_rendered(url: str, delay: float = 1.0) -> BeautifulSoup:
         page = browser.new_page(user_agent=USER_AGENT)
         page.goto(url, timeout=60000)
         page.wait_for_load_state("networkidle")
+        _dismiss_cookie_banner(page)
 
         previous_height = None
         for _ in range(MAX_SCROLL_ITERATIONS):

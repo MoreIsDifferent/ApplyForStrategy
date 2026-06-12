@@ -1,6 +1,16 @@
 from unittest.mock import MagicMock, patch
 
-from scraper.fetch import fetch_rendered, fetch_static
+from scraper.fetch import LOAD_MORE_PATTERN, fetch_rendered, fetch_static
+
+
+def test_load_more_pattern_matches_common_button_labels():
+    for label in ["Load More", "Show more", "View More", "See more", "More Faculty", "More Results"]:
+        assert LOAD_MORE_PATTERN.search(label), label
+
+
+def test_load_more_pattern_does_not_match_unrelated_labels():
+    for label in ["More information", "Read about us", "Learn more about Strategy"]:
+        assert not LOAD_MORE_PATTERN.search(label), label
 
 
 @patch("scraper.fetch.requests.get")
@@ -86,6 +96,7 @@ def test_fetch_rendered_clicks_load_more_buttons(mock_sleep):
     locator_with_button.all.return_value = [mock_button]
 
     mock_page.get_by_role.side_effect = [
+        _empty_locator(),  # cookie banner dismissal check
         locator_with_button,  # iteration 1: button role has a "Load More" button
         _empty_locator(),  # iteration 1: link role
         _empty_locator(),  # iteration 2: button role
@@ -99,6 +110,33 @@ def test_fetch_rendered_clicks_load_more_buttons(mock_sleep):
         fetch_rendered("https://example.edu/faculty", delay=0)
 
     mock_button.click.assert_called_once()
+
+
+@patch("scraper.fetch.time.sleep")
+def test_fetch_rendered_dismisses_cookie_banner(mock_sleep):
+    mock_page = MagicMock()
+    mock_page.content.return_value = "<html><body><h1>Rendered</h1></body></html>"
+
+    mock_accept_button = MagicMock()
+    mock_accept_button.is_visible.return_value = True
+    locator_with_accept = MagicMock()
+    locator_with_accept.all.return_value = [mock_accept_button]
+
+    mock_page.get_by_role.side_effect = [
+        locator_with_accept,  # cookie banner dismissal check
+        _empty_locator(),  # iteration 1: button role
+        _empty_locator(),  # iteration 1: link role
+        _empty_locator(),  # iteration 2: button role
+        _empty_locator(),  # iteration 2: link role
+    ]
+    mock_page.evaluate.return_value = 1000
+
+    mock_playwright_cm = _mock_playwright_page(mock_page)
+
+    with patch("playwright.sync_api.sync_playwright", return_value=mock_playwright_cm):
+        fetch_rendered("https://example.edu/faculty", delay=0)
+
+    mock_accept_button.click.assert_called_once()
 
 
 @patch("scraper.fetch.time.sleep")

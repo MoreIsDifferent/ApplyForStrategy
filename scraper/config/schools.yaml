@@ -42,9 +42,9 @@
   area_hint: "Management of Organizations (MORS) Group ladder faculty (covers strategy and organizational behavior)"
 - slug: michigan-ross
   name: "Michigan Ross"
-  directory_url: "https://michiganross.umich.edu/faculty-research/areas-of-study/strategy"
+  directory_url: "https://michiganross.umich.edu/faculty-research/directory?status=All&department=35"
   fetch_mode: rendered
-  area_hint: "Strategy area faculty"
+  area_hint: "Strategy department faculty"
 - slug: duke-fuqua
   name: "Duke Fuqua"
   directory_url: "https://areas.fuqua.duke.edu/strategy/"
