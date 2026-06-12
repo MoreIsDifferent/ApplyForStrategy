@@ -201,3 +201,34 @@ extracted correctly), but accept that bio fields (`phd_institution`, `methodolog
 `topics`, `personal_website_url`, `google_scholar_url`) will be null for HBS faculty.
 These will need manual lookup via the existing `needs_review` workflow. No further
 engineering effort planned for HBS bio scraping.
+
+## Columbia CBS empty roster — accepted limitation (2026-06-12)
+
+Investigated why `columbia-cbs` repeatedly produced an empty roster (`[]`) in the full
+pipeline run despite an earlier smoke test returning 12 faculty. Findings:
+
+- The configured directory page (`business.columbia.edu/faculty/areas-of-expertise/strategy`)
+  is fetched and cleaned **stably** (always ~8063 chars via trafilatura) — this is not a
+  fetch/extraction bug.
+- Unlike the other 8 schools, Columbia Business School has **no faculty-directory grid
+  page**. Its "Areas of Expertise > Strategy" page is a news/topic feed: a "Latest on
+  Strategy" article list, a "Strategy Faculty" widget containing exactly **one** named
+  faculty member (Gernot Wagner), and a "CBS Faculty Research on Strategy" article feed
+  whose author bylines link to ~15 other `/faculty/people/...` profiles (mostly
+  incidental "mentioned faculty", not a Strategy roster).
+- Columbia's Academic Divisions (Accounting, DRO, Economics, Finance, Management,
+  Marketing) include no "Strategy" division, and the Management division page is also a
+  news feed rather than a roster. No general faculty directory/search page exists
+  (`/faculty/people` is a 404).
+- Because the cleaned text mixes one genuine roster entry with many incidental author
+  mentions, `extract_faculty_list` is non-deterministic on this input — observed
+  returning 0, 1, or 12 faculty across different invocations on essentially the same
+  text. This matches the situation that got Stanford GSB dropped from the pilot
+  ("no unified Strategy department... no combined roster page").
+
+**Decision:** keep Columbia CBS in the pipeline rather than dropping it, but accept that
+its roster is incomplete and unreliable — currently 1 faculty member (Gernot Wagner,
+from the "Strategy Faculty" widget), with `phd_institution`/`methodology` null since no
+individual profile URL was found. The remaining Columbia Strategy-area faculty will need
+manual research via the existing `needs_review` workflow. No further engineering effort
+planned for Columbia's directory extraction.
