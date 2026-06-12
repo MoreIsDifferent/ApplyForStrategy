@@ -178,7 +178,26 @@ incomplete** (smoke test only — directory list extraction, not full bio scrapi
 | UNC Kenan-Flagler (`unc-kenan-flagler`) | 1 (first page only) | 24 |
 
 All 9 pilot schools now extract a full or near-full Strategy faculty roster from the
-directory page. Remaining open issue from the original pilot: **HBS's rendered profile
-pages still return empty bio content** (`phd_institution`/`topics`/`methodology` null)
-— this is unrelated to directory extraction and still needs investigation before HBS
-can be run in full.
+directory page.
+
+## HBS profile bio rendering — accepted limitation (2026-06-12)
+
+Investigated why HBS's rendered profile pages (`hbs.edu/faculty/Pages/profile.aspx?facId=...`)
+return empty bio fields. Findings:
+
+- Our research bot's User-Agent gets a **403 from HBS's CDN** (a WAF rule blocking
+  declared bots).
+- A normal browser User-Agent via plain `requests` gets a 200, but it's a **JS
+  challenge page** with no real content.
+- A normal browser User-Agent via headless Playwright triggers a **PerimeterX CAPTCHA**
+  ("solve a puzzle... confirm you are human").
+
+HBS faculty profile pages are actively protected by bot-detection/CAPTCHA. Bypassing
+this would require stealth/fingerprint-evasion or CAPTCHA-solving techniques, which is
+out of scope.
+
+**Decision:** keep HBS in the pipeline for its directory roster (23 Strategy faculty,
+extracted correctly), but accept that bio fields (`phd_institution`, `methodology`,
+`topics`, `personal_website_url`, `google_scholar_url`) will be null for HBS faculty.
+These will need manual lookup via the existing `needs_review` workflow. No further
+engineering effort planned for HBS bio scraping.
