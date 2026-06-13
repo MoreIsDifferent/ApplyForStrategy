@@ -43,7 +43,10 @@ path already reached 9/9 usable output.
   `run_pipeline`, so one school's fetch/extraction crash doesn't abort the
   whole run.
 - Compiling a working list of the remaining ~90 UTD Top 100 schools (current
-  rankings, minus the 12 already covered).
+  UTD Worldwide rankings, minus the 12 already covered).
+- Researching each school's **UTD Top 100 Worldwide ranking** (for all 100
+  schools — the 12 already in `schools.yaml` plus the ~90 new ones) and
+  geography/`website_url`, and writing this into the `schools` table.
 - Researching each school's Strategy-area faculty directory URL, `fetch_mode`,
   and `area_hint`, and adding entries to `schools.yaml`.
 - One full pipeline run across all newly-configured schools, producing
@@ -90,14 +93,41 @@ both failures (to be documented as accepted limitations or retried
 individually) and successes, so a single run produces a complete picture even
 if a handful of schools error out.
 
-### 2. School list compilation
+### 2. School list compilation + UTD Worldwide ranking research
 
-Research the current UTD Top 100 Business School Research Rankings (a publicly
-published list) and produce a working list of ~90 remaining schools (name +
-website), excluding the 12 already in `schools.yaml`:
-wharton, chicago-booth, ucla-anderson, mit-sloan, harvard-hbs, columbia-cbs,
-nyu-stern, northwestern-kellogg, berkeley-haas, michigan-ross, duke-fuqua,
-unc-kenan-flagler.
+During brainstorming, an attempt to fill in `ranking_utd`/geography/
+`website_url` for the 9 newly-loaded pilot schools found that the UTD Top 100
+**Worldwide** rankings table (`jsom.utdallas.edu/the-utd-top-100-business-
+school-research-rankings/worldRankings`) is rendered client-side via
+JS/AJAX — it's not present in the static HTML, so one-off `WebFetch`/`curl`
+lookups per school don't work reliably. North American rankings and rankings
+for top-10 schools were findable via search, but not a consistent Worldwide
+rank for the rest.
+
+This task does the research properly, once, for **all 100 schools** (the 12
+existing + ~90 new):
+
+1. Find the data source behind the Worldwide rankings table — either by
+   finding the AJAX endpoint it calls (inspect the page's JS for the request
+   URL/params and query it directly for the 2021-2025 Worldwide table), or by
+   finding an equivalent publicly-cached full table (e.g. a PDF mirror like
+   the ones found during brainstorming at colorado.edu/business or
+   haslam.utk.edu, if current enough).
+2. From that table, record each of the 100 schools' UTD Top 100 **Worldwide**
+   rank.
+3. Produce a working list of the ~90 schools not yet in `schools.yaml`
+   (name + website + Worldwide rank), excluding the 12 already covered:
+   wharton, chicago-booth, ucla-anderson, mit-sloan, harvard-hbs, columbia-cbs,
+   nyu-stern, northwestern-kellogg, berkeley-haas, michigan-ross, duke-fuqua,
+   unc-kenan-flagler.
+4. Also record `geography` (region, matching the existing style: "Northeast",
+   "Midwest", "West Coast", "South", etc.) and `website_url` for each of the
+   100 schools.
+
+If the Worldwide table genuinely cannot be retrieved (AJAX endpoint not
+discoverable, no current cached mirror), fall back to UTD **North American**
+rankings instead and note this substitution in the results doc — but Worldwide
+is preferred per user request.
 
 ### 3. Per-school research and `schools.yaml` config
 
@@ -151,9 +181,16 @@ spot-check rather than full manual review per school:
 
 ### 6. Supabase load
 
-- Insert `schools` rows for all newly-configured schools (one batch insert,
-  confirmed with the user beforehand — same pattern as this session's pilot
-  load).
+- Insert `schools` rows for all newly-configured schools, including
+  `ranking_utd`, `geography`, and `website_url` from the research in Section 2
+  (one batch insert, confirmed with the user beforehand — same pattern as this
+  session's pilot load).
+- Update the 12 already-existing `schools` rows with `ranking_utd` (Worldwide),
+  `geography`, and `website_url` from the same research, for the ones missing
+  this data (the 9 pilot schools added this session, currently all null).
+- `ranking_tamuga`/`ranking_qs`/`ranking_usnews`/`placement_summary` are left
+  null for all schools — out of scope (UTD Worldwide ranking only, per user
+  request).
 - Run `python -m scraper.upsert` once for all schools (existing script already
   iterates over all configs with an `output/<slug>.json` present, so no
   changes needed beyond the new config entries and output files existing).
