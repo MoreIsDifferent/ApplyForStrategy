@@ -6,3 +6,4 @@ findable Strategy-area faculty directory page and were therefore not added to
 
 | Slug | Name | Reason |
 |------|------|--------|
+| stanford-gsb | Stanford GSB | No unified Strategy department; the GSB's academic areas are Accounting, Economics, Finance, Marketing, Operations Information & Technology, Organizational Behavior, and Political Economy. Strategy-adjacent faculty are split across Organizational Behavior and Political Economy with no combined Strategy roster page. |

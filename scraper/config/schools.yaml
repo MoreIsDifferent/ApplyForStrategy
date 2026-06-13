@@ -55,3 +55,48 @@
   directory_url: "https://www.kenan-flagler.unc.edu/faculty/?area=strategy-and-entrepreneurship"
   fetch_mode: rendered
   area_hint: "Faculty whose title includes 'Strategy and Entrepreneurship' (e.g., Professor of Strategy and Entrepreneurship, Assistant Professor of Strategy and Entrepreneurship)"
+- slug: utdallas-jindal
+  name: "UT Dallas Jindal"
+  directory_url: "https://jindal.utdallas.edu/faculty/"
+  fetch_mode: rendered
+  area_hint: "Faculty in the Organizations, Strategy and International Management (OSIM) department, filterable via the directory's department filter"
+- slug: usc-marshall
+  name: "USC Marshall"
+  directory_url: "https://www.marshall.usc.edu/departments/management-and-organization/faculty"
+  fetch_mode: static
+  area_hint: "Management and Organization (MOR) Department faculty, which covers strategy and organizational behavior"
+- slug: insead
+  name: "INSEAD"
+  directory_url: "https://www.insead.edu/faculty-research/academic-areas/strategy"
+  fetch_mode: static
+  area_hint: "Strategy academic area faculty"
+- slug: indiana-kelley
+  name: "Indiana Kelley"
+  directory_url: "https://kelley.iu.edu/faculty-research/departments/management-entrepreneurship/faculty/index.html"
+  fetch_mode: static
+  area_hint: "Management & Entrepreneurship Department faculty, which includes the Strategic Management sub-area"
+- slug: texas-mccombs
+  name: "Texas McCombs"
+  directory_url: "https://www.mccombs.utexas.edu/faculty-research/departments/rosenthal-department-of-management/"
+  fetch_mode: static
+  area_hint: "Rosenthal Department of Management faculty, which covers strategic management and organizational behavior"
+- slug: cornell-johnson
+  name: "Cornell Johnson"
+  directory_url: "https://www.johnson.cornell.edu/faculty-research/search/?expertise=Strategy"
+  fetch_mode: rendered
+  area_hint: "Faculty whose self-reported expertise includes 'Strategy' in the Johnson faculty expertise search"
+- slug: toronto-rotman
+  name: "Toronto Rotman"
+  directory_url: "https://www.rotman.utoronto.ca/faculty-and-research/academic-areas/strategic-management/faculty/"
+  fetch_mode: rendered
+  area_hint: "Strategic Management academic area faculty"
+- slug: hku-business
+  name: "HKU Business School"
+  directory_url: "https://www.hkubs.hku.hk/people/faculty?staff_type=faculty&subject_area=all&track=professoriate"
+  fetch_mode: rendered
+  area_hint: "Faculty in the 'Management and Strategy' academic area (one of the filterable subject_area options on this directory)"
+- slug: wustl-olin
+  name: "WashU Olin"
+  directory_url: "https://olin.washu.edu/faculty-and-research/faculty-directory/index.php"
+  fetch_mode: rendered
+  area_hint: "Faculty in the 'Strategy & Entrepreneurship' academic area, filterable via the directory's area filter"
