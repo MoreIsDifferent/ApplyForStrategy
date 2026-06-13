@@ -200,3 +200,53 @@
   directory_url: "https://www.colorado.edu/business/faculty-research/directory/strategy-entrepreneurship-and-operations-faculty/strategy-and"
   fetch_mode: rendered
   area_hint: "Strategy and Entrepreneurship faculty group within the Strategy, Entrepreneurship and Operations division"
+- slug: tilburg-tisem
+  name: "Tilburg TiSEM"
+  directory_url: "https://www.tilburguniversity.edu/about/schools/economics-and-management/organization/departments/strategy-and-entrepreneurship/faculty"
+  fetch_mode: rendered
+  area_hint: "Department of Strategy and Entrepreneurship faculty roster"
+- slug: florida-warrington
+  name: "Florida Warrington"
+  directory_url: "https://warrington.ufl.edu/management-department/"
+  fetch_mode: static
+  area_hint: "Warrington has no separate Strategy area; this Department of Management faculty roster (which covers strategic management alongside organizational behavior, HR, and entrepreneurship) is the closest match"
+- slug: temple-fox
+  name: "Temple Fox"
+  directory_url: "https://www.fox.temple.edu/faculty-research/academic-areas/management/faculty"
+  fetch_mode: static
+  area_hint: "Fox has no standalone Strategic Management faculty roster page; this Department of Management faculty directory (which includes faculty with titles such as 'Professor of Strategic Management') is the closest match"
+- slug: imperial-college-business
+  name: "Imperial College Business School"
+  directory_url: "https://www.imperial.ac.uk/business-school/faculty-research/academic-areas/management-entrepreneurship/people/"
+  fetch_mode: static
+  area_hint: "Imperial has no separate Strategy area; Strategy researchers (titles like 'Professor of Strategy', 'Associate Professor of Strategy and Organisation') are integrated into this Management & Entrepreneurship department faculty list"
+- slug: emory-goizueta
+  name: "Emory Goizueta"
+  directory_url: "https://goizueta.emory.edu/faculty/organization-management"
+  fetch_mode: static
+  area_hint: "Organization & Management area faculty, which covers strategy, organization theory, and management alongside organizational behavior"
+- slug: mcgill-desautels
+  name: "McGill Desautels"
+  directory_url: "https://www.mcgill.ca/desautels/people/field_mprofile_areas/strategy_organization/field_mprofile_group/Faculty"
+  fetch_mode: rendered
+  area_hint: "Strategy and Organization specialization faculty profiles list"
+- slug: boston-college-carroll
+  name: "Boston College Carroll"
+  directory_url: "https://www.bc.edu/bc-web/schools/carroll-school/faculty-research/faculty-expertise.html"
+  fetch_mode: rendered
+  area_hint: "Carroll School faculty expertise directory filterable by department; select the 'Management and Organization' department, which covers strategy alongside organizational behavior"
+- slug: wisconsin-school-of-business
+  name: "Wisconsin School of Business"
+  directory_url: "https://business.wisc.edu/faculty-research/management-human-resources/faculty/"
+  fetch_mode: static
+  area_hint: "Department of Management and Human Resources faculty roster, whose research areas include strategy alongside organizational behavior, organizational theory, HR, and entrepreneurship"
+- slug: ubc-sauder
+  name: "UBC Sauder"
+  directory_url: "https://www.sauder.ubc.ca/thought-leadership/divisions/strategy-and-business-economics/people"
+  fetch_mode: rendered
+  area_hint: "Strategy & Business Economics Division faculty, which covers strategy, entrepreneurship, international business, and business economics"
+- slug: cmu-tepper
+  name: "CMU Tepper"
+  directory_url: "https://www.cmu.edu/tepper/faculty-and-research/faculty-by-area/strategy.html"
+  fetch_mode: static
+  area_hint: "Business Strategy faculty area listing"
