@@ -100,3 +100,53 @@
   directory_url: "https://olin.washu.edu/faculty-and-research/faculty-directory/index.php"
   fetch_mode: rendered
   area_hint: "Faculty in the 'Strategy & Entrepreneurship' academic area, filterable via the directory's area filter"
+- slug: uw-foster
+  name: "UW Foster"
+  directory_url: "https://foster.uw.edu/faculty-research/academic-departments/department-of-management-and-organization/faculty/"
+  fetch_mode: static
+  area_hint: "Management & Organization department faculty, which covers strategy, entrepreneurship, and organizational behavior"
+- slug: lbs
+  name: "London Business School"
+  directory_url: "https://www.london.edu/faculty-and-research/faculty?subjectArea=Strategy+and+Entrepreneurship"
+  fetch_mode: rendered
+  area_hint: "Faculty filtered to the 'Strategy and Entrepreneurship' subject area"
+- slug: asu-wpcarey
+  name: "ASU W.P. Carey"
+  directory_url: "https://wpcarey.asu.edu/people/departments/management-entrepreneurship"
+  fetch_mode: rendered
+  area_hint: "Department of Management and Entrepreneurship faculty, which covers strategic management, entrepreneurship, and organizational behavior"
+- slug: minnesota-carlson
+  name: "Minnesota Carlson"
+  directory_url: "https://carlsonschool.umn.edu/departments/strategic-management-entrepreneurship/faculty"
+  fetch_mode: static
+  area_hint: "Strategic Management & Entrepreneurship department faculty"
+- slug: ohio-state-fisher
+  name: "Ohio State Fisher"
+  directory_url: "https://fisher.osu.edu/directory?department=227"
+  fetch_mode: static
+  area_hint: "Department of Management and Human Resources faculty directory, which includes faculty with titles such as 'Professor of Strategy' and covers strategic management and OB"
+- slug: penn-state-smeal
+  name: "Penn State Smeal"
+  directory_url: "https://www.smeal.psu.edu/management/people/faculty"
+  fetch_mode: static
+  area_hint: "Management and Organization department faculty, which covers strategic management, entrepreneurship, and organizational behavior"
+- slug: hkust-business
+  name: "HKUST Business School"
+  directory_url: "https://mgmt.hkust.edu.hk/people"
+  fetch_mode: static
+  area_hint: "Department of Management faculty directory, which includes strategic management researchers alongside organizational behavior and entrepreneurship faculty"
+- slug: nus-business
+  name: "NUS Business School"
+  directory_url: "https://bschool.nus.edu.sg/strategy-policy/faculty/"
+  fetch_mode: static
+  area_hint: "Department of Strategy & Policy faculty"
+- slug: maryland-smith
+  name: "Maryland Smith"
+  directory_url: "https://www.rhsmith.umd.edu/departments/management-organization/faculty"
+  fetch_mode: static
+  area_hint: "Management & Organization department faculty, whose titles include 'Chair in Strategy and Entrepreneurship' and similar strategy-focused endowed chairs"
+- slug: illinois-gies
+  name: "Illinois Gies"
+  directory_url: "https://giesbusiness.illinois.edu/faculty-and-research/find-faculty"
+  fetch_mode: rendered
+  area_hint: "Faculty filterable by the 'Strategy and Entrepreneurship / International Business' academic department option in the Find Faculty directory"
