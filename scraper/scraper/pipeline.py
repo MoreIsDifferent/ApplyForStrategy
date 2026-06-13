@@ -1,6 +1,7 @@
 import argparse
 import hashlib
 import json
+import logging
 import os
 from pathlib import Path
 
@@ -70,7 +71,8 @@ def run_pipeline(
         try:
             records = scrape_school(config, client, model, limit=limit)
         except Exception as exc:
-            failures.append((config.slug, str(exc)))
+            logging.exception(f"Error scraping {config.slug}")
+            failures.append((config.slug, f"{type(exc).__name__}: {exc}"))
             continue
         output_path = output_dir / f"{config.slug}.json"
         output_path.write_text(json.dumps(records, indent=2))

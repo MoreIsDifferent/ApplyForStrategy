@@ -205,7 +205,7 @@ def test_run_pipeline_continues_after_school_error(tmp_path, monkeypatch):
 
     failures = pipeline_module.run_pipeline(config_path, output_dir)
 
-    assert failures == [("school-a", "boom")]
+    assert failures == [("school-a", "RuntimeError: boom")]
     assert not (output_dir / "school-a.json").exists()
 
     output_file = output_dir / "school-b.json"
