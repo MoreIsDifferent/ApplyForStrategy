@@ -187,7 +187,7 @@
   area_hint: "Department of Management and Marketing academic staff, whose listed research interests include 'Strategic Management', 'Strategic Leadership', and 'Strategy-as-Practice' alongside marketing and OB topics"
 - slug: bu-questrom
   name: "BU Questrom"
-  directory_url: "https://www.bu.edu/questrom/faculty-research/academic-departments/strategy-innovation/"
+  directory_url: "https://www.bu.edu/questrom/faculty/academic-departments/strategy-innovation/"
   fetch_mode: rendered
   area_hint: "Strategy & Innovation academic department faculty"
 - slug: notre-dame-mendoza
