@@ -1,0 +1,101 @@
+rank,slug,name,geography,website_url,in_schools_yaml,notes
+1,wharton,Wharton (UPenn),Northeast,https://www.wharton.upenn.edu,yes,
+2,utdallas-jindal,UT Dallas Jindal,South,https://jsom.utdallas.edu,no,
+3,columbia-cbs,Columbia Business School,Northeast,https://business.columbia.edu,yes,
+4,harvard-hbs,Harvard Business School,Northeast,https://www.hbs.edu,yes,
+5,chicago-booth,Chicago Booth,Midwest,https://www.chicagobooth.edu,yes,
+6,nyu-stern,NYU Stern,Northeast,https://www.stern.nyu.edu,yes,
+7,usc-marshall,USC Marshall,West Coast,https://www.marshall.usc.edu,no,
+8,mit-sloan,MIT Sloan,Northeast,https://mitsloan.mit.edu,yes,
+9,insead,INSEAD,International,https://www.insead.edu,no,
+10,indiana-kelley,Indiana Kelley,Midwest,https://kelley.iu.edu,no,
+11,stanford-gsb,Stanford GSB,West Coast,https://www.gsb.stanford.edu,no,
+12,texas-mccombs,Texas McCombs,South,https://www.mccombs.utexas.edu,no,
+13,cornell-johnson,Cornell Johnson,Northeast,https://www.johnson.cornell.edu,no,
+14,toronto-rotman,Toronto Rotman,International,https://www.rotman.utoronto.ca,no,Canada
+15,hku-business,HKU Business School,International,https://www.hkubs.hku.hk,no,Hong Kong
+16,wustl-olin,WashU Olin,Midwest,https://olin.wustl.edu,no,
+17,uw-foster,UW Foster,West Coast,https://foster.uw.edu,no,
+18,lbs,London Business School,International,https://www.london.edu,no,UK
+19,michigan-ross,Michigan Ross,Midwest,https://michiganross.umich.edu,yes,
+20,asu-wpcarey,ASU W.P. Carey,West Coast,https://wpcarey.asu.edu,no,
+21,duke-fuqua,Duke Fuqua,South,https://www.fuqua.duke.edu,yes,
+22,unc-kenan-flagler,UNC Kenan-Flagler,South,https://www.kenan-flagler.unc.edu,yes,
+23,minnesota-carlson,Minnesota Carlson,Midwest,https://carlsonschool.umn.edu,no,
+24,ohio-state-fisher,Ohio State Fisher,Midwest,https://fisher.osu.edu,no,
+25,penn-state-smeal,Penn State Smeal,Northeast,https://www.smeal.psu.edu,no,
+26,northwestern-kellogg,Northwestern Kellogg,Midwest,https://www.kellogg.northwestern.edu,yes,
+27,hkust-business,HKUST Business School,International,https://bm.hkust.edu.hk,no,Hong Kong
+28,nus-business,NUS Business School,International,https://bschool.nus.edu.sg,no,Singapore
+29,maryland-smith,Maryland Smith,South,https://www.rhsmith.umd.edu,no,
+30,illinois-gies,Illinois Gies,Midwest,https://giesbusiness.illinois.edu,no,
+31,cuhk-business,CUHK Business School,International,https://www.bschool.cuhk.edu.hk,no,Hong Kong
+32,purdue-krannert,Purdue Krannert,Midwest,https://krannert.purdue.edu,no,
+33,texas-am-mays,Texas A&M Mays,South,https://mays.tamu.edu,no,
+34,yale-som,Yale SOM,Northeast,https://som.yale.edu,no,
+35,ucla-anderson,UCLA Anderson,West Coast,https://www.anderson.ucla.edu,yes,
+36,cityu-hk-business,City University of Hong Kong Business,International,https://www.cb.cityu.edu.hk,no,Hong Kong
+37,rsm-erasmus,Rotterdam School of Management,International,https://www.rsm.nl,no,Netherlands
+38,polyu-business,Hong Kong PolyU Business,International,https://www.polyu.edu.hk/af,no,Hong Kong
+39,bu-questrom,BU Questrom,Northeast,https://www.bu.edu/questrom,no,
+40,notre-dame-mendoza,Notre Dame Mendoza,Midwest,https://mendoza.nd.edu,no,
+41,colorado-leeds,Colorado Leeds,West Coast,https://www.colorado.edu/business,no,
+42,tilburg-tisem,Tilburg TiSEM,International,https://www.tilburguniversity.edu/about/schools/economics-and-management,no,Netherlands
+43,florida-warrington,Florida Warrington,South,https://warrington.ufl.edu,no,
+44,berkeley-haas,UC Berkeley Haas,West Coast,https://haas.berkeley.edu,yes,
+45,temple-fox,Temple Fox,Northeast,https://www.fox.temple.edu,no,
+46,imperial-college-business,Imperial College Business School,International,https://www.imperial.ac.uk/business-school,no,UK
+47,emory-goizueta,Emory Goizueta,South,https://goizueta.emory.edu,no,
+48,mcgill-desautels,McGill Desautels,International,https://www.mcgill.ca/desautels,no,Canada
+49,boston-college-carroll,Boston College Carroll,Northeast,https://www.bc.edu/bc-web/schools/carroll-school.html,no,
+50,wisconsin-school-of-business,Wisconsin School of Business,Midwest,https://business.wisc.edu,no,
+51,ubc-sauder,UBC Sauder,International,https://www.sauder.ubc.ca,no,Canada
+52,cmu-tepper,CMU Tepper,Northeast,https://www.cmu.edu/tepper,no,
+53,georgia-terry,Georgia Terry,South,https://www.terry.uga.edu,no,
+54,utah-eccles,Utah Eccles,West Coast,https://eccles.utah.edu,no,
+55,hec-paris,HEC Paris,International,https://www.hec.edu,no,France
+56,georgia-tech-scheller,Georgia Tech Scheller,South,https://www.scheller.gatech.edu,no,
+57,johns-hopkins-carey,Johns Hopkins Carey,Northeast,https://carey.jhu.edu,no,
+58,tsinghua-sem,Tsinghua SEM,International,https://www.sem.tsinghua.edu.cn,no,China
+59,uconn-business,UConn School of Business,Northeast,https://business.uconn.edu,no,
+60,miami-business,Miami Herbert Business,South,https://business.miami.edu,no,
+61,houston-bauer,Houston Bauer,South,https://www.bauer.uh.edu,no,
+62,smu-business,Singapore Management University Lee Kong Chian,International,https://business.smu.edu.sg,no,Singapore
+63,south-carolina-moore,South Carolina Darla Moore,South,https://moore.sc.edu,no,
+64,copenhagen-business-school,Copenhagen Business School,International,https://www.cbs.dk,no,Denmark
+65,fudan-som,Fudan School of Management,International,https://www.fdsm.fudan.edu.cn,no,China
+66,georgia-state-robinson,Georgia State Robinson,South,https://robinson.gsu.edu,no,
+67,georgetown-mcdonough,Georgetown McDonough,Northeast,https://msb.georgetown.edu,no,
+68,northeastern-damore-mckim,Northeastern D'Amore-McKim,Northeast,https://damore-mckim.northeastern.edu,no,
+69,ustc-som,USTC School of Management,International,https://en.sm.ustc.edu.cn,no,China
+70,rice-jones,Rice Jones,South,https://business.rice.edu,no,
+71,baruch-zicklin,Baruch Zicklin,Northeast,https://zicklin.baruch.cuny.edu,no,
+72,bayes-business-school,Bayes Business School,International,https://www.bayes.city.ac.uk,no,UK
+73,cuhk-shenzhen-sme,CUHK-Shenzhen School of Management and Economics,International,https://sme.cuhk.edu.cn,no,China
+74,michigan-state-broad,Michigan State Broad,Midwest,https://broad.msu.edu,no,
+75,dartmouth-tuck,Dartmouth Tuck,Northeast,https://www.tuck.dartmouth.edu,no,
+76,ntu-nanyang-business,Nanyang Business School,International,https://www.ntu.edu.sg/nbs,no,Singapore
+77,arizona-eller,Arizona Eller,West Coast,https://eller.arizona.edu,no,
+78,warwick-business-school,Warwick Business School,International,https://www.wbs.ac.uk,no,UK
+79,tennessee-haslam,Tennessee Haslam,South,https://haslam.utk.edu,no,
+80,melbourne-business-school,Melbourne Business School,International,https://mbs.edu,no,Australia
+81,sjtu-antai,SJTU Antai College,International,https://www.acem.sjtu.edu.cn,no,China
+82,uc-irvine-merage,UC Irvine Merage,West Coast,https://merage.uci.edu,no,
+83,ucl-school-of-management,UCL School of Management,International,https://www.ucl.ac.uk/management,no,UK
+84,iese-business-school,IESE Business School,International,https://www.iese.edu,no,Spain
+85,oxford-said,Oxford Said,International,https://www.sbs.ox.ac.uk,no,UK
+86,lse,London School of Economics,International,https://www.lse.ac.uk,no,UK
+87,bocconi-sda,Bocconi SDA,International,https://www.sdabocconi.it,no,Italy
+88,frankfurt-school,Frankfurt School of Finance and Management,International,https://www.frankfurt-school.de,no,Germany
+89,virginia-tech-pamplin,Virginia Tech Pamplin,South,https://pamplin.vt.edu,no,
+90,uic-business,UIC College of Business Administration,Midwest,https://business.uic.edu,no,
+91,peking-guanghua,Peking University Guanghua,International,https://en.gsm.pku.edu.cn,no,China
+92,cambridge-judge,Cambridge Judge,International,https://www.jbs.cam.ac.uk,no,UK
+93,uc-san-diego-rady,UC San Diego Rady,West Coast,https://rady.ucsd.edu,no,
+94,western-ivey,Ivey Business School,International,https://www.ivey.uwo.ca,no,Canada
+95,rochester-simon,Rochester Simon,Northeast,https://simon.rochester.edu,no,
+96,isb-india,Indian School of Business,International,https://www.isb.edu,no,India
+97,tum-school-of-management,TUM School of Management,International,https://www.mgt.tum.de,no,Germany
+98,amsterdam-business-school,Amsterdam Business School,International,https://abs.uva.nl,no,Netherlands
+99,pittsburgh-katz,Pittsburgh Katz,Northeast,https://www.business.pitt.edu,no,
+100,rutgers-business-school,Rutgers Business School,Northeast,https://www.business.rutgers.edu,no,
