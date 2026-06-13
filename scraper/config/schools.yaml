@@ -150,3 +150,53 @@
   directory_url: "https://giesbusiness.illinois.edu/faculty-and-research/find-faculty"
   fetch_mode: rendered
   area_hint: "Faculty filterable by the 'Strategy and Entrepreneurship / International Business' academic department option in the Find Faculty directory"
+- slug: cuhk-business
+  name: "CUHK Business School"
+  directory_url: "https://www.bschool.cuhk.edu.hk/staff/?departments=management"
+  fetch_mode: static
+  area_hint: "Department of Management academic staff, whose research areas include strategic management alongside organisational behaviour, entrepreneurship, and international management"
+- slug: purdue-krannert
+  name: "Purdue Krannert"
+  directory_url: "https://business.purdue.edu/directory/view.php?search=FacArea&FacAreaList=59"
+  fetch_mode: static
+  area_hint: "Faculty directory pre-filtered to the Strategic Management academic area (FacArea 59)"
+- slug: texas-am-mays
+  name: "Texas A&M Mays"
+  directory_url: "https://mays.tamu.edu/faculty/"
+  fetch_mode: rendered
+  area_hint: "General faculty directory spanning all departments; look for faculty affiliated with the Department of Management whose research/teaching covers strategic management"
+- slug: yale-som
+  name: "Yale SOM"
+  directory_url: "https://som.yale.edu/faculty-research/faculty-directory/organizational-behavior"
+  fetch_mode: static
+  area_hint: "Yale SOM has no separate Strategy area; its Organizational Behavior faculty group is the closest match and includes faculty working on management and strategy-adjacent topics"
+- slug: cityu-hk-business
+  name: "City University of Hong Kong Business"
+  directory_url: "https://www.cb.cityu.edu.hk/people-and-research/people?dept_code=MGT"
+  fetch_mode: static
+  area_hint: "Department of Management (dept_code=MGT) faculty, which covers strategic management alongside organizational behavior and international business"
+- slug: rsm-erasmus
+  name: "Rotterdam School of Management"
+  directory_url: "https://www.rsm.nl/faculty-research/departments/strategic-management-and-entrepreneurship/faculty/"
+  fetch_mode: rendered
+  area_hint: "Department of Strategic Management and Entrepreneurship faculty roster"
+- slug: polyu-business
+  name: "Hong Kong PolyU Business"
+  directory_url: "https://www.polyu.edu.hk/mm/people/academic-staff/"
+  fetch_mode: static
+  area_hint: "Department of Management and Marketing academic staff, whose listed research interests include 'Strategic Management', 'Strategic Leadership', and 'Strategy-as-Practice' alongside marketing and OB topics"
+- slug: bu-questrom
+  name: "BU Questrom"
+  directory_url: "https://www.bu.edu/questrom/faculty-research/academic-departments/strategy-innovation/"
+  fetch_mode: rendered
+  area_hint: "Strategy & Innovation academic department faculty"
+- slug: notre-dame-mendoza
+  name: "Notre Dame Mendoza"
+  directory_url: "https://mendoza.nd.edu/mendoza-directory/"
+  fetch_mode: rendered
+  area_hint: "Faculty directory filterable by department; select the 'Management & Organization' department, which covers strategic management, entrepreneurship, and organizational behavior"
+- slug: colorado-leeds
+  name: "Colorado Leeds"
+  directory_url: "https://www.colorado.edu/business/faculty-research/directory/strategy-entrepreneurship-and-operations-faculty/strategy-and"
+  fetch_mode: rendered
+  area_hint: "Strategy and Entrepreneurship faculty group within the Strategy, Entrepreneurship and Operations division"
