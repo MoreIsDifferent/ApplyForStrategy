@@ -165,3 +165,50 @@ def test_run_pipeline_writes_output_json(tmp_path, monkeypatch):
     data = json.loads(output_file.read_text())
     assert len(data) == 1
     assert data[0]["name"] == "Jane Doe"
+
+
+def test_run_pipeline_continues_after_school_error(tmp_path, monkeypatch):
+    config_path = tmp_path / "schools.yaml"
+    config_path.write_text(
+        "- slug: school-a\n"
+        "  name: School A\n"
+        "  directory_url: https://example.edu/a\n"
+        "  fetch_mode: static\n"
+        "- slug: school-b\n"
+        "  name: School B\n"
+        "  directory_url: https://example.edu/b\n"
+        "  fetch_mode: static\n"
+    )
+    output_dir = tmp_path / "output"
+
+    good_record = {
+        "name": "Jane Doe",
+        "title": "Professor",
+        "school_profile_url": "https://example.edu/jane-doe",
+        "personal_website_url": None,
+        "google_scholar_url": None,
+        "phd_institution": None,
+        "methodology": None,
+        "topics": [],
+        "theories": [],
+        "bio_hash": "sha256:abc",
+    }
+
+    def fake_scrape_school(config, client, model, limit=None):
+        if config.slug == "school-a":
+            raise RuntimeError("boom")
+        return [good_record]
+
+    monkeypatch.setattr(pipeline_module, "scrape_school", fake_scrape_school)
+    monkeypatch.setattr(pipeline_module, "build_client", lambda: MagicMock())
+    monkeypatch.setattr(pipeline_module, "get_model", lambda: "test-model")
+
+    failures = pipeline_module.run_pipeline(config_path, output_dir)
+
+    assert failures == [("school-a", "boom")]
+    assert not (output_dir / "school-a.json").exists()
+
+    output_file = output_dir / "school-b.json"
+    assert output_file.exists()
+    data = json.loads(output_file.read_text())
+    assert data[0]["name"] == "Jane Doe"

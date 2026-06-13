@@ -56,7 +56,7 @@ def scrape_school(config: SchoolConfig, client, model: str, limit: int | None = 
 
 def run_pipeline(
     config_path: Path, output_dir: Path, school_slug: str | None = None, limit: int | None = None
-) -> None:
+) -> list[tuple[str, str]]:
     configs = load_school_configs(config_path)
     if school_slug:
         configs = [c for c in configs if c.slug == school_slug]
@@ -65,10 +65,22 @@ def run_pipeline(
     model = get_model()
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    failures: list[tuple[str, str]] = []
     for config in configs:
-        records = scrape_school(config, client, model, limit=limit)
+        try:
+            records = scrape_school(config, client, model, limit=limit)
+        except Exception as exc:
+            failures.append((config.slug, str(exc)))
+            continue
         output_path = output_dir / f"{config.slug}.json"
         output_path.write_text(json.dumps(records, indent=2))
+
+    if failures:
+        print("=== Pipeline run summary: failures ===")
+        for slug, message in failures:
+            print(f"FAILED: {slug} - {message}")
+
+    return failures
 
 
 if __name__ == "__main__":
