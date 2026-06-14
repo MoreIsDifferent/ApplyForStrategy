@@ -68,7 +68,7 @@
 - slug: insead
   name: "INSEAD"
   directory_url: "https://www.insead.edu/faculty-research/academic-areas/strategy"
-  fetch_mode: static
+  fetch_mode: rendered
   area_hint: "Strategy academic area faculty"
 - slug: indiana-kelley
   name: "Indiana Kelley"

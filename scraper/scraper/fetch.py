@@ -9,6 +9,12 @@ USER_AGENT = (
     "(+https://github.com/MoreIsDifferent/ApplyForStrategy; research project)"
 )
 
+REQUEST_HEADERS = {
+    "User-Agent": USER_AGENT,
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+}
+
 LOAD_MORE_PATTERN = re.compile(
     r"^(load|show|view|see)\s+more\b|^more\s+(faculty|results|profiles|people|staff|articles|posts)\b",
     re.IGNORECASE,
@@ -20,9 +26,21 @@ MAX_SCROLL_ITERATIONS = 10
 
 
 def fetch_static(url: str, delay: float = 1.0) -> BeautifulSoup:
-    """Fetch a static page with requests + BeautifulSoup, with a polite delay."""
+    """Fetch a static page with requests + BeautifulSoup, with a polite delay.
+
+    Some university sites serve an incomplete certificate chain that fails
+    verification with Python's bundled CA store even though browsers accept
+    it (they fetch the missing intermediate via AIA). Retry without
+    verification in that case - the content being scraped is public.
+    """
     time.sleep(delay)
-    response = requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=30)
+    try:
+        response = requests.get(url, headers=REQUEST_HEADERS, timeout=30)
+    except requests.exceptions.SSLError:
+        from urllib3.exceptions import InsecureRequestWarning
+
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+        response = requests.get(url, headers=REQUEST_HEADERS, timeout=30, verify=False)
     response.raise_for_status()
     return BeautifulSoup(response.text, "html.parser")
 

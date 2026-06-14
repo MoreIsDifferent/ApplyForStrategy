@@ -1,5 +1,7 @@
 from unittest.mock import MagicMock, patch
 
+import requests
+
 from scraper.fetch import LOAD_MORE_PATTERN, fetch_rendered, fetch_static
 
 
@@ -28,6 +30,23 @@ def test_fetch_static_returns_soup(mock_sleep, mock_get):
     assert mock_get.call_args.kwargs["headers"]["User-Agent"].startswith(
         "StrategyPhDFacultyFinderBot"
     )
+    assert "Accept" in mock_get.call_args.kwargs["headers"]
+    assert "Accept-Language" in mock_get.call_args.kwargs["headers"]
+
+
+@patch("scraper.fetch.requests.get")
+@patch("scraper.fetch.time.sleep")
+def test_fetch_static_retries_without_verification_on_ssl_error(mock_sleep, mock_get):
+    mock_response = MagicMock()
+    mock_response.text = "<html><body><h1>Hello</h1></body></html>"
+    mock_response.raise_for_status = MagicMock()
+    mock_get.side_effect = [requests.exceptions.SSLError("cert verify failed"), mock_response]
+
+    soup = fetch_static("https://example.edu/faculty", delay=0)
+
+    assert soup.find("h1").text == "Hello"
+    assert mock_get.call_count == 2
+    assert mock_get.call_args_list[1].kwargs["verify"] is False
 
 
 def _empty_locator():
