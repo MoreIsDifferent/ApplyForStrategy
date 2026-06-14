@@ -340,3 +340,53 @@
   directory_url: "https://www.bayes.citystgeorges.ac.uk/faculties-and-research/management/strategy-group"
   fetch_mode: rendered
   area_hint: "Strategy Group faculty within the Faculty of Management (dedicated Strategy area page)"
+- slug: cuhk-shenzhen-sme
+  name: "CUHK-Shenzhen School of Management and Economics"
+  directory_url: "https://sme.cuhk.edu.cn/en/teacher-search"
+  fetch_mode: rendered
+  area_hint: "SME has no separate Strategy area; use the teacher search filtered to the 'Management' academic field, which is the closest match and includes strategic management researchers alongside organizational behavior and HR faculty"
+- slug: michigan-state-broad
+  name: "Michigan State Broad"
+  directory_url: "https://broad.msu.edu/faculty-strategic-leadership-management/"
+  fetch_mode: static
+  area_hint: "Strategic Leadership & Management faculty group within the Department of Management, covering strategic management, leadership, and organizational behavior"
+- slug: dartmouth-tuck
+  name: "Dartmouth Tuck"
+  directory_url: "https://tuck.dartmouth.edu/faculty/faculty-directory"
+  fetch_mode: rendered
+  area_hint: "General faculty directory filterable by Research Area; select 'Strategy' to get the Strategy area faculty (Tuck's academic groups include Accounting, Economics, Finance, Marketing, Operations and Management Science, Organizational Behavior, and Strategy)"
+- slug: ntu-nanyang-business
+  name: "Nanyang Business School"
+  directory_url: "https://www.ntu.edu.sg/business/research/academic-divisions/sie/our-faculty"
+  fetch_mode: static
+  area_hint: "Strategy, International Business, and Entrepreneurship (SIE) Division faculty"
+- slug: arizona-eller
+  name: "Arizona Eller"
+  directory_url: "https://eller.arizona.edu/departments-research/schools-departments/management/faculty"
+  fetch_mode: static
+  area_hint: "Eller has no separate Strategy area; this Department of Management and Organizations faculty roster (covers strategic management alongside organizational behavior) is the closest match"
+- slug: warwick-business-school
+  name: "Warwick Business School"
+  directory_url: "https://www.wbs.ac.uk/research/academics-and-research-students/?subjectGroupNames=Strategy+%26+International+Business&facetFields=subjectGroupNames"
+  fetch_mode: rendered
+  area_hint: "Faculty filtered to the Strategy and International Business (SIB) subject group"
+- slug: tennessee-haslam
+  name: "Tennessee Haslam"
+  directory_url: "https://haslam.utk.edu/management/people/"
+  fetch_mode: static
+  area_hint: "Department of Management & Entrepreneurship faculty roster, which includes the Strategic Leadership & Management group covering strategic management alongside leadership and entrepreneurship"
+- slug: melbourne-business-school
+  name: "Melbourne Business School"
+  directory_url: "https://mbs.edu/faculty-and-research/strategy-and-marketing"
+  fetch_mode: rendered
+  area_hint: "Strategy and Marketing academic area faculty"
+- slug: sjtu-antai
+  name: "SJTU Antai College"
+  directory_url: "https://www.acem.sjtu.edu.cn/en/acem/organization.html"
+  fetch_mode: static
+  area_hint: "Antai has no separate Strategy department; this Department of Organization Management page (which includes the Institute of Strategic Management and covers strategic management alongside organizational behavior and HR) is the closest match; page may include Chinese text"
+- slug: uc-irvine-merage
+  name: "UC Irvine Merage"
+  directory_url: "https://merage.uci.edu/research-faculty/academic-areas/strategy.html"
+  fetch_mode: static
+  area_hint: "Strategy academic area faculty"
