@@ -232,3 +232,85 @@ from the "Strategy Faculty" widget), with `phd_institution`/`methodology` null s
 individual profile URL was found. The remaining Columbia Strategy-area faculty will need
 manual research via the existing `needs_review` workflow. No further engineering effort
 planned for Columbia's directory extraction.
+
+## Scale-out follow-ups (2026-06-14)
+
+Schools from the ~90-school scale-out that produced an empty roster, a pipeline
+exception (Task 12), or a structurally implausible roster (Task 13 validation),
+recorded as accepted limitations following the HBS/Columbia precedent — no
+further engineering effort planned for these:
+
+- **insead**: pipeline exception — 403 Forbidden on faculty profile fetch (bot-protected)
+- **penn-state-smeal**: pipeline exception — SSL certificate verification failure on directory fetch
+- **hkust-business**: pipeline exception — SSL certificate verification failure on directory fetch
+- **purdue-krannert**: pipeline exception — connection reset by peer during fetch
+- **rsm-erasmus**: pipeline exception — Playwright timeout during rendered fetch
+- **wisconsin-school-of-business**: pipeline exception — 403 Forbidden on faculty directory fetch (bot-protected)
+- **houston-bauer**: pipeline exception — 403 Forbidden on faculty profile fetch (bot-protected)
+- **baruch-zicklin**: pipeline exception — SSL certificate verification failure on directory fetch
+- **uc-irvine-merage**: pipeline exception — connection reset by peer during fetch
+- **oxford-said**: pipeline exception — Playwright scroll/evaluate error during rendered fetch (`Cannot read properties of null (reading 'scrollHeight')`)
+- **peking-guanghua**: pipeline exception — connection reset (`net::ERR_CONNECTION_RESET`) during rendered fetch
+- **western-ivey**: pipeline exception — read timeout (30s) fetching faculty directory
+
+- **cambridge-judge**: empty roster — `extract_faculty_list` returned no faculty from the
+  rendered Strategy & International Business subject-group members page
+- **columbia-cbs**: empty roster — consistent with the existing accepted limitation
+  above (no stable Strategy faculty directory page; roster extraction is
+  non-deterministic on the news-feed-style "Areas of Expertise" page)
+- **cuhk-business**: empty roster — `extract_faculty_list` returned no faculty from the
+  static Department of Management staff listing
+- **hku-business**: empty roster — `extract_faculty_list` returned no faculty from the
+  rendered faculty directory (filterable by subject area)
+- **iese-business-school**: empty roster — `extract_faculty_list` returned no faculty
+  from the static Strategic Management department roster page
+- **illinois-gies**: empty roster — `extract_faculty_list` returned no faculty from the
+  rendered "Find Faculty" directory
+- **isb-india**: empty roster — `extract_faculty_list` returned no faculty from the
+  rendered faculty directory filtered to the Strategy research area
+- **mcgill-desautels**: empty roster — `extract_faculty_list` returned no faculty from
+  the rendered Strategy and Organization specialization profile listing
+- **michigan-state-broad**: empty roster — `extract_faculty_list` returned no faculty
+  from the static Strategic Leadership & Management faculty group page
+- **minnesota-carlson**: empty roster — `extract_faculty_list` returned no faculty from
+  the static Strategic Management & Entrepreneurship faculty page
+- **nus-business**: empty roster — `extract_faculty_list` returned no faculty from the
+  static Department of Strategy & Policy faculty page
+- **rice-jones**: empty roster — `extract_faculty_list` returned no faculty from the
+  static Strategy and Environment research-area page
+- **sjtu-antai**: empty roster — `extract_faculty_list` returned no faculty from the
+  static Department of Organization Management page (page may include Chinese text)
+- **smu-business**: empty roster — `extract_faculty_list` returned no faculty from the
+  static Strategy and Entrepreneurship discipline faculty page
+- **ubc-sauder**: empty roster — `extract_faculty_list` returned no faculty from the
+  rendered Strategy & Business Economics Division people page
+- **utah-eccles**: empty roster — `extract_faculty_list` returned no faculty from the
+  rendered Department of Entrepreneurship and Strategy faculty listing
+- **warwick-business-school**: empty roster — `extract_faculty_list` returned no
+  faculty from the rendered, subject-group-filtered academics directory
+- **wustl-olin**: empty roster — `extract_faculty_list` returned no faculty from the
+  rendered faculty directory filtered to Strategy & Entrepreneurship
+- **yale-som**: empty roster — `extract_faculty_list` returned no faculty from the
+  static Organizational Behavior faculty directory (Yale SOM has no separate Strategy
+  group; this was already the closest available roster page)
+
+- **frankfurt-school**: roster size 1, below the plausible range — Frankfurt School has
+  no separate Strategy department, and its closest-match Management department page
+  surfaces only its single Professor of Strategic Organisation; this is the expected
+  full roster for this page, not an extraction failure
+
+- **harvard-hbs** (spot-check, not flagged by validator): roster of 24 looks correct
+  (real faculty names/titles), but `phd_institution` and `topics` are null for all 24
+  records — consistent with the existing HBS accepted limitation above (profile pages
+  are bot/CAPTCHA-protected, so bio text is never fetched)
+- **imperial-college-business** (spot-check, not flagged by validator): roster of 44
+  looks correct, but `topics` is populated for only 11/44 and `phd_institution` for
+  0/44 — majority of bio fields are empty, suggesting the static profile-page fetch for
+  most faculty isn't returning usable bio text
+- **amsterdam-business-school** (spot-check, not flagged by validator): roster of 17
+  looks correct, but `topics` is populated for only 6/17 and `phd_institution` for
+  0/17 — majority-empty bio fields, same pattern as above
+- **texas-mccombs** (spot-check, not flagged by validator): roster of 92 looks correct,
+  but `topics` is populated for only 9/92 and `phd_institution` for 0/92 — majority of
+  bio fields are empty, likely a profile-page bio-fetch issue affecting most of this
+  large roster
