@@ -390,3 +390,53 @@
   directory_url: "https://merage.uci.edu/research-faculty/academic-areas/strategy.html"
   fetch_mode: static
   area_hint: "Strategy academic area faculty"
+- slug: ucl-school-of-management
+  name: "UCL School of Management"
+  directory_url: "https://www.mgmt.ucl.ac.uk/people"
+  fetch_mode: static
+  area_hint: "Faculty are grouped by research group on this page; focus on the 'Strategy & Entrepreneurship' research group"
+- slug: iese-business-school
+  name: "IESE Business School"
+  directory_url: "https://www.iese.edu/faculty-research/academic-departments/strategic-management/"
+  fetch_mode: static
+  area_hint: "Strategic Management Department faculty roster"
+- slug: oxford-said
+  name: "Oxford Said"
+  directory_url: "https://www.sbs.ox.ac.uk/about-us/people?f%5B0%5D=research_areas_facet%3A241"
+  fetch_mode: rendered
+  area_hint: "People finder pre-filtered to the 'Strategy' research area (research_areas_facet 241), covering strategy-as-practice, corporate strategy, and innovation strategy faculty"
+- slug: lse
+  name: "London School of Economics"
+  directory_url: "https://www.lse.ac.uk/management/people/academic-staff"
+  fetch_mode: static
+  area_hint: "Department of Management academic staff page, organized by research group; focus on the 'Managerial Economics and Strategy' faculty research group"
+- slug: bocconi-sda
+  name: "Bocconi SDA"
+  directory_url: "https://www.sdabocconi.it/en/faculty-research/faculty-knowledge/strategy-and-operations"
+  fetch_mode: rendered
+  area_hint: "Strategy and Operations Knowledge Group faculty (covers competitive strategy, strategic management, and operations)"
+- slug: frankfurt-school
+  name: "Frankfurt School of Finance and Management"
+  directory_url: "https://www.frankfurt-school.de/en/research-and-faculty/departments/management"
+  fetch_mode: static
+  area_hint: "Frankfurt School has no separate Strategy department; this Management department page (led by the Professor of Strategic Organisation) is the closest match, covering strategy, organization, and decision-making"
+- slug: virginia-tech-pamplin
+  name: "Virginia Tech Pamplin"
+  directory_url: "https://management.pamplin.vt.edu/faculty/directory.html"
+  fetch_mode: static
+  area_hint: "Pamplin has no separate Strategy department; this Department of Management faculty directory (whose faculty teach and research strategy, entrepreneurship, leadership, and organizational behavior) is the closest match"
+- slug: uic-business
+  name: "UIC College of Business Administration"
+  directory_url: "https://business.uic.edu/academics-research/faculty/managerial-studies-department/"
+  fetch_mode: static
+  area_hint: "UIC Business has no separate Strategy department; this Department of Managerial Studies faculty roster (covers strategic management alongside entrepreneurship, leadership, and organizational behavior) is the closest match"
+- slug: peking-guanghua
+  name: "Peking University Guanghua"
+  directory_url: "https://en.gsm.pku.edu.cn/organization_strategy/Faculty_Directory.htm"
+  fetch_mode: rendered
+  area_hint: "Department of Organization and Strategic Management (OSM) faculty directory; page may render primarily in Chinese or require JS to display the faculty grid"
+- slug: cambridge-judge
+  name: "Cambridge Judge"
+  directory_url: "https://www.jbs.cam.ac.uk/faculty-research/subject-groups/strategy-international-business/members/"
+  fetch_mode: rendered
+  area_hint: "Strategy and International Business subject group members page"
