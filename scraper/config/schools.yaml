@@ -440,3 +440,43 @@
   directory_url: "https://www.jbs.cam.ac.uk/faculty-research/subject-groups/strategy-international-business/members/"
   fetch_mode: rendered
   area_hint: "Strategy and International Business subject group members page"
+- slug: uc-san-diego-rady
+  name: "UC San Diego Rady"
+  directory_url: "https://rady.ucsd.edu/faculty-research/faculty-directory/"
+  fetch_mode: static
+  area_hint: "General faculty directory filterable by Academic Area; faculty in the 'Economics and Strategy' academic area are the relevant Strategy group (e.g., titles like 'Professor of Economics and Strategy')"
+- slug: western-ivey
+  name: "Ivey Business School"
+  directory_url: "https://www.ivey.uwo.ca/faculty_research/faculty/area-groups/strategy/"
+  fetch_mode: static
+  area_hint: "Strategy area group faculty"
+- slug: rochester-simon
+  name: "Rochester Simon"
+  directory_url: "https://simon.rochester.edu/faculty-areas/economics-and-management"
+  fetch_mode: static
+  area_hint: "Simon has no separate Strategy area; this Economics and Management faculty area page (covers firm strategy, competitive dynamics, and business administration) is the closest match"
+- slug: isb-india
+  name: "Indian School of Business"
+  directory_url: "https://www.isb.edu/faculty-and-research/faculty-directory?area=Strategy"
+  fetch_mode: rendered
+  area_hint: "Faculty directory filtered to the 'Strategy' research area (one of the filterable research areas alongside Accounting, Economics and Public Policy, Entrepreneurship, Finance, Information Systems, Marketing, Operations Management, and Organisational Behaviour)"
+- slug: tum-school-of-management
+  name: "TUM School of Management"
+  directory_url: "https://www.mgt.tum.de/faculty-research/academic-departments/marketing-strategy-leadership"
+  fetch_mode: static
+  area_hint: "Marketing, Strategy & Leadership department faculty roster; focus on faculty with strategy-related specializations such as 'Strategic and International Management' and 'Strategy and Organization'"
+- slug: amsterdam-business-school
+  name: "Amsterdam Business School"
+  directory_url: "https://abs.uva.nl/content/sections/strategy-international-business/staff/staff.html"
+  fetch_mode: static
+  area_hint: "Strategy & International Business section staff roster; focus on the Strategy group within this section"
+- slug: pittsburgh-katz
+  name: "Pittsburgh Katz"
+  directory_url: "https://www.business.pitt.edu/connect/faculty/faculty-organizations-and-entrepreneurship/"
+  fetch_mode: static
+  area_hint: "Katz has no separate Strategy department; this Organizations & Entrepreneurship faculty roster (includes the 'Donald R. Beall Professor of Strategic Management' and other strategy researchers alongside entrepreneurship and OB faculty) is the closest match"
+- slug: rutgers-business-school
+  name: "Rutgers Business School"
+  directory_url: "https://www.business.rutgers.edu/faculty-research/faculty-profiles?aoe%5B68%5D=68"
+  fetch_mode: static
+  area_hint: "Faculty directory pre-filtered to the Management & Global Business academic area, which covers strategic management, international business, and organizational behavior"
