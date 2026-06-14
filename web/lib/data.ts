@@ -85,14 +85,22 @@ export async function getSchools(): Promise<School[]> {
   return (data as SchoolRow[]).map(toSchool);
 }
 
+const PAGE_SIZE = 1000;
+
 export async function getAllFaculty(): Promise<Faculty[]> {
   const supabase = getSupabaseClient();
-  const { data, error } = await supabase
-    .from('faculty')
-    .select(
-      '*, schools(*), faculty_topics(topics(name, canonical_name, category)), faculty_theories(theories(name))'
-    )
-    .order('name');
-  if (error) throw error;
-  return (data as unknown as FacultyRow[]).map(toFaculty);
+  const rows: FacultyRow[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('faculty')
+      .select(
+        '*, schools(*), faculty_topics(topics(name, canonical_name, category)), faculty_theories(theories(name))'
+      )
+      .order('name')
+      .range(from, from + PAGE_SIZE - 1);
+    if (error) throw error;
+    rows.push(...(data as unknown as FacultyRow[]));
+    if (data.length < PAGE_SIZE) break;
+  }
+  return rows.map(toFaculty);
 }
