@@ -238,7 +238,7 @@
 - slug: wisconsin-school-of-business
   name: "Wisconsin School of Business"
   directory_url: "https://business.wisc.edu/faculty-research/management-human-resources/faculty/"
-  fetch_mode: static
+  fetch_mode: rendered
   area_hint: "Department of Management and Human Resources faculty roster, whose research areas include strategy alongside organizational behavior, organizational theory, HR, and entrepreneurship"
 - slug: ubc-sauder
   name: "UBC Sauder"
@@ -288,7 +288,7 @@
 - slug: houston-bauer
   name: "Houston Bauer"
   directory_url: "https://bauer.uh.edu/departments/management-leadership/directory/faculty.php"
-  fetch_mode: static
+  fetch_mode: rendered
   area_hint: "Department of Management & Leadership faculty, which covers macro areas including strategy, strategic leadership, and organizational theory alongside organizational behavior and HR"
 - slug: smu-business
   name: "Singapore Management University Lee Kong Chian"
@@ -388,7 +388,7 @@
 - slug: uc-irvine-merage
   name: "UC Irvine Merage"
   directory_url: "https://merage.uci.edu/research-faculty/academic-areas/strategy.html"
-  fetch_mode: static
+  fetch_mode: rendered
   area_hint: "Strategy academic area faculty"
 - slug: ucl-school-of-management
   name: "UCL School of Management"

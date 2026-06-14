@@ -96,22 +96,32 @@ def fetch_rendered(url: str, delay: float = 1.0) -> BeautifulSoup:
     scrolls to the bottom until the page height stabilizes, to surface content
     loaded via pagination or infinite scroll.
     """
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
     from playwright.sync_api import sync_playwright
+
+    def _wait_idle(page) -> None:
+        # Some pages (e.g. those with chat widgets or analytics polling) never
+        # go fully idle. Treat that as "good enough" rather than failing the
+        # whole fetch.
+        try:
+            page.wait_for_load_state("networkidle")
+        except PlaywrightTimeoutError:
+            pass
 
     time.sleep(delay)
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
         page = browser.new_page(user_agent=USER_AGENT)
         page.goto(url, timeout=60000)
-        page.wait_for_load_state("networkidle")
+        _wait_idle(page)
         _dismiss_cookie_banner(page)
 
         previous_height = None
         for _ in range(MAX_SCROLL_ITERATIONS):
             clicked = _click_load_more(page)
-            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            page.wait_for_load_state("networkidle")
-            current_height = page.evaluate("document.body.scrollHeight")
+            page.evaluate("document.body && window.scrollTo(0, document.body.scrollHeight)")
+            _wait_idle(page)
+            current_height = page.evaluate("document.body ? document.body.scrollHeight : 0")
             if current_height == previous_height and not clicked:
                 break
             previous_height = current_height
