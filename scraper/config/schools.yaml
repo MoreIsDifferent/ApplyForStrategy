@@ -257,7 +257,7 @@
   area_hint: "Department of Management faculty directory, which covers strategic management alongside organizational behavior, entrepreneurship, and human resource management"
 - slug: utah-eccles
   name: "Utah Eccles"
-  directory_url: "https://eccles.utah.edu/programs/phd-in-business-administration/entrepreneurship-and-strategy-faculty/"
+  directory_url: "https://eccles.utah.edu/faculty/department-entrepreneurship-strategy/"
   fetch_mode: rendered
   area_hint: "Department of Entrepreneurship and Strategy faculty listing"
 - slug: hec-paris
