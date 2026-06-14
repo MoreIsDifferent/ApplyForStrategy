@@ -1,8 +1,15 @@
 import re
+import socket
 import time
 
 import requests
+import urllib3.util.connection
 from bs4 import BeautifulSoup
+
+# Some university hosts advertise IPv6 addresses that are unreachable from
+# this network, leaving connections stuck in SYN_SENT well past any
+# configured timeout. Prefer IPv4 to avoid those hangs.
+urllib3.util.connection.allowed_gai_family = lambda: socket.AF_INET
 
 USER_AGENT = (
     "StrategyPhDFacultyFinderBot/0.1 "
