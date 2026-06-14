@@ -295,3 +295,48 @@
   directory_url: "https://business.smu.edu.sg/disciplines/strategy-and-entrepreneurship/faculty"
   fetch_mode: static
   area_hint: "Strategy and Entrepreneurship discipline faculty roster"
+- slug: south-carolina-moore
+  name: "South Carolina Darla Moore"
+  directory_url: "https://sc.edu/study/colleges_schools/moore/study/management/our_people/index.php"
+  fetch_mode: static
+  area_hint: "Moore has no separate Strategy area; this Department of Management faculty roster (whose research/teaching areas include strategic management alongside organizational behavior, HR, and business policy) is the closest match"
+- slug: copenhagen-business-school
+  name: "Copenhagen Business School"
+  directory_url: "https://www.cbs.dk/en/research/departments/department-strategy-and-innovation"
+  fetch_mode: static
+  area_hint: "Department of Strategy and Innovation faculty/staff roster, which covers strategy, innovation, entrepreneurship, and international business"
+- slug: georgia-state-robinson
+  name: "Georgia State Robinson"
+  directory_url: "https://robinson.gsu.edu/academic-departments/management/meet-our-faculty/"
+  fetch_mode: static
+  area_hint: "Robinson has no separate Strategy area; this Department of Management faculty roster (covers strategic management alongside organizational behavior, HR, and leadership) is the closest match"
+- slug: georgetown-mcdonough
+  name: "Georgetown McDonough"
+  directory_url: "https://msb.georgetown.edu/faculty-research/strategy-economics-ethics-public-policy/"
+  fetch_mode: static
+  area_hint: "Strategy, Economics, Ethics, and Public Policy area faculty (includes the Strategy and International Business sub-area)"
+- slug: northeastern-damore-mckim
+  name: "Northeastern D'Amore-McKim"
+  directory_url: "https://damore-mckim.northeastern.edu/group/international-business/members/"
+  fetch_mode: static
+  area_hint: "D'Amore-McKim has no standalone Strategy department; the International Business & Strategy faculty group (covers strategic management alongside international business) is the closest match"
+- slug: ustc-som
+  name: "USTC School of Management"
+  directory_url: "https://bs.ustc.edu.cn/chinese/teacher-1.html"
+  fetch_mode: static
+  area_hint: "工商管理系 (Department of Business Administration) faculty roster, which includes strategic management researchers alongside other business administration sub-areas; page is in Chinese"
+- slug: rice-jones
+  name: "Rice Jones"
+  directory_url: "https://business.rice.edu/faculty-research/research/strategy-and-environment"
+  fetch_mode: static
+  area_hint: "Strategy and Environment academic area faculty"
+- slug: baruch-zicklin
+  name: "Baruch Zicklin"
+  directory_url: "https://zicklin.baruch.cuny.edu/faculty-research/academic-departments/management/faculty-management/"
+  fetch_mode: static
+  area_hint: "Narendra Paul Loomba Department of Management faculty roster, which covers strategic management alongside organizational behavior, HR, entrepreneurship, and operations management"
+- slug: bayes-business-school
+  name: "Bayes Business School"
+  directory_url: "https://www.bayes.citystgeorges.ac.uk/faculties-and-research/management/strategy-group"
+  fetch_mode: rendered
+  area_hint: "Strategy Group faculty within the Faculty of Management (dedicated Strategy area page)"
