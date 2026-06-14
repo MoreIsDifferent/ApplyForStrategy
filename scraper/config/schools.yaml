@@ -250,3 +250,48 @@
   directory_url: "https://www.cmu.edu/tepper/faculty-and-research/faculty-by-area/strategy.html"
   fetch_mode: static
   area_hint: "Business Strategy faculty area listing"
+- slug: georgia-terry
+  name: "Georgia Terry"
+  directory_url: "https://www.terry.uga.edu/directory/?group=management"
+  fetch_mode: rendered
+  area_hint: "Department of Management faculty directory, which covers strategic management alongside organizational behavior, entrepreneurship, and human resource management"
+- slug: utah-eccles
+  name: "Utah Eccles"
+  directory_url: "https://eccles.utah.edu/programs/phd-in-business-administration/entrepreneurship-and-strategy-faculty/"
+  fetch_mode: rendered
+  area_hint: "Department of Entrepreneurship and Strategy faculty listing"
+- slug: hec-paris
+  name: "HEC Paris"
+  directory_url: "https://www.hec.edu/en/faculty-research/faculty-directory/faculty-member/all/Faculty/strategie-et-politique-d'entreprise"
+  fetch_mode: static
+  area_hint: "Strategy and Business Policy department faculty roster (full list)"
+- slug: georgia-tech-scheller
+  name: "Georgia Tech Scheller"
+  directory_url: "https://www.scheller.gatech.edu/directory/faculty/index.html"
+  fetch_mode: rendered
+  area_hint: "Faculty directory filterable by the 'Strategy and Innovation' academic area checkbox"
+- slug: tsinghua-sem
+  name: "Tsinghua SEM"
+  directory_url: "https://www.sem.tsinghua.edu.cn/iesen/Faculty.htm"
+  fetch_mode: static
+  area_hint: "Department of Innovation, Entrepreneurship and Strategy faculty roster (covers strategic management)"
+- slug: uconn-business
+  name: "UConn School of Business"
+  directory_url: "https://www.business.uconn.edu/faculty/management/"
+  fetch_mode: static
+  area_hint: "Boucher Management & Entrepreneurship Department faculty, which covers strategic management, strategic entrepreneurship, and organizational behavior"
+- slug: miami-business
+  name: "Miami Herbert Business"
+  directory_url: "https://www.herbert.miami.edu/faculty-research/academic-departments/management/faculty.html"
+  fetch_mode: static
+  area_hint: "Miami Herbert has no separate Strategy area; this Department of Management faculty roster (covers entrepreneurship, OB, and strategic management) is the closest match"
+- slug: houston-bauer
+  name: "Houston Bauer"
+  directory_url: "https://bauer.uh.edu/departments/management-leadership/directory/faculty.php"
+  fetch_mode: static
+  area_hint: "Department of Management & Leadership faculty, which covers macro areas including strategy, strategic leadership, and organizational theory alongside organizational behavior and HR"
+- slug: smu-business
+  name: "Singapore Management University Lee Kong Chian"
+  directory_url: "https://business.smu.edu.sg/disciplines/strategy-and-entrepreneurship/faculty"
+  fetch_mode: rendered
+  area_hint: "Strategy and Entrepreneurship discipline faculty roster"
