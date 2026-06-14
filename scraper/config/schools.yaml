@@ -293,5 +293,5 @@
 - slug: smu-business
   name: "Singapore Management University Lee Kong Chian"
   directory_url: "https://business.smu.edu.sg/disciplines/strategy-and-entrepreneurship/faculty"
-  fetch_mode: rendered
+  fetch_mode: static
   area_hint: "Strategy and Entrepreneurship discipline faculty roster"
