@@ -25,12 +25,15 @@ RECENT_WORKS_THRESHOLD = 3
 
 MAX_RETRIES = 3
 RETRY_BACKOFF_SECONDS = 1
+POLITE_DELAY_SECONDS = 0.1
 
 
 def _get(path: str, params: dict) -> dict:
     params = dict(params)
     params["mailto"] = os.environ.get("OPENALEX_EMAIL", "phd-finder@example.com")
     for attempt in range(MAX_RETRIES):
+        if attempt == 0:
+            time.sleep(POLITE_DELAY_SECONDS)
         try:
             response = requests.get(
                 f"{BASE_URL}{path}", params=params, headers={"User-Agent": USER_AGENT}, timeout=30
