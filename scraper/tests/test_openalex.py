@@ -1,6 +1,8 @@
 from datetime import date
 from unittest.mock import MagicMock
 
+import requests
+
 from scraper import openalex
 
 
@@ -244,6 +246,37 @@ def test_fetch_works_expands_limit_for_prolific_author(monkeypatch):
 
     sort_calls = [params for _, params in calls if "sort" in params]
     assert all(params["per_page"] == 20 for params in sort_calls)
+
+
+def test_get_retries_on_transient_request_exception(monkeypatch):
+    mock_get = MagicMock(
+        side_effect=[
+            requests.exceptions.ReadTimeout("timed out"),
+            _response({"results": []}),
+        ]
+    )
+    monkeypatch.setattr(openalex.requests, "get", mock_get)
+    monkeypatch.setattr(openalex.time, "sleep", MagicMock())
+
+    data = openalex._get("/institutions", {"search": "Harvard"})
+
+    assert data == {"results": []}
+    assert mock_get.call_count == 2
+
+
+def test_get_raises_after_exhausting_retries(monkeypatch):
+    mock_get = MagicMock(side_effect=requests.exceptions.ReadTimeout("timed out"))
+    monkeypatch.setattr(openalex.requests, "get", mock_get)
+    monkeypatch.setattr(openalex.time, "sleep", MagicMock())
+
+    try:
+        openalex._get("/institutions", {"search": "Harvard"})
+        raised = False
+    except requests.exceptions.ReadTimeout:
+        raised = True
+
+    assert raised
+    assert mock_get.call_count == openalex.MAX_RETRIES
 
 
 def test_fetch_works_expands_limit_for_rising_star(monkeypatch):

@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import date
 
 import requests
@@ -15,15 +16,24 @@ WORKS_COUNT_THRESHOLD = 30
 RECENT_YEARS = 3
 RECENT_WORKS_THRESHOLD = 3
 
+MAX_RETRIES = 3
+RETRY_BACKOFF_SECONDS = 1
+
 
 def _get(path: str, params: dict) -> dict:
     params = dict(params)
     params["mailto"] = os.environ.get("OPENALEX_EMAIL", "phd-finder@example.com")
-    response = requests.get(
-        f"{BASE_URL}{path}", params=params, headers={"User-Agent": USER_AGENT}, timeout=30
-    )
-    response.raise_for_status()
-    return response.json()
+    for attempt in range(MAX_RETRIES):
+        try:
+            response = requests.get(
+                f"{BASE_URL}{path}", params=params, headers={"User-Agent": USER_AGENT}, timeout=30
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException:
+            if attempt == MAX_RETRIES - 1:
+                raise
+            time.sleep(RETRY_BACKOFF_SECONDS * (2**attempt))
 
 
 def _short_id(openalex_url: str) -> str:
