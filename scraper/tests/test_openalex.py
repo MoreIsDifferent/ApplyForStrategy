@@ -33,6 +33,75 @@ def test_resolve_institution_id_returns_none_when_no_results(monkeypatch):
     assert openalex.resolve_institution_id("Nonexistent University") is None
 
 
+def test_search_institutions_by_phrase_returns_summaries(monkeypatch):
+    mock_get = MagicMock(
+        return_value=_response(
+            {
+                "results": [
+                    {
+                        "id": "https://openalex.org/I61544103",
+                        "display_name": "London Business School",
+                        "works_count": 5000,
+                        "homepage_url": "https://www.london.edu",
+                    }
+                ]
+            }
+        )
+    )
+    monkeypatch.setattr(openalex.requests, "get", mock_get)
+
+    results = openalex.search_institutions_by_phrase("London Business School")
+
+    assert results == [
+        {
+            "id": "I61544103",
+            "display_name": "London Business School",
+            "works_count": 5000,
+            "homepage_url": "https://www.london.edu",
+        }
+    ]
+    _, kwargs = mock_get.call_args
+    assert kwargs["params"]["filter"] == "display_name.search:London Business School"
+
+
+def test_search_institutions_returns_summaries(monkeypatch):
+    mock_get = MagicMock(
+        return_value=_response(
+            {
+                "results": [
+                    {
+                        "id": "https://openalex.org/I136199984",
+                        "display_name": "Harvard University",
+                        "works_count": 500000,
+                        "homepage_url": "https://www.harvard.edu",
+                    }
+                ]
+            }
+        )
+    )
+    monkeypatch.setattr(openalex.requests, "get", mock_get)
+
+    results = openalex.search_institutions("Harvard")
+
+    assert results == [
+        {
+            "id": "I136199984",
+            "display_name": "Harvard University",
+            "works_count": 500000,
+            "homepage_url": "https://www.harvard.edu",
+        }
+    ]
+    _, kwargs = mock_get.call_args
+    assert kwargs["params"]["search"] == "Harvard"
+
+
+def test_search_institutions_returns_empty_list_when_no_results(monkeypatch):
+    mock_get = MagicMock(return_value=_response({"results": []}))
+    monkeypatch.setattr(openalex.requests, "get", mock_get)
+
+    assert openalex.search_institutions("Nonexistent University Xyzzy") == []
+
+
 def test_find_author_returns_match_when_single_candidate(monkeypatch):
     mock_get = MagicMock(
         return_value=_response(

@@ -38,6 +38,25 @@ def resolve_institution_id(school_name: str) -> str | None:
     return _short_id(results[0]["id"])
 
 
+def _institution_summary(result: dict) -> dict:
+    return {
+        "id": _short_id(result["id"]),
+        "display_name": result.get("display_name"),
+        "works_count": result.get("works_count"),
+        "homepage_url": result.get("homepage_url"),
+    }
+
+
+def search_institutions_by_phrase(name: str, per_page: int = 1) -> list[dict]:
+    data = _get("/institutions", {"filter": f"display_name.search:{name}", "per_page": per_page})
+    return [_institution_summary(result) for result in data.get("results") or []]
+
+
+def search_institutions(query: str, per_page: int = 1) -> list[dict]:
+    data = _get("/institutions", {"search": query, "per_page": per_page})
+    return [_institution_summary(result) for result in data.get("results") or []]
+
+
 def find_author(name: str, institution_id: str | None) -> tuple[str | None, str]:
     if institution_id is None:
         return None, "ambiguous"
