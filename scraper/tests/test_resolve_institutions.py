@@ -106,6 +106,41 @@ def test_generate_report_writes_csv_for_unresolved_schools(monkeypatch, tmp_path
     assert rows[0]["query_used"] == 'search:"Harvard"'
 
 
+def test_generate_report_continues_after_resolve_school_error(monkeypatch, tmp_path):
+    client = FakeSupabaseClient()
+    client.seed(
+        "schools",
+        [
+            {"id": "school-1", "slug": "broken-school", "name": "Broken School", "openalex_institution_id": None},
+            {"id": "school-2", "slug": "harvard-hbs", "name": "Harvard Business School", "openalex_institution_id": None},
+        ],
+    )
+
+    def fake_resolve(school_name):
+        if school_name == "Broken School":
+            raise RuntimeError("timed out")
+        return {
+            "id": "I136199984",
+            "display_name": "Harvard University",
+            "works_count": 500000,
+            "homepage_url": "https://www.harvard.edu",
+            "query_used": 'search:"Harvard"',
+        }
+
+    monkeypatch.setattr(resolve_institutions, "resolve_school", MagicMock(side_effect=fake_resolve))
+
+    report_path = tmp_path / "report.csv"
+    count = resolve_institutions.generate_report(client, report_path)
+
+    assert count == 2
+    rows = list(csv.DictReader(report_path.open()))
+    assert rows[0]["slug"] == "broken-school"
+    assert rows[0]["openalex_institution_id"] == ""
+    assert rows[0]["query_used"] == "error: timed out"
+    assert rows[1]["slug"] == "harvard-hbs"
+    assert rows[1]["openalex_institution_id"] == "I136199984"
+
+
 def test_apply_report_updates_school_institution_ids(tmp_path):
     client = FakeSupabaseClient()
     client.seed(

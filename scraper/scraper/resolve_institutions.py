@@ -44,7 +44,16 @@ def generate_report(supabase, report_path: Path = DEFAULT_REPORT_PATH) -> int:
         writer = csv.DictWriter(f, fieldnames=REPORT_FIELDS)
         writer.writeheader()
         for school in targets:
-            resolution = resolve_school(school["name"])
+            try:
+                resolution = resolve_school(school["name"])
+            except Exception as exc:
+                resolution = {
+                    "id": "",
+                    "display_name": "",
+                    "works_count": "",
+                    "homepage_url": "",
+                    "query_used": f"error: {exc}",
+                }
             writer.writerow(
                 {
                     "slug": school["slug"],
