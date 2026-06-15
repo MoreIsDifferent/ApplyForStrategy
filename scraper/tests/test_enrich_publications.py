@@ -132,6 +132,31 @@ def test_successful_match_resolves_institution_and_upserts_publications(monkeypa
     assert new_pub["title"] == "New Paper"
 
 
+def test_run_paginates_through_all_faculty(monkeypatch):
+    client = FakeSupabaseClient()
+    client.seed(
+        "schools",
+        [{"id": "school-1", "slug": "wharton", "name": "Wharton (UPenn)", "openalex_institution_id": "I1"}],
+    )
+    client.seed(
+        "faculty",
+        [
+            {"id": "fac-1", "name": "A", "school_id": "school-1", "openalex_author_id": "A1", "needs_review": False},
+            {"id": "fac-2", "name": "B", "school_id": "school-1", "openalex_author_id": "A2", "needs_review": False},
+            {"id": "fac-3", "name": "C", "school_id": "school-1", "openalex_author_id": "A3", "needs_review": False},
+        ],
+    )
+
+    monkeypatch.setattr(enrich_publications, "PAGE_SIZE", 2)
+    monkeypatch.setattr(openalex, "find_author", MagicMock())
+    monkeypatch.setattr(openalex, "fetch_works", MagicMock(return_value=[]))
+
+    enrich_publications.run(client)
+
+    openalex.find_author.assert_not_called()
+    assert openalex.fetch_works.call_count == 3
+
+
 def test_run_filters_by_school_slug(monkeypatch):
     client = FakeSupabaseClient()
     client.seed(

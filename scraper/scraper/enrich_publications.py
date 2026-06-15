@@ -1,6 +1,9 @@
+import itertools
 import os
 
 from scraper import openalex
+
+PAGE_SIZE = 1000
 
 
 def upsert_publication(supabase, faculty_id: str, work: dict) -> None:
@@ -77,7 +80,13 @@ def run(supabase, school_slug: str | None = None, limit: int | None = None) -> N
         school = supabase.table("schools").select("id").eq("slug", school_slug).execute().data[0]
         query = query.eq("school_id", school["id"])
 
-    rows = query.execute().data
+    rows: list[dict] = []
+    for offset in itertools.count(0, PAGE_SIZE):
+        page = query.range(offset, offset + PAGE_SIZE - 1).execute().data
+        rows.extend(page)
+        if len(page) < PAGE_SIZE:
+            break
+
     if limit is not None:
         rows = rows[:limit]
 
