@@ -12,6 +12,7 @@ class FakeQuery:
         self.filters = []
         self.op = None
         self.payload = None
+        self.range_bounds = None
 
     def select(self, _cols):
         self.op = "select"
@@ -39,18 +40,36 @@ class FakeQuery:
         self.filters.append(("ilike", col, value))
         return self
 
+    def range(self, start, end):
+        self.range_bounds = (start, end)
+        return self
+
+    def is_(self, col, value):
+        self.filters.append(("is", col, value))
+        return self
+
     def _matches(self, row):
         for kind, col, value in self.filters:
             if kind == "eq" and row.get(col) != value:
                 return False
-            if kind == "ilike" and str(row.get(col, "")).lower() != str(value).lower():
+            elif kind == "ilike" and str(row.get(col, "")).lower() != str(value).lower():
                 return False
+            elif kind == "is":
+                is_null = row.get(col) is None
+                if value == "null" and not is_null:
+                    return False
+                if value != "null" and is_null:
+                    return False
         return True
 
     def execute(self):
         rows = self.table.rows
         if self.op == "select":
-            return FakeResult([dict(row) for row in rows if self._matches(row)])
+            matched = [dict(row) for row in rows if self._matches(row)]
+            if self.range_bounds is not None:
+                start, end = self.range_bounds
+                matched = matched[start : end + 1]
+            return FakeResult(matched)
         if self.op == "insert":
             new_row = dict(self.payload)
             new_row["id"] = self.table.next_id()
