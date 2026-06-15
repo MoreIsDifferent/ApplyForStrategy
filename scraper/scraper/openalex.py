@@ -1,8 +1,15 @@
 import os
+import socket
 import time
 from datetime import date
 
 import requests
+import urllib3.util.connection
+
+# Some hosts advertise IPv6 addresses that are unreachable from this network,
+# leaving connections stuck in SYN_SENT/ESTABLISHED past any configured
+# timeout. Prefer IPv4 to avoid those hangs (same fix as scraper/fetch.py).
+urllib3.util.connection.allowed_gai_family = lambda: socket.AF_INET
 
 BASE_URL = "https://api.openalex.org"
 USER_AGENT = (
