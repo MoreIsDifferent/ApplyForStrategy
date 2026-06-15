@@ -132,6 +132,32 @@ def test_successful_match_resolves_institution_and_upserts_publications(monkeypa
     assert new_pub["title"] == "New Paper"
 
 
+def test_run_continues_after_enrich_faculty_error(monkeypatch, capsys):
+    client = FakeSupabaseClient()
+    client.seed(
+        "schools",
+        [{"id": "school-1", "slug": "wharton", "name": "Wharton (UPenn)", "openalex_institution_id": "I1"}],
+    )
+    client.seed(
+        "faculty",
+        [
+            {"id": "fac-1", "name": "Broken, Faculty", "school_id": "school-1", "openalex_author_id": "A1", "needs_review": False},
+            {"id": "fac-2", "name": "Working Faculty", "school_id": "school-1", "openalex_author_id": "A2", "needs_review": False},
+        ],
+    )
+
+    def fake_fetch_works(author_id, **kwargs):
+        if author_id == "A1":
+            raise RuntimeError("boom")
+        return []
+
+    monkeypatch.setattr(openalex, "fetch_works", MagicMock(side_effect=fake_fetch_works))
+
+    enrich_publications.run(client)
+
+    assert "fac-1" in capsys.readouterr().out
+
+
 def test_run_paginates_through_all_faculty(monkeypatch):
     client = FakeSupabaseClient()
     client.seed(

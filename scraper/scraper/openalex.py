@@ -78,7 +78,10 @@ def find_author(name: str, institution_id: str | None) -> tuple[str | None, str]
     if institution_id is None:
         return None, "ambiguous"
 
-    filter_str = f"display_name.search:{name},affiliations.institution.id:{institution_id}"
+    # Commas separate filter clauses in the OpenAlex API, so a name like
+    # "Ceccagnoli, Marco" would otherwise split into an invalid filter clause.
+    search_name = name.replace(",", " ")
+    filter_str = f"display_name.search:{search_name},affiliations.institution.id:{institution_id}"
     data = _get("/authors", {"filter": filter_str, "per_page": 25})
     results = data.get("results") or []
     if len(results) != 1:

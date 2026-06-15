@@ -118,6 +118,16 @@ def test_find_author_returns_match_when_single_candidate(monkeypatch):
     assert confidence == "name_institution"
 
 
+def test_find_author_strips_commas_from_name(monkeypatch):
+    mock_get = MagicMock(return_value=_response({"results": []}))
+    monkeypatch.setattr(openalex.requests, "get", mock_get)
+
+    openalex.find_author("Ceccagnoli, Marco", "I130701444")
+
+    _, kwargs = mock_get.call_args
+    assert kwargs["params"]["filter"] == "display_name.search:Ceccagnoli  Marco,affiliations.institution.id:I130701444"
+
+
 def test_find_author_ambiguous_when_multiple_candidates(monkeypatch):
     mock_get = MagicMock(
         return_value=_response(

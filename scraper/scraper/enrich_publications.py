@@ -92,7 +92,10 @@ def run(supabase, school_slug: str | None = None, limit: int | None = None) -> N
 
     institution_cache: dict[str, str | None] = {}
     for row in rows:
-        enrich_faculty(supabase, row, institution_cache)
+        try:
+            enrich_faculty(supabase, row, institution_cache)
+        except Exception as exc:
+            print(f"Error enriching faculty {row['id']} ({row['name']!r}): {exc}")
 
 
 def main() -> None:
