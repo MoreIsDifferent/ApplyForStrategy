@@ -26,6 +26,7 @@ RECENT_WORKS_THRESHOLD = 3
 MAX_RETRIES = 3
 RETRY_BACKOFF_SECONDS = 1
 POLITE_DELAY_SECONDS = 0.5
+RATE_LIMIT_BACKOFF_SECONDS = 60
 
 
 def _get(path: str, params: dict) -> dict:
@@ -40,6 +41,14 @@ def _get(path: str, params: dict) -> dict:
             )
             response.raise_for_status()
             return response.json()
+        except requests.exceptions.HTTPError as exc:
+            if exc.response.status_code == 429:
+                if attempt == MAX_RETRIES - 1:
+                    raise
+                # Back off significantly on rate limit — short delays just make it worse.
+                time.sleep(RATE_LIMIT_BACKOFF_SECONDS * (attempt + 1))
+            else:
+                raise
         except requests.exceptions.RequestException:
             if attempt == MAX_RETRIES - 1:
                 raise
