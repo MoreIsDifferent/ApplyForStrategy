@@ -74,11 +74,13 @@ def enrich_faculty(supabase, faculty_row: dict, institution_cache: dict[str, str
         upsert_publication(supabase, faculty_row["id"], work)
 
 
-def run(supabase, school_slug: str | None = None, limit: int | None = None) -> None:
+def run(supabase, school_slug: str | None = None, limit: int | None = None, unmatched_only: bool = False) -> None:
     query = supabase.table("faculty").select("id, name, school_id, openalex_author_id")
     if school_slug:
         school = supabase.table("schools").select("id").eq("slug", school_slug).execute().data[0]
         query = query.eq("school_id", school["id"])
+    if unmatched_only:
+        query = query.is_("openalex_match_confidence", "null")
 
     rows: list[dict] = []
     for offset in itertools.count(0, PAGE_SIZE):
@@ -106,10 +108,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Enrich faculty with OpenAlex publication data")
     parser.add_argument("--school", help="Only process faculty at this school slug")
     parser.add_argument("--limit", type=int, help="Only process this many faculty")
+    parser.add_argument("--unmatched-only", action="store_true", help="Only process faculty with no confidence yet (NULL openalex_match_confidence)")
     args = parser.parse_args()
 
     supabase = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"])
-    run(supabase, school_slug=args.school, limit=args.limit)
+    run(supabase, school_slug=args.school, limit=args.limit, unmatched_only=args.unmatched_only)
 
 
 if __name__ == "__main__":

@@ -183,6 +183,34 @@ def test_run_paginates_through_all_faculty(monkeypatch):
     assert openalex.fetch_works.call_count == 3
 
 
+def test_run_unmatched_only_skips_processed_faculty(monkeypatch):
+    client = FakeSupabaseClient()
+    client.seed(
+        "schools",
+        [{"id": "school-1", "slug": "wharton", "name": "Wharton (UPenn)", "openalex_institution_id": "I1"}],
+    )
+    client.seed(
+        "faculty",
+        [
+            {"id": "fac-1", "name": "Already Matched", "school_id": "school-1", "openalex_author_id": "A1", "openalex_match_confidence": "name_institution", "needs_review": False},
+            {"id": "fac-2", "name": "Already Ambiguous", "school_id": "school-1", "openalex_author_id": None, "openalex_match_confidence": "ambiguous", "needs_review": True},
+            {"id": "fac-3", "name": "Not Yet Processed", "school_id": "school-1", "openalex_author_id": None, "openalex_match_confidence": None, "needs_review": False},
+        ],
+    )
+
+    fetch_works = MagicMock(return_value=[])
+    monkeypatch.setattr(openalex, "fetch_works", fetch_works)
+    monkeypatch.setattr(openalex, "find_author", MagicMock(return_value=(None, "ambiguous")))
+
+    enrich_publications.run(client, unmatched_only=True)
+
+    fetch_works.assert_not_called()
+    faculty_rows = {row["id"]: row for row in client.tables["faculty"].rows}
+    assert faculty_rows["fac-1"]["openalex_match_confidence"] == "name_institution"
+    assert faculty_rows["fac-2"]["openalex_match_confidence"] == "ambiguous"
+    assert faculty_rows["fac-3"]["openalex_match_confidence"] == "ambiguous"
+
+
 def test_run_filters_by_school_slug(monkeypatch):
     client = FakeSupabaseClient()
     client.seed(
