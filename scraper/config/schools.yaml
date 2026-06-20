@@ -62,8 +62,8 @@
   area_hint: "Faculty in the Organizations, Strategy and International Management (OSIM) department, filterable via the directory's department filter"
 - slug: usc-marshall
   name: "USC Marshall"
-  directory_url: "https://www.marshall.usc.edu/departments/management-and-organization/faculty"
-  fetch_mode: static
+  directory_url: "https://www.marshall.usc.edu/faculty-research/faculty-directory?department=882"
+  fetch_mode: rendered
   area_hint: "Management and Organization (MOR) Department faculty, which covers strategy and organizational behavior"
 - slug: insead
   name: "INSEAD"
