@@ -14,6 +14,7 @@ from scraper.schools import (
     dartmouth_tuck,
     georgetown_mcdonough,
     indiana_kelley,
+    lbs,
     maryland_smith,
     texas_am_mays,
     ucla_anderson,
@@ -33,6 +34,7 @@ SCRAPER_MODULES = {
     "indiana-kelley": indiana_kelley,
     "texas-am-mays": texas_am_mays,
     "dartmouth-tuck": dartmouth_tuck,
+    "lbs": lbs,
 }
 
 
