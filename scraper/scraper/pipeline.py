@@ -11,6 +11,7 @@ from scraper.extract import build_client, extract_faculty_fields, get_model
 from scraper.schools import (
     chicago_booth,
     columbia_cbs,
+    dartmouth_tuck,
     georgetown_mcdonough,
     indiana_kelley,
     maryland_smith,
@@ -31,6 +32,7 @@ SCRAPER_MODULES = {
     "maryland-smith": maryland_smith,
     "indiana-kelley": indiana_kelley,
     "texas-am-mays": texas_am_mays,
+    "dartmouth-tuck": dartmouth_tuck,
 }
 
 
