@@ -1,15 +1,17 @@
 import os
-import socket
 import time
 from datetime import date
 
 import requests
-import urllib3.util.connection
 
-# Some hosts advertise IPv6 addresses that are unreachable from this network,
-# leaving connections stuck in SYN_SENT/ESTABLISHED past any configured
-# timeout. Prefer IPv4 to avoid those hangs (same fix as scraper/fetch.py).
-urllib3.util.connection.allowed_gai_family = lambda: socket.AF_INET
+# NOTE: Unlike scraper/fetch.py (which talks to assorted university hosts), the
+# OpenAlex API is Cloudflare-backed and reachable over both IPv4 and IPv6. We
+# deliberately do NOT pin the address family here: pinning IPv4 has been
+# observed to hang for ~30s per request when the IPv4 route degrades, while the
+# default dual-stack resolution stays fast. A pinned connect timeout below
+# bounds any single-family stall so retries can recover.
+CONNECT_TIMEOUT_SECONDS = 10
+READ_TIMEOUT_SECONDS = 30
 
 BASE_URL = "https://api.openalex.org"
 USER_AGENT = (
@@ -37,7 +39,10 @@ def _get(path: str, params: dict) -> dict:
             time.sleep(POLITE_DELAY_SECONDS)
         try:
             response = requests.get(
-                f"{BASE_URL}{path}", params=params, headers={"User-Agent": USER_AGENT}, timeout=30
+                f"{BASE_URL}{path}",
+                params=params,
+                headers={"User-Agent": USER_AGENT},
+                timeout=(CONNECT_TIMEOUT_SECONDS, READ_TIMEOUT_SECONDS),
             )
             response.raise_for_status()
             return response.json()
