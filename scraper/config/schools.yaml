@@ -313,7 +313,7 @@
 - slug: georgetown-mcdonough
   name: "Georgetown McDonough"
   directory_url: "https://msb.georgetown.edu/faculty-research/strategy-economics-ethics-public-policy/"
-  fetch_mode: static
+  fetch_mode: rendered
   area_hint: "Strategy, Economics, Ethics, and Public Policy area faculty (includes the Strategy and International Business sub-area)"
 - slug: northeastern-damore-mckim
   name: "Northeastern D'Amore-McKim"

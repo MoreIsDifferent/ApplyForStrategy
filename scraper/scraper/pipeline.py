@@ -8,7 +8,14 @@ from pathlib import Path
 from scraper import generic
 from scraper.config import load_school_configs
 from scraper.extract import build_client, extract_faculty_fields, get_model
-from scraper.schools import chicago_booth, ucla_anderson, usc_marshall, wharton
+from scraper.schools import (
+    chicago_booth,
+    columbia_cbs,
+    georgetown_mcdonough,
+    ucla_anderson,
+    usc_marshall,
+    wharton,
+)
 from scraper.types import SchoolConfig
 
 SCRAPER_MODULES = {
@@ -16,6 +23,8 @@ SCRAPER_MODULES = {
     "chicago-booth": chicago_booth,
     "ucla-anderson": ucla_anderson,
     "usc-marshall": usc_marshall,
+    "columbia-cbs": columbia_cbs,
+    "georgetown-mcdonough": georgetown_mcdonough,
 }
 
 
