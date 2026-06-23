@@ -162,9 +162,9 @@
   area_hint: "Faculty directory pre-filtered to the Strategic Management academic area (FacArea 59)"
 - slug: texas-am-mays
   name: "Texas A&M Mays"
-  directory_url: "https://mays.tamu.edu/faculty/"
+  directory_url: "https://mays.tamu.edu/faculty/?department=3&fullname="
   fetch_mode: rendered
-  area_hint: "General faculty directory spanning all departments; look for faculty affiliated with the Department of Management whose research/teaching covers strategic management"
+  area_hint: "Department of Management faculty (department=3 filter), covering strategic management and organizational behavior"
 - slug: yale-som
   name: "Yale SOM"
   directory_url: "https://som.yale.edu/faculty-research/faculty-directory/organizational-behavior"

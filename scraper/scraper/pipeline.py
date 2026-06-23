@@ -14,6 +14,7 @@ from scraper.schools import (
     georgetown_mcdonough,
     indiana_kelley,
     maryland_smith,
+    texas_am_mays,
     ucla_anderson,
     usc_marshall,
     wharton,
@@ -29,6 +30,7 @@ SCRAPER_MODULES = {
     "georgetown-mcdonough": georgetown_mcdonough,
     "maryland-smith": maryland_smith,
     "indiana-kelley": indiana_kelley,
+    "texas-am-mays": texas_am_mays,
 }
 
 
