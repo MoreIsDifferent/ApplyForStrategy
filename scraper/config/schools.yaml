@@ -168,7 +168,7 @@
 - slug: yale-som
   name: "Yale SOM"
   directory_url: "https://som.yale.edu/faculty-research/faculty-directory/organizational-behavior"
-  fetch_mode: static
+  fetch_mode: rendered
   area_hint: "Yale SOM has no separate Strategy area; its Organizational Behavior faculty group is the closest match and includes faculty working on management and strategy-adjacent topics"
 - slug: cityu-hk-business
   name: "City University of Hong Kong Business"

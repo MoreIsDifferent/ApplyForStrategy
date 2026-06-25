@@ -22,6 +22,8 @@ from scraper.schools import (
     ucla_anderson,
     usc_marshall,
     wharton,
+    wisconsin_business,
+    yale_som,
 )
 from scraper.types import SchoolConfig
 
@@ -39,6 +41,8 @@ SCRAPER_MODULES = {
     "lbs": lbs,
     "rice-jones": rice_jones,
     "minnesota-carlson": minnesota_carlson,
+    "yale-som": yale_som,
+    "wisconsin-school-of-business": wisconsin_business,
 }
 
 
