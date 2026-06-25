@@ -328,7 +328,7 @@
 - slug: rice-jones
   name: "Rice Jones"
   directory_url: "https://business.rice.edu/faculty-research/research/strategy-and-environment"
-  fetch_mode: static
+  fetch_mode: rendered
   area_hint: "Strategy and Environment academic area faculty"
 - slug: baruch-zicklin
   name: "Baruch Zicklin"
