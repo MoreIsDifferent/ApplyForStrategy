@@ -16,6 +16,19 @@ USER_AGENT = (
     "(+https://github.com/MoreIsDifferent/ApplyForStrategy; research project)"
 )
 
+# For JS-rendered fetches we drive a real headless browser. Several university
+# sites serve a degraded/empty shell (no faculty data) to non-browser user
+# agents, so the rendered path presents a standard browser UA — the page is
+# genuinely rendered like a real visitor would see it.
+BROWSER_UA = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+)
+
+# After the network goes idle, give client-side frameworks a moment to hydrate
+# and fire their content XHRs before snapshotting the DOM.
+RENDER_SETTLE_MS = 2500
+
 REQUEST_HEADERS = {
     "User-Agent": USER_AGENT,
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -111,9 +124,10 @@ def fetch_rendered(url: str, delay: float = 1.0) -> BeautifulSoup:
     time.sleep(delay)
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch()
-        page = browser.new_page(user_agent=USER_AGENT)
+        page = browser.new_page(user_agent=BROWSER_UA)
         page.goto(url, timeout=60000)
         _wait_idle(page)
+        page.wait_for_timeout(RENDER_SETTLE_MS)
         _dismiss_cookie_banner(page)
 
         previous_height = None
