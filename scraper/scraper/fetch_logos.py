@@ -49,8 +49,9 @@ def _parse_max_size(sizes: str | None) -> int:
 def extract_icon_url(html: str, base_url: str) -> str | None:
     """Return the best icon URL declared in the page, or None.
 
-    Prefers apple-touch-icon links, then any rel=icon with a size, choosing the
-    largest declared size. Resolves relative hrefs against base_url.
+    Prefers apple-touch-icon links, then any rel=icon link, ranking by largest
+    declared size. Unsized links rank last (area 0) but are still returned if
+    they are the only candidate. Resolves relative hrefs against base_url.
     """
     soup = BeautifulSoup(html, "html.parser")
     candidates = []  # (is_apple, area, absolute_url)
@@ -60,7 +61,7 @@ def extract_icon_url(html: str, base_url: str) -> str | None:
         if not href or not rels:
             continue
         is_apple = any("apple-touch-icon" in r for r in rels)
-        is_icon = "icon" in rels or "shortcut" in rels
+        is_icon = "icon" in rels
         if not (is_apple or is_icon):
             continue
         area = _parse_max_size(link.get("sizes"))

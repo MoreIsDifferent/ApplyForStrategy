@@ -31,6 +31,11 @@ def test_extract_icon_returns_none_when_no_usable_link():
     assert extract_icon_url("<html><head></head></html>", "https://x.edu") is None
 
 
+def test_extract_icon_ignores_bare_shortcut_rel():
+    html = '<link rel="shortcut" href="/shortcuts.html">'
+    assert extract_icon_url(html, "https://x.edu") is None
+
+
 def test_favicon_fallback_url_uses_google_service():
     url = favicon_fallback_url("www.hbs.edu")
     assert url == "https://www.google.com/s2/favicons?domain=www.hbs.edu&sz=128"
@@ -42,8 +47,16 @@ def test_extension_for_maps_content_type():
     assert extension_for("image/svg+xml", "https://x/y") == ".svg"
 
 
+def test_extension_for_strips_content_type_parameters():
+    assert extension_for("image/png; charset=utf-8", "https://x/y") == ".png"
+
+
 def test_extension_for_falls_back_to_url_suffix():
     assert extension_for("application/octet-stream", "https://x/logo.ico") == ".ico"
+
+
+def test_extension_for_defaults_to_png_when_no_type_or_suffix():
+    assert extension_for("application/octet-stream", "https://x/logo") == ".png"
 
 
 def test_render_generated_map_sorts_and_formats():
