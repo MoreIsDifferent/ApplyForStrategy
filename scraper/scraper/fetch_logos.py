@@ -94,3 +94,110 @@ def render_generated_map(slug_to_filename: dict[str, str]) -> str:
         lines.append(f"  '{slug}': '/school-icons/{slug_to_filename[slug]}',")
     lines.append("};")
     return "\n".join(lines) + "\n"
+
+
+REQUEST_HEADERS = {"User-Agent": BROWSER_UA, "Accept-Language": "en-US,en;q=0.9"}
+MIN_IMAGE_BYTES = 512  # anything smaller is almost certainly broken/empty
+ICON_DIR = Path(__file__).resolve().parent.parent.parent / "web" / "public" / "school-icons"
+GENERATED_TS = Path(__file__).resolve().parent.parent.parent / "web" / "lib" / "schoolIcons.generated.ts"
+
+
+def _download(url: str) -> tuple[bytes, str] | None:
+    try:
+        resp = requests.get(url, headers=REQUEST_HEADERS, timeout=30)
+        resp.raise_for_status()
+    except requests.RequestException:
+        return None
+    ct = resp.headers.get("Content-Type", "")
+    if "image" not in ct and not url.lower().endswith((".png", ".jpg", ".jpeg", ".svg", ".ico")):
+        return None
+    if len(resp.content) < MIN_IMAGE_BYTES:
+        return None
+    return resp.content, ct
+
+
+def fetch_one(slug: str, website_url: str) -> tuple[str, str] | None:
+    """Fetch, validate, and save one school's logo.
+
+    Returns (filename, source) where source is 'site' or 'favicon', or None on
+    failure. Never touches MANUAL_OVERRIDE_SLUGS.
+    """
+    domain = domain_from_url(website_url)
+    icon_url = None
+    try:
+        page = requests.get(website_url, headers=REQUEST_HEADERS, timeout=30)
+        page.raise_for_status()
+        icon_url = extract_icon_url(page.text, website_url)
+    except requests.RequestException:
+        pass
+
+    source = "site"
+    result = _download(icon_url) if icon_url else None
+    if result is None:
+        source = "favicon"
+        result = _download(favicon_fallback_url(domain))
+    if result is None:
+        return None
+
+    content, content_type = result
+    filename = f"{slug}{extension_for(content_type, icon_url or '')}"
+    ICON_DIR.mkdir(parents=True, exist_ok=True)
+    (ICON_DIR / filename).write_bytes(content)
+    return filename, source
+
+
+def _existing_map() -> dict[str, str]:
+    """slug -> filename for icons already on disk."""
+    mapping = {}
+    if ICON_DIR.exists():
+        for path in ICON_DIR.iterdir():
+            if path.is_file() and not path.name.startswith("."):
+                mapping[path.stem] = path.name
+    return mapping
+
+
+def fetch_school_logos(supabase, force: bool = False) -> None:
+    rows = supabase.table("schools").select("slug,website_url").execute().data
+    existing = _existing_map()
+    results = {"site": 0, "favicon": 0, "failed": [], "skipped": 0}
+
+    for row in rows:
+        slug, website_url = row["slug"], row.get("website_url")
+        if slug in MANUAL_OVERRIDE_SLUGS or not website_url:
+            results["skipped"] += 1
+            continue
+        if not force and slug in existing:
+            results["skipped"] += 1
+            continue
+        outcome = fetch_one(slug, website_url)
+        if outcome is None:
+            results["failed"].append(slug)
+            print(f"  FAIL   {slug}")
+        else:
+            filename, source = outcome
+            results[source] += 1
+            print(f"  {source:7} {slug} -> {filename}")
+
+    # Regenerate the TS map from whatever is now on disk.
+    final_map = _existing_map()
+    GENERATED_TS.write_text(render_generated_map(final_map))
+
+    print(
+        f"\nDone. site={results['site']} favicon={results['favicon']} "
+        f"failed={len(results['failed'])} skipped={results['skipped']}"
+    )
+    if results["failed"]:
+        print("Failed slugs:", ", ".join(results["failed"]))
+
+
+def main() -> None:
+    import sys
+
+    from supabase import create_client
+
+    client = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"])
+    fetch_school_logos(client, force="--force" in sys.argv)
+
+
+if __name__ == "__main__":
+    main()
