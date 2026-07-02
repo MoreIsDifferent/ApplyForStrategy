@@ -140,8 +140,12 @@ def fetch_one(slug: str, website_url: str) -> tuple[str, str] | None:
         return None
 
     content, content_type = result
-    filename = f"{slug}{extension_for(content_type, icon_url or '')}"
+    used_url = icon_url if source == "site" else favicon_fallback_url(domain)
+    filename = f"{slug}{extension_for(content_type, used_url)}"
     ICON_DIR.mkdir(parents=True, exist_ok=True)
+    # Remove any stale file for this slug (extension may have changed on --force).
+    for stale in ICON_DIR.glob(f"{slug}.*"):
+        stale.unlink()
     (ICON_DIR / filename).write_bytes(content)
     return filename, source
 
@@ -180,7 +184,7 @@ def fetch_school_logos(supabase, force: bool = False) -> None:
 
     # Regenerate the TS map from whatever is now on disk.
     final_map = _existing_map()
-    GENERATED_TS.write_text(render_generated_map(final_map))
+    GENERATED_TS.write_text(render_generated_map(final_map), encoding="utf-8")
 
     print(
         f"\nDone. site={results['site']} favicon={results['favicon']} "
