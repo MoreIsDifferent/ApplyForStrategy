@@ -1,8 +1,17 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FilterableFacultyList } from './FilterableFacultyList';
 import { allFaculty } from '@/lib/sampleData';
+
+// FilterableFacultyList reads the URL via next/navigation hooks, which require
+// an app-router context that isn't mounted under @testing-library/react. Mock
+// the hooks so the component can render in isolation.
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ replace: vi.fn(), push: vi.fn(), prefetch: vi.fn() }),
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 describe('FilterableFacultyList', () => {
   it('shows all faculty by default', () => {

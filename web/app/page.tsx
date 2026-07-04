@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { FilterableFacultyList } from '@/components/FilterableFacultyList';
 import { WhySiteModal } from '@/components/WhySiteModal';
 import { getAllFaculty } from '@/lib/data';
@@ -27,7 +28,9 @@ export default async function HomePage() {
           .
         </p>
       </div>
-      <FilterableFacultyList faculty={allFaculty} />
+      <Suspense fallback={null}>
+        <FilterableFacultyList faculty={allFaculty} />
+      </Suspense>
     </main>
   );
 }
