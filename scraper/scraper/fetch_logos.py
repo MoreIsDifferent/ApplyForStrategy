@@ -14,7 +14,26 @@ BROWSER_UA = (
 
 # Slugs with hand-curated logos in MANUAL_OVERRIDES (web/lib/schoolIcons.ts).
 # The fetch never downloads or regenerates entries for these.
-MANUAL_OVERRIDE_SLUGS = {"wharton", "chicago-booth", "ucla-anderson", "unc-kenan-flagler"}
+MANUAL_OVERRIDE_SLUGS = {
+    "wharton",
+    "chicago-booth",
+    "ucla-anderson",
+    "unc-kenan-flagler",
+    # Hand-picked for schools the automated fetch couldn't source.
+    "utdallas-jindal",
+    "uw-foster",
+    "penn-state-smeal",
+    "rsm-erasmus",
+    "mcgill-desautels",
+    "uconn-business",
+    "miami-business",
+    "houston-bauer",
+    "south-carolina-moore",
+    "ustc-som",
+    "uc-irvine-merage",
+    "bocconi-sda",
+    "frankfurt-school",
+}
 
 _CONTENT_TYPE_EXT = {
     "image/png": ".png",
