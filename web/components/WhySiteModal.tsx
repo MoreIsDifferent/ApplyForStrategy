@@ -35,9 +35,8 @@ export function WhySiteModal() {
             programs attract candidates who are a strong fit.
           </p>
           <p className="text-navy">
-            This site was built as a collaborative effort by Yi Hao and Isin Guler from the UNC Kenan-Flagler Business
-            School. Yi Hao is a PhD student in Strategy and Entrepreneurship, and Isin Guler is a Professor of
-            Strategy.
+            This site was built by Yi Hao from the UNC Kenan-Flagler Business School. Yi Hao is a PhD student in
+            Strategy and Entrepreneurship.
           </p>
           <p className="text-navy">
             We welcome your feedback to help improve this resource. If you have suggestions or data corrections,
