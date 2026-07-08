@@ -15,11 +15,12 @@ export function getTopCoauthors(
   const counts = new Map<string, number>();
   for (const pub of publications) {
     for (const name of pub.coauthors ?? []) {
+      if (!name) continue;
       counts.set(name, (counts.get(name) ?? 0) + 1);
     }
   }
   return Array.from(counts.entries())
     .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'en'))
     .slice(0, limit);
 }

@@ -34,6 +34,14 @@ describe('getTopCoauthors', () => {
 
   it('caps results at the given limit', () => {
     const pubs = [{ coauthors: ['A', 'B', 'C', 'D', 'E'] }];
-    expect(getTopCoauthors(pubs, 3)).toHaveLength(3);
+    expect(getTopCoauthors(pubs, 3)).toEqual([
+      { name: 'A', count: 1 },
+      { name: 'B', count: 1 },
+      { name: 'C', count: 1 },
+    ]);
+  });
+
+  it('ignores empty-string coauthor names', () => {
+    expect(getTopCoauthors([{ coauthors: ['', 'Bob'] }])).toEqual([{ name: 'Bob', count: 1 }]);
   });
 });
