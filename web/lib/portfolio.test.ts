@@ -20,6 +20,10 @@ function makeFaculty(topics: Topic[]): Faculty {
     methodology: 'Quantitative',
     topics,
     theories: [],
+    verified: false,
+    openalexAuthorId: null,
+    publications: [],
+    coauthors: [],
   };
 }
 

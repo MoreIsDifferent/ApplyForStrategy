@@ -19,6 +19,18 @@ export interface Topic {
   category: string;
 }
 
+export interface Publication {
+  title: string;
+  journal: string | null;
+  year: number | null;
+  citation_count: number;
+}
+
+export interface Coauthor {
+  name: string;
+  count: number;
+}
+
 export interface Faculty {
   id: string;
   name: string;
@@ -32,4 +44,8 @@ export interface Faculty {
   methodology: Methodology | null;
   topics: Topic[];
   theories: string[];
+  verified: boolean;
+  openalexAuthorId: string | null;
+  publications: Publication[];
+  coauthors: Coauthor[];
 }

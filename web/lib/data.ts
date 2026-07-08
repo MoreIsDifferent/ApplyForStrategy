@@ -1,5 +1,6 @@
 import { getSupabaseClient } from './supabase';
-import type { Faculty, Methodology, School, Topic } from './types';
+import type { Coauthor, Faculty, Methodology, Publication, School, Topic } from './types';
+import { getTopCoauthors } from './coauthors';
 
 interface SchoolRow {
   id: string;
@@ -15,7 +16,7 @@ interface SchoolRow {
   logo_url: string | null;
 }
 
-interface FacultyRow {
+export interface FacultyRow {
   id: string;
   name: string;
   title: string | null;
@@ -25,9 +26,20 @@ interface FacultyRow {
   personal_website_url: string | null;
   google_scholar_url: string | null;
   methodology: string | null;
+  openalex_author_id: string | null;
+  openalex_match_confidence: string | null;
   schools: SchoolRow;
   faculty_topics: { topics: { name: string; canonical_name: string | null; category: string | null } | null }[];
   faculty_theories: { theories: { name: string } | null }[];
+}
+
+export interface PublicationRow {
+  faculty_id: string;
+  title: string;
+  journal: string | null;
+  year: number | null;
+  citation_count: number;
+  coauthors: string[] | null;
 }
 
 function toSchool(row: SchoolRow): School {
@@ -61,7 +73,20 @@ function dedupeTopics(
   return Array.from(map.values());
 }
 
-function toFaculty(row: FacultyRow): Faculty {
+const MAX_PUBLICATIONS = 25;
+
+export function buildFaculty(row: FacultyRow, pubRows: PublicationRow[]): Faculty {
+  const verified = row.openalex_match_confidence === 'name_institution';
+  const sorted = [...pubRows].sort((a, b) => b.citation_count - a.citation_count);
+  const publications: Publication[] = verified
+    ? sorted.slice(0, MAX_PUBLICATIONS).map((p) => ({
+        title: p.title,
+        journal: p.journal,
+        year: p.year,
+        citation_count: p.citation_count,
+      }))
+    : [];
+  const coauthors: Coauthor[] = verified ? getTopCoauthors(pubRows) : [];
   return {
     id: row.id,
     name: row.name,
@@ -75,6 +100,10 @@ function toFaculty(row: FacultyRow): Faculty {
     methodology: (row.methodology as Methodology | null) ?? null,
     topics: dedupeTopics(row.faculty_topics),
     theories: row.faculty_theories.map((ft) => ft.theories?.name).filter((name): name is string => !!name),
+    verified,
+    openalexAuthorId: verified ? row.openalex_author_id : null,
+    publications,
+    coauthors,
   };
 }
 
@@ -86,6 +115,25 @@ export async function getSchools(): Promise<School[]> {
 }
 
 const PAGE_SIZE = 1000;
+
+async function getPublicationsByFaculty(): Promise<Map<string, PublicationRow[]>> {
+  const supabase = getSupabaseClient();
+  const byFaculty = new Map<string, PublicationRow[]>();
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('publications')
+      .select('faculty_id, title, journal, year, citation_count, coauthors')
+      .range(from, from + PAGE_SIZE - 1);
+    if (error) throw error;
+    for (const p of data as unknown as PublicationRow[]) {
+      const list = byFaculty.get(p.faculty_id) ?? [];
+      list.push(p);
+      byFaculty.set(p.faculty_id, list);
+    }
+    if (data.length < PAGE_SIZE) break;
+  }
+  return byFaculty;
+}
 
 export async function getAllFaculty(): Promise<Faculty[]> {
   const supabase = getSupabaseClient();
@@ -102,5 +150,6 @@ export async function getAllFaculty(): Promise<Faculty[]> {
     rows.push(...(data as unknown as FacultyRow[]));
     if (data.length < PAGE_SIZE) break;
   }
-  return rows.map(toFaculty);
+  const pubsByFaculty = await getPublicationsByFaculty();
+  return rows.map((row) => buildFaculty(row, pubsByFaculty.get(row.id) ?? []));
 }

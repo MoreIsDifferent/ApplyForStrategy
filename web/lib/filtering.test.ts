@@ -32,8 +32,12 @@ function makeFaculty(overrides: Partial<Faculty> & { id: string; name: string })
     methodology: 'Quantitative',
     topics: [],
     theories: [],
+    verified: false,
+    openalexAuthorId: null,
+    publications: [],
+    coauthors: [],
     ...overrides,
-  };
+  } as Faculty;
 }
 
 const INNOVATION = { name: 'Innovation', category: 'Innovation & Technology' };
