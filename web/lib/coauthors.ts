@@ -1,23 +1,25 @@
-import type { Faculty } from './types';
+export interface CoauthorCount {
+  name: string;
+  count: number;
+}
 
-const MAX_COAUTHORS = 5;
-
-export function getSampleCoauthors(faculty: Faculty, allFaculty: Faculty[]): Faculty[] {
-  const topicNames = new Set(faculty.topics.map((t) => t.name));
-  const theoryNames = new Set(faculty.theories);
-
-  return allFaculty
-    .filter((f) => f.id !== faculty.id)
-    .map((f) => {
-      let score = 0;
-      for (const t of f.topics) if (topicNames.has(t.name)) score += 2;
-      for (const th of f.theories) if (theoryNames.has(th)) score += 1;
-      if (f.school.id === faculty.school.id) score += 1;
-      if (f.methodology && f.methodology === faculty.methodology) score += 1;
-      return { faculty: f, score };
-    })
-    .filter((entry) => entry.score > 0)
-    .sort((a, b) => b.score - a.score || a.faculty.name.localeCompare(b.faculty.name))
-    .slice(0, MAX_COAUTHORS)
-    .map((entry) => entry.faculty);
+/**
+ * Count how often each coauthor name appears across a faculty member's
+ * publications and return the most frequent, highest first (ties broken
+ * alphabetically). Input items only need a `coauthors` string array.
+ */
+export function getTopCoauthors(
+  publications: { coauthors: string[] | null }[],
+  limit = 8
+): CoauthorCount[] {
+  const counts = new Map<string, number>();
+  for (const pub of publications) {
+    for (const name of pub.coauthors ?? []) {
+      counts.set(name, (counts.get(name) ?? 0) + 1);
+    }
+  }
+  return Array.from(counts.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+    .slice(0, limit);
 }
