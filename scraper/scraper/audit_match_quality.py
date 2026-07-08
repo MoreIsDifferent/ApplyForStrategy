@@ -21,7 +21,7 @@ def is_suspect_match(author: dict, school_name: str) -> bool:
     affiliations NOR the author's fields look business-related."""
     institutions = author.get("last_known_institutions") or []
     school_lower = school_name.lower()
-    school_hit = any(
+    school_hit = bool(school_lower) and any(
         school_lower in (inst.get("display_name") or "").lower()
         or (inst.get("display_name") or "").lower() in school_lower
         for inst in institutions
