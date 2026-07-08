@@ -9,8 +9,8 @@ export function PublicationList({ publications }: { publications: Publication[] 
       </h2>
       <p className="text-[11px] text-gray-secondary mb-3">Publications matched via OpenAlex</p>
       <ul className="space-y-2">
-        {publications.map((p, i) => (
-          <li key={i} className="text-sm text-charcoal">
+        {publications.map((p) => (
+          <li key={p.title} className="text-sm text-charcoal">
             <span className="font-medium">{p.title}</span>
             <span className="text-gray-secondary">
               {p.journal ? ` — ${p.journal}` : ''}

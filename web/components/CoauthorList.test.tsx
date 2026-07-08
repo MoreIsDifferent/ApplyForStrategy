@@ -10,7 +10,12 @@ describe('CoauthorList', () => {
 
   it('renders each coauthor name (with its count when > 1)', () => {
     render(<CoauthorList coauthors={[{ name: 'Bob', count: 3 }]} />);
-    expect(screen.getByText(/Bob/)).toBeInTheDocument();
-    expect(screen.getByText(/\(3\)/)).toBeInTheDocument();
+    expect(screen.getByText('Bob (3)')).toBeInTheDocument();
+  });
+
+  it('omits the count suffix when count is 1', () => {
+    render(<CoauthorList coauthors={[{ name: 'Solo', count: 1 }]} />);
+    expect(screen.getByText('Solo')).toBeInTheDocument();
+    expect(screen.queryByText(/\(1\)/)).not.toBeInTheDocument();
   });
 });
