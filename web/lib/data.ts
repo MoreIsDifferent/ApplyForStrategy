@@ -77,7 +77,9 @@ const MAX_PUBLICATIONS = 25;
 
 export function buildFaculty(row: FacultyRow, pubRows: PublicationRow[]): Faculty {
   const verified = row.openalex_match_confidence === 'name_institution';
-  const sorted = [...pubRows].sort((a, b) => b.citation_count - a.citation_count);
+  const sorted = verified
+    ? [...pubRows].sort((a, b) => b.citation_count - a.citation_count)
+    : [];
   const publications: Publication[] = verified
     ? sorted.slice(0, MAX_PUBLICATIONS).map((p) => ({
         title: p.title,
@@ -123,6 +125,7 @@ async function getPublicationsByFaculty(): Promise<Map<string, PublicationRow[]>
     const { data, error } = await supabase
       .from('publications')
       .select('faculty_id, title, journal, year, citation_count, coauthors')
+      .order('faculty_id')
       .range(from, from + PAGE_SIZE - 1);
     if (error) throw error;
     for (const p of data as unknown as PublicationRow[]) {

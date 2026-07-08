@@ -1,7 +1,4 @@
-export interface CoauthorCount {
-  name: string;
-  count: number;
-}
+import type { Coauthor } from './types';
 
 /**
  * Count how often each coauthor name appears across a faculty member's
@@ -11,7 +8,7 @@ export interface CoauthorCount {
 export function getTopCoauthors(
   publications: { coauthors: string[] | null }[],
   limit = 8
-): CoauthorCount[] {
+): Coauthor[] {
   const counts = new Map<string, number>();
   for (const pub of publications) {
     for (const name of pub.coauthors ?? []) {

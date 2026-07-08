@@ -45,6 +45,17 @@ describe('buildFaculty', () => {
     expect(f.coauthors).toEqual([]);
   });
 
+  it('treats null confidence as unverified', () => {
+    const f = buildFaculty(
+      facultyRow({ openalex_author_id: 'A999', openalex_match_confidence: null }),
+      pubs
+    );
+    expect(f.verified).toBe(false);
+    expect(f.openalexAuthorId).toBeNull();
+    expect(f.publications).toEqual([]);
+    expect(f.coauthors).toEqual([]);
+  });
+
   it('caps attached publications at 25', () => {
     const many: PublicationRow[] = Array.from({ length: 40 }, (_, i) => ({
       faculty_id: 'f1', title: `P${i}`, journal: null, year: 2000 + i, citation_count: i, coauthors: [],
