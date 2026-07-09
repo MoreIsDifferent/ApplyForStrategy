@@ -88,6 +88,7 @@ export function buildFaculty(row: FacultyRow, pubRows: PublicationRow[]): Facult
         citation_count: p.citation_count,
       }))
     : [];
+  // facultyId starts null; getAllFaculty replaces it via linkCoauthors after building the name index
   const coauthors: Coauthor[] = verified
     ? getTopCoauthors(pubRows).map((c) => ({ ...c, facultyId: null }))
     : [];

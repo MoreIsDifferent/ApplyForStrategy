@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getTopCoauthors } from './coauthors';
+import { getTopCoauthors, linkCoauthors } from './coauthors';
 
 describe('getTopCoauthors', () => {
   it('returns [] when there are no publications', () => {
@@ -45,8 +45,6 @@ describe('getTopCoauthors', () => {
     expect(getTopCoauthors([{ coauthors: ['', 'Bob'] }])).toEqual([{ name: 'Bob', count: 1 }]);
   });
 });
-
-import { linkCoauthors } from './coauthors';
 
 describe('linkCoauthors', () => {
   it('sets facultyId to the unique match for an in-network name', () => {

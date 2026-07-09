@@ -28,6 +28,7 @@ describe('buildNameIndex', () => {
       { id: 'a', name: 'Unique Person' },
       { id: 'b', name: 'Same Name' },
       { id: 'c', name: 'Same Name' },
+      { id: 'd', name: 'Same Name' },
     ]);
     expect(index.get('unique person')).toBe('a');
     expect(index.get('same name')).toBeNull();
