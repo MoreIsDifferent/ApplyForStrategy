@@ -20,9 +20,10 @@ const SIZE = 320;
 const CENTER = SIZE / 2;
 const RING_RADIUS = 120;
 const MIN_NODE_RADIUS = 10;
-const NODE_RADIUS_BONUS = 12;
+const NODE_RADIUS_RANGE = 12;
 const MIN_STROKE = 1;
-const STROKE_BONUS = 4;
+const STROKE_RANGE = 4;
+const CENTER_POINT = { x: CENTER, y: CENTER } as const;
 
 /** Radial ego layout: coauthors evenly around a ring, sized by collaboration count. */
 export function coauthorGraphLayout(coauthors: Coauthor[]): GraphLayout {
@@ -36,9 +37,9 @@ export function coauthorGraphLayout(coauthors: Coauthor[]): GraphLayout {
       count: coauthor.count,
       x: CENTER + RING_RADIUS * Math.cos(angle),
       y: CENTER + RING_RADIUS * Math.sin(angle),
-      radius: MIN_NODE_RADIUS + NODE_RADIUS_BONUS * ratio,
-      strokeWidth: MIN_STROKE + STROKE_BONUS * ratio,
+      radius: MIN_NODE_RADIUS + NODE_RADIUS_RANGE * ratio,
+      strokeWidth: MIN_STROKE + STROKE_RANGE * ratio,
     };
   });
-  return { size: SIZE, center: { x: CENTER, y: CENTER }, nodes };
+  return { size: SIZE, center: CENTER_POINT, nodes };
 }

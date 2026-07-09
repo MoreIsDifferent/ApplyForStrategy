@@ -21,6 +21,15 @@ describe('coauthorGraphLayout', () => {
     const layout = coauthorGraphLayout([c('A', 1), c('B', 1), c('C', 1)]);
     const keys = layout.nodes.map((n) => `${n.x.toFixed(2)},${n.y.toFixed(2)}`);
     expect(new Set(keys).size).toBe(3);
+    const radii = layout.nodes.map((n) => n.radius);
+    expect(radii[0]).toBe(radii[1]);
+  });
+
+  it('handles a coauthor with count 0 without NaN', () => {
+    const layout = coauthorGraphLayout([c('Ghost', 0)]);
+    expect(layout.nodes[0].radius).toBeGreaterThan(0);
+    expect(layout.nodes[0].strokeWidth).toBeGreaterThan(0);
+    expect(Number.isFinite(layout.nodes[0].x)).toBe(true);
   });
 
   it('scales radius and strokeWidth up with count', () => {
