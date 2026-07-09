@@ -45,3 +45,27 @@ describe('getTopCoauthors', () => {
     expect(getTopCoauthors([{ coauthors: ['', 'Bob'] }])).toEqual([{ name: 'Bob', count: 1 }]);
   });
 });
+
+import { linkCoauthors } from './coauthors';
+
+describe('linkCoauthors', () => {
+  it('sets facultyId to the unique match for an in-network name', () => {
+    const index = new Map<string, string | null>([['bob', 'f2']]);
+    expect(linkCoauthors([{ name: 'Bob', count: 2 }], index)).toEqual([
+      { name: 'Bob', count: 2, facultyId: 'f2' },
+    ]);
+  });
+
+  it('leaves facultyId null for absent or ambiguous names', () => {
+    const index = new Map<string, string | null>([['ann', null]]); // ambiguous
+    expect(linkCoauthors([{ name: 'Ann', count: 1 }, { name: 'Zed', count: 1 }], index)).toEqual([
+      { name: 'Ann', count: 1, facultyId: null },
+      { name: 'Zed', count: 1, facultyId: null },
+    ]);
+  });
+
+  it('matches case-insensitively', () => {
+    const index = new Map<string, string | null>([['bob smith', 'f9']]);
+    expect(linkCoauthors([{ name: 'BOB SMITH', count: 1 }], index)[0].facultyId).toBe('f9');
+  });
+});

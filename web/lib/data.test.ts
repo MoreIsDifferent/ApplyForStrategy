@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildFaculty, type FacultyRow, type PublicationRow } from './data';
+import { buildFaculty, buildNameIndex, type FacultyRow, type PublicationRow } from './data';
 
 const schoolRow = {
   id: 's1', name: 'Test School', slug: 'test-school', geography: 'Northeast',
@@ -22,6 +22,18 @@ const pubs: PublicationRow[] = [
   { faculty_id: 'f1', title: 'Paper B', journal: 'SMJ', year: 2019, citation_count: 90, coauthors: ['Bob', 'Carol'] },
 ];
 
+describe('buildNameIndex', () => {
+  it('maps a unique name to its id and a duplicated name to null', () => {
+    const index = buildNameIndex([
+      { id: 'a', name: 'Unique Person' },
+      { id: 'b', name: 'Same Name' },
+      { id: 'c', name: 'Same Name' },
+    ]);
+    expect(index.get('unique person')).toBe('a');
+    expect(index.get('same name')).toBeNull();
+  });
+});
+
 describe('buildFaculty', () => {
   it('marks name_institution matches verified and attaches publications sorted by citations', () => {
     const f = buildFaculty(
@@ -31,7 +43,10 @@ describe('buildFaculty', () => {
     expect(f.verified).toBe(true);
     expect(f.openalexAuthorId).toBe('A123');
     expect(f.publications.map((p) => p.title)).toEqual(['Paper B', 'Paper A']);
-    expect(f.coauthors).toEqual([{ name: 'Bob', count: 2 }, { name: 'Carol', count: 1 }]);
+    expect(f.coauthors).toEqual([
+      { name: 'Bob', count: 2, facultyId: null },
+      { name: 'Carol', count: 1, facultyId: null },
+    ]);
   });
 
   it('hides all OpenAlex-derived data for ambiguous (unverified) faculty', () => {

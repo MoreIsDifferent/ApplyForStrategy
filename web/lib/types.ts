@@ -29,6 +29,7 @@ export interface Publication {
 export interface Coauthor {
   name: string;
   count: number;
+  facultyId: string | null;
 }
 
 export interface Faculty {

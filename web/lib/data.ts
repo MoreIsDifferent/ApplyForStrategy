@@ -1,6 +1,6 @@
 import { getSupabaseClient } from './supabase';
 import type { Coauthor, Faculty, Methodology, Publication, School, Topic } from './types';
-import { getTopCoauthors } from './coauthors';
+import { getTopCoauthors, linkCoauthors } from './coauthors';
 
 interface SchoolRow {
   id: string;
@@ -88,7 +88,9 @@ export function buildFaculty(row: FacultyRow, pubRows: PublicationRow[]): Facult
         citation_count: p.citation_count,
       }))
     : [];
-  const coauthors: Coauthor[] = verified ? getTopCoauthors(pubRows) : [];
+  const coauthors: Coauthor[] = verified
+    ? getTopCoauthors(pubRows).map((c) => ({ ...c, facultyId: null }))
+    : [];
   return {
     id: row.id,
     name: row.name,
@@ -138,6 +140,15 @@ async function getPublicationsByFaculty(): Promise<Map<string, PublicationRow[]>
   return byFaculty;
 }
 
+export function buildNameIndex(faculty: { id: string; name: string }[]): Map<string, string | null> {
+  const index = new Map<string, string | null>();
+  for (const f of faculty) {
+    const key = f.name.toLowerCase();
+    index.set(key, index.has(key) ? null : f.id);
+  }
+  return index;
+}
+
 export async function getAllFaculty(): Promise<Faculty[]> {
   const supabase = getSupabaseClient();
   const rows: FacultyRow[] = [];
@@ -154,5 +165,7 @@ export async function getAllFaculty(): Promise<Faculty[]> {
     if (data.length < PAGE_SIZE) break;
   }
   const pubsByFaculty = await getPublicationsByFaculty();
-  return rows.map((row) => buildFaculty(row, pubsByFaculty.get(row.id) ?? []));
+  const faculty = rows.map((row) => buildFaculty(row, pubsByFaculty.get(row.id) ?? []));
+  const nameIndex = buildNameIndex(faculty);
+  return faculty.map((f) => ({ ...f, coauthors: linkCoauthors(f.coauthors, nameIndex) }));
 }
