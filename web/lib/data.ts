@@ -88,9 +88,14 @@ export function buildFaculty(row: FacultyRow, pubRows: PublicationRow[]): Facult
         citation_count: p.citation_count,
       }))
     : [];
-  // facultyId starts null; getAllFaculty replaces it via linkCoauthors after building the name index
+  // Exclude the faculty's own name (OpenAlex coauthor lists can include the
+  // author themselves, which would otherwise render a self-node linking home).
+  // facultyId starts null; getAllFaculty replaces it via linkCoauthors after building the name index.
+  const ownName = row.name.toLowerCase();
   const coauthors: Coauthor[] = verified
-    ? getTopCoauthors(pubRows).map((c) => ({ ...c, facultyId: null }))
+    ? getTopCoauthors(pubRows)
+        .filter((c) => c.name.toLowerCase() !== ownName)
+        .map((c) => ({ ...c, facultyId: null }))
     : [];
   return {
     id: row.id,

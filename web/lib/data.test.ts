@@ -36,6 +36,14 @@ describe('buildNameIndex', () => {
 });
 
 describe('buildFaculty', () => {
+  it('excludes the faculty\'s own name from their coauthors (case-insensitive)', () => {
+    const f = buildFaculty(
+      facultyRow({ name: 'Alice', openalex_author_id: 'A1', openalex_match_confidence: 'name_institution' }),
+      [{ faculty_id: 'f1', title: 'P', journal: null, year: 2020, citation_count: 1, coauthors: ['ALICE', 'Bob'] }]
+    );
+    expect(f.coauthors.map((c) => c.name)).toEqual(['Bob']);
+  });
+
   it('marks name_institution matches verified and attaches publications sorted by citations', () => {
     const f = buildFaculty(
       facultyRow({ openalex_author_id: 'A123', openalex_match_confidence: 'name_institution' }),
