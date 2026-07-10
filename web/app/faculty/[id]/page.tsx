@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { getAllFaculty } from '@/lib/data';
 import { getInitials } from '@/lib/initials';
 import { PublicationList } from '@/components/PublicationList';
-import { CoauthorList } from '@/components/CoauthorList';
+import { CoauthorGraph } from '@/components/CoauthorGraph';
 import { BackButton } from '@/components/BackButton';
 
 export async function generateStaticParams() {
@@ -94,7 +94,7 @@ export default async function FacultyPage({
       </div>
 
       <PublicationList publications={faculty.publications} />
-      <CoauthorList coauthors={faculty.coauthors} />
+      <CoauthorGraph centerName={faculty.name} coauthors={faculty.coauthors} />
     </main>
   );
 }
